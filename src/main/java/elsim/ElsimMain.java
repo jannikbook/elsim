@@ -4,7 +4,7 @@ public class ElsimMain {
 
 	public static void main(String[] args) {
 		
-		System.out.println("Java Programm l‰uft");
+		System.out.println("Java Programm l√§uft");
 
 	}
 
