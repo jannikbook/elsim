@@ -1,0 +1,4 @@
+# Manually created .gitignore file
+
+# target folder doesn't seem to be necessary in the repository
+target/
