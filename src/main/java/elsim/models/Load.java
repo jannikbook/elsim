@@ -10,7 +10,7 @@ package main.java.elsim.models;
  */
 public abstract class Load {
     int mass;
-    double area;
+    double spaceRequired;
 
     /**
      * Get the mass of the object
@@ -22,9 +22,9 @@ public abstract class Load {
 
     /**
      * Get the required area for the object
-     * @return area in m²
+     * @return required space in m²
      */
-    public double getArea() {
-        return area;
+    public double getSpaceRequired() {
+        return spaceRequired;
     }
 }

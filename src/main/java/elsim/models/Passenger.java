@@ -17,14 +17,14 @@ public class Passenger extends Load {
      * Manual constructor for Passenger Objects
      * @param type Passenger type defined in enum
      * @param mass Mass of the passenger in kg
-     * @param area Area needed for the passenger in m²
+     * @param spaceRequired Area needed for the passenger in m²
      * @param floorStartingPoint Starting floor of passenger
      * @param floorDestination Destination floor of passenger
      */
-    public Passenger(PassengerType type, int mass, double area, Floor floorStartingPoint, Floor floorDestination){
+    public Passenger(PassengerType type, int mass, double spaceRequired, Floor floorStartingPoint, Floor floorDestination){
         this.type = type;
         this.mass = mass;
-        this.area = area;
+        this.spaceRequired = spaceRequired;
         this.floorStartingPoint = floorStartingPoint;
         this.floorDestination = floorDestination;
     }
