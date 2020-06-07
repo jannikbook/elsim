@@ -1,5 +1,5 @@
 package main.java.elsim.models;
 
-public class Item {
+public class Item extends Load {
 
 }
