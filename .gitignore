@@ -1,4 +1,5 @@
 # Manually created .gitignore file
 
-# target folder doesn't seem to be necessary in the repository
+# these two folder contain build and binary files and are not currently needed in the repository
+bin/
 target/
