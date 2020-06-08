@@ -8,6 +8,8 @@ import java.util.ArrayList;
  * @author jdunker
  */
 public class Passenger extends Load {
+    private int timeChange;
+    private int timePatience;
     public ArrayList<Item> items;
     private PassengerType type;
     private Floor floorStartingPoint;
@@ -21,9 +23,11 @@ public class Passenger extends Load {
      * @param floorStartingPoint Starting floor of passenger
      * @param floorDestination Destination floor of passenger
      */
-    public Passenger(PassengerType type, int mass, double spaceRequired, Floor floorStartingPoint, Floor floorDestination){
+    public Passenger(PassengerType type, int mass, double spaceRequired, int timeChange, int timePatience, Floor floorStartingPoint, Floor floorDestination){
         this.type = type;
         this.mass = mass;
+        this.timeChange = timeChange;
+        this.timePatience = timePatience;
         this.spaceRequired = spaceRequired;
         this.floorStartingPoint = floorStartingPoint;
         this.floorDestination = floorDestination;
@@ -51,5 +55,37 @@ public class Passenger extends Load {
      */
     public Floor getFloorDestination() {
         return floorDestination;
+    }
+
+    /**
+     * Get time required to get in or out of the elevator
+     * @return time in ms
+     */
+    public int getTimeChange() {
+        return timeChange;
+    }
+
+    /**
+     * Set time required to get in or out of the elevator
+     * @param timeChange time in ms
+     */
+    public void setTimeChange(int timeChange) {
+        this.timeChange = timeChange;
+    }
+
+    /**
+     * Get patience of passenger
+     * @return time in ms
+     */
+    public int getTimePatience() {
+        return timePatience;
+    }
+
+    /**
+     * Set patience of passenger
+     * @param timePatience time in ms
+     */
+    public void setTimePatience(int timePatience) {
+        this.timePatience = timePatience;
     }
 }
