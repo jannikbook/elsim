@@ -25,15 +25,16 @@ public class ElevatorShaft {
 
     public double distanceToFloor(int floor) {
         double distance = 0;
+        int save;               //Warte auf implementierung von Car.getCurrentFloor();
         int from = 0;
-        int to = 0;
-        if (floor>0) {
-            from = floor;
-            to = 0;
-        } else {
-            from = 0;
-            to = floor;
+        int to = floor;
+
+        if (from>to) {
+            save = to;
+            to = from;
+            from = save;
         }
+
         for (int i = from; i<to; i++) {
             distance+=this.getFloors().get(i).getHeight();
         }
