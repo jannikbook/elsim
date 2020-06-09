@@ -1,6 +1,5 @@
 package main.java.elsim.models;
 
-import java.awt.*;
 import java.util.List;
 
 public class ElevatorShaft {
