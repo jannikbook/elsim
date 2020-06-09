@@ -36,7 +36,7 @@ public class Floor {
     public int getHeight() { return height; }
 
     /**
-     * Remove the passenger at index X
+     * Remove the first passenger
      */
     public void removeFirstPassenger() {
         if(passengers.size() > 0)
