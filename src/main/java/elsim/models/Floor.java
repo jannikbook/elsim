@@ -1,8 +1,6 @@
 package main.java.elsim.models;
 
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 /**
  * Class for floors where the passengers wait for the elevator
@@ -38,23 +36,36 @@ public class Floor {
     public int getHeight() { return height; }
 
     /**
+     * Remove the first passenger
+     */
+    public void removeFirstPassenger() {
+        if(passengers.size() > 0)
+            passengers.pop();
+    }
+
+    /**
      * Get the first waiting passenger
      * @return Passenger
      */
     public Passenger getFirstPassenger() { return passengers.peekFirst(); }
 
     /**
-     * Get next waiting passenger who can get into the elevator limited by mass and required space
+     * Find, return and remove next waiting passenger who can get into the elevator limited by mass and required space
      * @param freeMass Free mass of the elevator
      * @param freeSpace Free space of the elevator
      * @return Passenger as type Passenger who fit with the conditions and can enter the elevator. If no passenger fit it will return null.
      */
-    public Passenger getNextPossiblePassenger(int freeMass, double freeSpace) {
-        for (Passenger passenger: passengers) {
-            if(passenger.mass <= freeMass && passenger.spaceRequired <= freeSpace) {
-                return passenger;
+    public Passenger findAndRemoveNextPossiblePassenger(int freeMass, double freeSpace) {
+        Passenger passenger = null;
+        for (Passenger tmp: passengers) {
+            if(tmp.mass <= freeMass && tmp.spaceRequired <= freeSpace) {
+                passenger = tmp;
+                break;
             }
         }
-        return null;
+        if(passenger != null) {
+            passengers.remove(passenger);
+        }
+        return passenger;
     }
 }

@@ -1,6 +1,5 @@
 package main.java.elsim.models;
 
-import java.awt.*;
 import java.util.Scanner;
 
 /**
@@ -28,7 +27,7 @@ public class Item {
         int height = getRandomInteger(MIN_HEIGHT,MAX_HEIGHT);
         Item myItem = new Item();
         myItem.mass = getRandomInteger(MIN_MASS,MAX_MASS);
-        myItem.spaceRequired = new Rectangle(0,0,width,height);
+        myItem.spaceRequired = new Rectangle(0,0);
         return myItem;
     }
     //Generate random integer in a given range
@@ -41,7 +40,7 @@ public class Item {
         Item myItem = SpawnItem();
         System.out.println("Item #" + itemNumber + ":");
         System.out.println("Mass : " + myItem.mass + "kg");
-        System.out.println("Required space : " + myItem.spaceRequired.width + "x" + myItem.spaceRequired.height + " cm");
+        System.out.println("Required space : " + myItem.spaceRequired.getWidth() + "x" + myItem.spaceRequired.getHeight() + " cm");
 
     }
     //Testfunction that spawns new Items and shows their attributes

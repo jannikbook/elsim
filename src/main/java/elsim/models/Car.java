@@ -1,6 +1,5 @@
 package main.java.elsim.models;
 
-import java.awt.Rectangle;
 import java.util.List;
 
 /**
