@@ -18,13 +18,13 @@ public class Car {
 	
 	private int currentPersonNumber;
 	private int currentMass;
-	private Rectangle currentCarArea;
+	private double currentCarArea;
 	private int currentFloor;
 	
 	/**
      * Parameterized Creation of Car Object
      * @param maxPersonNumber Maximum amount of passenger inside a car
-     * @param maxMax Maximum amount of mass inside a car in kg
+     * @param maxMass Maximum amount of mass inside a car in kg
      * @param maxCarArea Rectangle desribing the maximum car area
      * @param elevatorSpeed Speed of a car while switching floors in m/s
      * @param numberOfFloors Number of floors which the car can reach
@@ -38,7 +38,7 @@ public class Car {
 		this.numberOfFloors = numberOfFloors;
 		this.currentPersonNumber = 0;
 		this.currentMass = 0;
-		this.currentCarArea = new Rectangle(0, 0);
+		this.currentCarArea = 0.0;
 		this.currentFloor = 0;
 	}
 	
@@ -51,14 +51,12 @@ public class Car {
 	public boolean addPassenger(Passenger passenger) {
 		int checkPersonNumber = this.currentPersonNumber + 1;
 		int checkMass = this.currentMass + passenger.getMass();
-		double checkCarAreaWidth = 0.00;
-		double checkCarAreaHeight = 0.00;		
+		double checkCarArea = 0.00;
 		List<Item> passengerItems = passenger.getItems();
 		
 		for (int i = 0; i < passengerItems.size(); i++) {
-			checkMass = checkMass + passengerItems.get(i).mass;	
-			checkCarAreaWidth = passengerItems.get(i).spaceRequired.getWidth();
-			checkCarAreaHeight = passengerItems.get(i).spaceRequired.getHeight();
+			checkMass = checkMass + passengerItems.get(i).mass;
+			checkCarArea = passengerItems.get(i).spaceRequired;
 		}
 		
 		if(checkPersonNumber > this.maxPersonNumber) {
@@ -71,17 +69,17 @@ public class Car {
 			return false;
 		}
 		
-		if(checkCarAreaWidth > this.maxCarArea.getWidth()) {
+		if(checkCarArea > this.maxCarArea.getWidth()) {
 			System.out.println("Car width exceeds the limit");
 		}
 		
-		if(checkCarAreaHeight > this.maxCarArea.getHeight()) {
+		if(checkCarArea > this.maxCarArea.getHeight()) {
 			System.out.println("Car height exceeds the limit");
 		}
 		
 		this.currentPersonNumber = checkPersonNumber;
 		this.currentMass = checkMass;
-		this.currentCarArea = new Rectangle((int)checkCarAreaWidth, (int)checkCarAreaHeight);
+		this.currentCarArea = checkCarArea;
 		return true;
 		
 	}
@@ -94,22 +92,17 @@ public class Car {
 	public void removePassenger(Passenger passenger) {
 		
 		int removedMass = 0;
-		double removedCarAreaWidth = 0.00;
-		double removedCarAreaHeight = 0.00;		
+		double removedCarArea = 0.0;
 		List<Item> passengerItems = passenger.getItems();
 		
 		for (int i = 0; i < passengerItems.size(); i++) {
 			removedMass = removedMass + passengerItems.get(i).mass;	
-			removedCarAreaWidth = passengerItems.get(i).spaceRequired.getWidth();
-			removedCarAreaHeight = passengerItems.get(i).spaceRequired.getHeight();
+			removedCarArea = passengerItems.get(i).spaceRequired;
 		}
 		
 		this.currentPersonNumber = this.currentPersonNumber - 1;
 		this.currentMass = this.currentMass - removedMass;
-		this.currentCarArea = new Rectangle(
-			(int)(this.currentCarArea.getWidth() - removedCarAreaWidth),
-			(int)(this.currentCarArea.getHeight() - removedCarAreaHeight)
-		);
+		this.currentCarArea = currentCarArea - removedCarArea;
 	}
 	
 }
