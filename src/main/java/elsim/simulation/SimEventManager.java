@@ -4,13 +4,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class SimEventManager {
-	private SortedSet<SimEvent> events;
+	private SortedSet<AbstractSimEvent> events;
 
 	/**
 	 * Creates a new EventManager instance.
 	 */
 	public SimEventManager() {
-		events = new TreeSet<>(new SimEventComparator());
+		events = new TreeSet<>(new SimEventTimestampComparator());
 	}
 
 	/**
@@ -18,7 +18,7 @@ public class SimEventManager {
 	 * @param newEvent The new {@code SimEvent} to add.
 	 * @return True iff the event was successfully added to the queue.
 	 */
-	public boolean addEvent(SimEvent newEvent) {
+	public boolean addEvent(AbstractSimEvent newEvent) {
 		return events.add(newEvent);
 	}
 }

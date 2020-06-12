@@ -4,6 +4,9 @@ import main.java.elsim.models.ElevatorShaft;
 
 import java.time.LocalDateTime;
 
+/**
+ * Contains all information needed to run a simulation and handles the basic simulation logic.
+ */
 public class Simulation {
 	private LocalDateTime simulationStart;
 	private LocalDateTime simulationEnd;
