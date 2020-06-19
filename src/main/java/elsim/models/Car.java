@@ -7,25 +7,27 @@ import java.util.List;
  * Class for a elevator car used by passengers
  * @author fwagner
  */
-public class Car {
 
-	public enum movement {
-		UP,
-		DOWN,
-		STILL
-	}
+/*
+ * Data to be used in the config (Car)
+ * maxPassengerNumber => Maximum allowed passengers in current elevator
+ * maxCarArea => Rectangle of the area inside the elevator
+ * maxMass => Maximum allowed of mass in current elevator
+ * elevatorSpeed => Speed of which the elevator moves between floors
+ * changeDoorTime => Time(seconds, tick) it takes to open/close the door
+ */
+
+public class Car {
 	
 	private int maxPassengerNumber;
 	private int maxMass;							// Mass in kg
-	private Rectangle maxCarArea;					// DEBATABLE (currently custom rectangle)
+	private Rectangle maxCarArea;					
 	private int elevatorSpeed;						// Unit for speed = m/s
-	private int numberOfFloors;
+	private double changeDoorTime;					// Time in seconds
 	
 	private int currentPassengerNumber;
 	private int currentMass;						// Mass in kg
-	private double currentCarArea;					// DEBATABLE (currently area in m²)
-	private int currentFloor;						// Bottom terminal floor = 1
-	private movement currentMovement;				// Movement of the car
+	private double currentCarArea;					// area in m²
 	private List<Passenger> currentPassengers;		
 
 	/**
@@ -34,20 +36,18 @@ public class Car {
      * @param maxMass Maximum amount of mass inside a car in kg
      * @param maxCarArea Rectangle desribing the maximum car area
      * @param elevatorSpeed Speed of a car while switching floors in m/s
-     * @param numberOfFloors Number of floors which the car can reach
+     * @param changeDoorTime Time it takes to open/close the door
      */
-	public Car(int maxPassangerNumber, int maxMass, Rectangle maxCarArea, int elevatorSpeed, int numberOfFloors) {
+	public Car(int maxPassangerNumber, int maxMass, Rectangle maxCarArea, int elevatorSpeed, double changeDoorTime) {
 		super();
 		this.maxPassengerNumber = maxPassangerNumber;
 		this.maxMass = maxMass;
 		this.maxCarArea = maxCarArea;
 		this.elevatorSpeed = elevatorSpeed;
-		this.numberOfFloors = numberOfFloors;
+		this.changeDoorTime = changeDoorTime;
 		this.currentPassengerNumber = 0;
 		this.currentMass = 0;
 		this.currentCarArea = 0.0;
-		this.currentFloor = 1;
-		this.currentMovement = movement.STILL;
 		this.currentPassengers = new ArrayList<>();
 	}
 	
@@ -84,22 +84,6 @@ public class Car {
 	}
 
 	/**
-	 * Returns current floor number
-	 * @return Current floor number
-	 */
-	public int getCurrentFloor() {
-		return currentFloor;
-	}
-	
-	/**
-	 * Returns movement of the elevator (enum)
-	 * @return Movement of the elevator
-	 */
-	public movement getCurrentMovement() {
-		return currentMovement;
-	}
-
-	/**
 	 * Returns list of passenger inside the car
 	 * @return List of passenger inside the car
 	 */
@@ -124,40 +108,49 @@ public class Car {
 	}
 	
 	/**
+	 * Returns spare passenger number (maxPassengerNumber - currentPassengerNumber)
+	 * @return Spare passenger number
+	 */
+	public int getSparePassenger() {
+		return this.maxPassengerNumber - this.currentPassengerNumber;
+	}
+	
+	/**
      * Adding a passenger to a car with a check to the limits
      * @see Passenger
      * @param passenger Passenger to be added to the car
      * @return Status if passenger can be added
      */
 	public boolean addPassenger(Passenger passenger) {
-		int checkPersonNumber = this.currentPassengerNumber + 1;
-		int checkMass = this.currentMass + passenger.getMass();
-		double checkCarArea = 0.00;
+		int checkPersonNumber = 1;
+		int checkMass = passenger.getMass();
+		double checkCarArea = passenger.getSpaceRequired();
 		List<Item> passengerItems = passenger.getItems();
 		
 		for (int i = 0; i < passengerItems.size(); i++) {
-			checkMass = checkMass + passengerItems.get(i).mass;
-			checkCarArea = passengerItems.get(i).spaceRequired;
+			checkMass = checkMass + passengerItems.get(i).getMass();
+			checkCarArea = passengerItems.get(i).getSpaceRequired();
 		}
 		
-		if(checkPersonNumber > this.maxPassengerNumber) {
+		if(checkPersonNumber > getSparePassenger()) {
 			System.out.println("Passenger number exceeds limit");
 			return false;
 		}
 		
-		if(checkMass > this.maxMass) {
+		if(checkMass > getSpareMass()) {
 			System.out.println("Mass exceeds the limit");
 			return false;
 		}
 		
-		if(checkCarArea > this.maxCarArea.getArea()) {
+		if(checkCarArea > getSpareArea()) {
 			System.out.println("Car area exceeds the limit");
+			return false;
 		}
 		
 		this.currentPassengers.add(passenger);
-		this.currentPassengerNumber = checkPersonNumber;
-		this.currentMass = checkMass;
-		this.currentCarArea = checkCarArea;
+		this.currentPassengerNumber++;
+		this.currentMass = this.currentMass + checkMass;
+		this.currentCarArea = this.currentCarArea + checkCarArea;
 		return true;
 		
 	}
@@ -170,18 +163,34 @@ public class Car {
 	public void removePassenger(Passenger passenger) {
 		
 		int removedMass = passenger.getMass();
-		double removedCarArea = 0.0;
+		double removedCarArea = passenger.getSpaceRequired();
 		List<Item> passengerItems = passenger.getItems();
 		
 		for (int i = 0; i < passengerItems.size(); i++) {
-			removedMass = removedMass + passengerItems.get(i).mass;	
-			removedCarArea = passengerItems.get(i).spaceRequired;
+			removedMass = removedMass + passengerItems.get(i).getMass();	
+			removedCarArea = passengerItems.get(i).getSpaceRequired();
 		}
 		
 		this.currentPassengers.remove(passenger);
-		this.currentPassengerNumber = this.currentPassengerNumber - 1;
+		this.currentPassengerNumber--;
 		this.currentMass = this.currentMass - removedMass;
 		this.currentCarArea = currentCarArea - removedCarArea;
+	}
+	
+	/**
+	 * Opens the door
+	 * @return changeDoorTime Time it takes to open the door 
+	 */
+	public double openDoor() {
+		return changeDoorTime;
+	}
+	
+	/**
+	 * Closes the door
+	 * @return changeDoorTime Time it takes to close the door 
+	 */
+	public double closeDoor() {
+		return changeDoorTime;
 	}
 	
 }
