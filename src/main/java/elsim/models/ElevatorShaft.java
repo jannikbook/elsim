@@ -12,6 +12,10 @@ public class ElevatorShaft {
     private MoveDirection carDir;
     private double carSpeed = 21.00;
 
+    public MoveDirection getDir() {
+        return carDir;
+    }
+
     public ElevatorShaft(Car c) {
         elevatorCar = c;
         floors = new ArrayList<Floor>();
@@ -71,4 +75,6 @@ public class ElevatorShaft {
     public void moveCar() {
         getSecondsToFloor(distanceToFloor(nextFloor()));
     }
+
+
 }
