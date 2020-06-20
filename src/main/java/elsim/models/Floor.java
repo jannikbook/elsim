@@ -21,7 +21,8 @@ public class Floor {
      */
     public Floor(int height) {
         this.height = height;
-        passengers = new LinkedList<>();
+        passengers =
+                new LinkedList<>();
     }
 
     /**
