@@ -34,11 +34,25 @@ public class Floor {
     public int getFloorNumber() { return floorNumber; }
 
     /**
-     * Add a passenger who wait at this floor for the elevator
+     * Add a passenger who wait at this floor for the elevator and press the button up or down to call the elevator car
      * @param passenger A new passenger who will wait for an elevator
      */
     public void addPassenger(Passenger passenger) {
-        passengers.add(passenger);
+        int destinationFloorNumber = passenger.getFloorDestination().getFloorNumber();
+        if(destinationFloorNumber > floorNumber) {
+            buttonPressedUp = true;
+            passengers.add(passenger);
+        }
+        else if(destinationFloorNumber < floorNumber) {
+            buttonPressedDown = true;
+            passengers.add(passenger);
+        }
+        /*
+        else {
+            // Don't add passengers if is this floor is their destination floor
+            // Maybe error or warning message?
+        }
+        */
     }
 
     /**
