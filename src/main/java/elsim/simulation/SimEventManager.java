@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
+// TODO: Handling of `end` time (don't return events after Simulation.end)
 public class SimEventManager {
 	private NavigableSet<AbstractSimEvent> events;
 	private LocalDateTime lastEventTimestamp;

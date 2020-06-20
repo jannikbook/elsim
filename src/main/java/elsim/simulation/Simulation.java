@@ -71,6 +71,9 @@ public class Simulation {
 		}
 
 		simulationIsRunning = true;
+
+		// TODO: add first event
+
 		var event = eventManager.getNextEvent();
 		while (event != null) {
 			event.processEvent();
