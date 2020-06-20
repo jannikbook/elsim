@@ -32,8 +32,7 @@ public class ElevatorShaft {
         return floors;
     }
 
-    public void addFloor(int height) {
-        Floor f = new Floor(height);
+    public void addFloor(Floor f) {
         floors.add(f);
         if (carFloor == null) {             //Kabine startet im untersten Geschoss
             carFloor = f;
