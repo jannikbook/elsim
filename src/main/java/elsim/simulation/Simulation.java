@@ -12,6 +12,7 @@ public class Simulation {
 	private LocalDateTime simulationEnd;
 
 	private ElevatorShaft elevatorShaft;
+	private SimEventManager eventManager;
 
 	public Simulation(LocalDateTime simStart, LocalDateTime simEnd, ElevatorShaft elevatorShaft) {
 		if (simStart == null) {
@@ -31,5 +32,16 @@ public class Simulation {
 		}
 
 		this.elevatorShaft = elevatorShaft;
+	}
+
+	public void RunSimulation() {
+		var event = eventManager.getNextEvent();
+		while (event != null) {
+			event.processEvent();
+
+			event = eventManager.getNextEvent();
+		}
+
+		System.out.println("Simulation has ended.");
 	}
 }

@@ -1,10 +1,10 @@
 package main.java.elsim.simulation;
 
-import java.util.SortedSet;
+import java.util.NavigableSet;
 import java.util.TreeSet;
 
 public class SimEventManager {
-	private SortedSet<AbstractSimEvent> events;
+	private NavigableSet<AbstractSimEvent> events;
 
 	/**
 	 * Creates a new EventManager instance.
@@ -20,5 +20,13 @@ public class SimEventManager {
 	 */
 	public boolean addEvent(AbstractSimEvent newEvent) {
 		return events.add(newEvent);
+	}
+
+	/**
+	 * Gets the next event in the simulation and removes it from the internal event queue.
+	 * @return The first event in the internal collection of events, based on its timestamp.
+	 */
+	public AbstractSimEvent getNextEvent() {
+		return events.pollFirst();
 	}
 }
