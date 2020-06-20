@@ -11,6 +11,9 @@ import java.util.LinkedList;
 public class Floor {
     private int height;
     private LinkedList<Passenger> passengers;
+    private boolean buttonPressedUp;
+    private boolean buttonPressedDown;
+    //private enum floorType; // Top or base floor do not have booth buttons
 
     /**
      * Manual constructor for Passenger Objects
@@ -68,4 +71,26 @@ public class Floor {
         }
         return passenger;
     }
+
+    /**
+     * Getter, check if the up button was pressed
+     * @return true if the button is pressed and false if not
+     */
+    public boolean getButtonPressedUp() { return buttonPressedUp; }
+
+    /**
+     * Reset the button up to false (necessary after the car arrived)
+     */
+    public void resetButtonUp() { buttonPressedUp = false; }
+
+    /**
+     * Getter, check if the down button was pressed
+     * @return true if the button is pressed and false if not
+     */
+    public boolean getButtonPressedDown() { return buttonPressedDown; }
+
+    /**
+     * Reset the button down to false (necessary after the car arrived)
+     */
+    public void resetButtonDown() { buttonPressedDown = false; }
 }
