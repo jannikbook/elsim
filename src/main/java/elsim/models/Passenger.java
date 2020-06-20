@@ -1,14 +1,16 @@
 package main.java.elsim.models;
+import java.time.Duration;
 import java.util.ArrayList;
 
 /**
  * Class for passengers that use elevators
  * @see Load
+ * @see Duration
  * @author jdunker
  */
 public class Passenger extends Load {
-    private int timeChange;
-    private int timePatience;
+    private Duration timeChange;
+    private Duration timePatience;
     public ArrayList<Item> items;
     private Floor floorStartingPoint;
     private Floor floorDestination;
@@ -17,10 +19,12 @@ public class Passenger extends Load {
      * Manual constructor for Passenger Objects
      * @param mass Mass of the passenger in kg
      * @param spaceRequired Area needed for the passenger in m²
+     * @param timeChange Duration for getting on or off the car
+     * @param timePatience Patience of the passenger as Duration
      * @param floorStartingPoint Starting floor of passenger
      * @param floorDestination Destination floor of passenger
      */
-    public Passenger(int mass, double spaceRequired, int timeChange, int timePatience, Floor floorStartingPoint, Floor floorDestination){
+    public Passenger(int mass, double spaceRequired, Duration timeChange, Duration timePatience, Floor floorStartingPoint, Floor floorDestination){
         this.mass = mass;
         this.timeChange = timeChange;
         this.timePatience = timePatience;
@@ -35,7 +39,7 @@ public class Passenger extends Load {
      * @param floorDestination Destination floor of passenger
      */
     public Passenger(Floor floorStartingPoint, Floor floorDestination){
-        this(80, 0.25, 2500, 3600, floorStartingPoint, floorDestination);
+        this(80, 0.25, Duration.ofSeconds(3), Duration.ofMinutes(10), floorStartingPoint, floorDestination);
     }
 
     /**
@@ -66,7 +70,7 @@ public class Passenger extends Load {
      * Get time required to get in or out of the elevator
      * @return time in ms
      */
-    public int getTimeChange() {
+    public Duration getTimeChange() {
         return timeChange;
     }
 
@@ -74,23 +78,23 @@ public class Passenger extends Load {
      * Set time required to get in or out of the elevator
      * @param timeChange time in ms
      */
-    public void setTimeChange(int timeChange) {
+    public void setTimeChange(Duration timeChange) {
         this.timeChange = timeChange;
     }
 
     /**
      * Get patience of passenger
-     * @return time in ms
+     * @return time
      */
-    public int getTimePatience() {
+    public Duration getTimePatience() {
         return timePatience;
     }
 
     /**
      * Set patience of passenger
-     * @param timePatience time in ms
+     * @param timePatience time
      */
-    public void setTimePatience(int timePatience) {
+    public void setTimePatience(Duration timePatience) {
         this.timePatience = timePatience;
     }
 }
