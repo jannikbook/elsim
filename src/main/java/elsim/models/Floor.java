@@ -9,6 +9,7 @@ import java.util.LinkedList;
  */
 
 public class Floor {
+    private int floorNumber;
     private int height;
     private LinkedList<Passenger> passengers;
     private boolean buttonPressedUp;
@@ -19,11 +20,18 @@ public class Floor {
      * Manual constructor for Passenger Objects
      * @param  height Height of the floor in centimeters
      */
-    public Floor(int height) {
+    public Floor(int floorNumber, int height) {
+        this.floorNumber = floorNumber;
         this.height = height;
         passengers =
                 new LinkedList<>();
     }
+
+    /**
+     * Get number of floor
+     * @return the number of the floor
+     */
+    public int getFloorNumber() { return floorNumber; }
 
     /**
      * Add a passenger who wait at this floor for the elevator
@@ -40,29 +48,19 @@ public class Floor {
     public int getHeight() { return height; }
 
     /**
-     * Remove the first passenger
-     */
-    public void removeFirstPassenger() {
-        if(passengers.size() > 0)
-            passengers.pop();
-    }
-
-    /**
-     * Get the first waiting passenger
-     * @return Passenger
-     */
-    public Passenger getFirstPassenger() { return passengers.peekFirst(); }
-
-    /**
-     * Find, return and remove next waiting passenger who can get into the elevator limited by mass and required space
+     * Find, return and remove next waiting passenger who can get into the elevator limited by mass, required space and direction
      * @param freeMass Free mass of the elevator
      * @param freeSpace Free space of the elevator
+     * @param direction The move direction of the elevator car
      * @return Passenger as type Passenger who fit with the conditions and can enter the elevator. If no passenger fit it will return null.
      */
-    public Passenger findAndRemoveNextPossiblePassenger(int freeMass, double freeSpace) {
+    public Passenger findAndRemoveNextPossiblePassenger(int freeMass, double freeSpace, MoveDirection direction) {
         Passenger passenger = null;
         for (Passenger tmp: passengers) {
-            if(tmp.mass <= freeMass && tmp.spaceRequired <= freeSpace) {
+            int directionFloorNumber = tmp.getFloorDestination().getFloorNumber();
+            if(tmp.mass <= freeMass && tmp.spaceRequired <= freeSpace && (
+                            (direction == MoveDirection.Up && directionFloorNumber > floorNumber) ||
+                            (direction == MoveDirection.Down && directionFloorNumber < floorNumber) ) ) {
                 passenger = tmp;
                 break;
             }
