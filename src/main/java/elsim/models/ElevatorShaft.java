@@ -1,5 +1,6 @@
 package main.java.elsim.models;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,13 +69,14 @@ public class ElevatorShaft {
         return null;
     }
 
-    public double getSecondsToFloor(double distance) {
-        return distance/carSpeed;
+    public int getSecondsToFloor(double distance) {
+        return (int) (distance/carSpeed);
     }
 
     public void moveCar() {
         getSecondsToFloor(distanceToFloor(nextFloor()));
     }
+
 
 
 }
