@@ -2,11 +2,13 @@ package main.java.elsim.simulation;
 
 import main.java.elsim.simulation.events.AbstractSimEvent;
 
+import java.time.LocalDateTime;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
 public class SimEventManager {
 	private NavigableSet<AbstractSimEvent> events;
+	private LocalDateTime lastEventTimestamp;
 
 	/**
 	 * Creates a new EventManager instance.
@@ -20,8 +22,14 @@ public class SimEventManager {
 	 * @param newEvent The new {@code SimEvent} to add.
 	 * @return True iff the event was successfully added to the queue.
 	 */
-	public boolean addEvent(AbstractSimEvent newEvent) {
-		return events.add(newEvent);
+	public void addEvent(AbstractSimEvent newEvent) throws EventWithoutTimestampException, EventAlreadyExistsException {
+		if (newEvent.getTimestamp() == null) {
+			throw new EventWithoutTimestampException();
+		}
+
+		if (!events.add(newEvent)) {
+			throw new EventAlreadyExistsException();
+		}
 	}
 
 	/**
@@ -29,6 +37,12 @@ public class SimEventManager {
 	 * @return The first event in the internal collection of events, based on its timestamp.
 	 */
 	public AbstractSimEvent getNextEvent() {
-		return events.pollFirst();
+		var nextEvent = events.pollFirst();
+		lastEventTimestamp = nextEvent.getTimestamp();
+		return nextEvent;
+	}
+
+	public LocalDateTime getCurrentTimestamp() {
+		return lastEventTimestamp;
 	}
 }

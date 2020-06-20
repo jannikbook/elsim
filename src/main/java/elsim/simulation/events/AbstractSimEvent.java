@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 public abstract class AbstractSimEvent {
 	private LocalDateTime timestamp;
 
+	public AbstractSimEvent() {}
+
 	/**
 	 * Create an event that should be processed at a given time during the simulation.
 	 * @param timestamp When the event occurs.
@@ -27,5 +29,17 @@ public abstract class AbstractSimEvent {
 	 */
 	public LocalDateTime getTimestamp() {
 		return timestamp;
+	}
+
+	/**
+	 * Sets the event's timestamp. Only possible to set once.
+	 * @param timestamp The event's new timestamp.
+	 */
+	public void setTimestamp(LocalDateTime timestamp) {
+		if (this.timestamp != null) {
+			throw new UnsupportedOperationException("timestamp can only be set once.");
+		}
+
+		this.timestamp = timestamp;
 	}
 }
