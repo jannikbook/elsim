@@ -1,5 +1,7 @@
 package main.java.elsim.simulation;
 
+import main.java.elsim.simulation.events.AbstractSimEvent;
+
 import java.util.Comparator;
 
 /**

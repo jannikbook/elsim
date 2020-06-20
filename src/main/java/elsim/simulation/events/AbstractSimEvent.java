@@ -1,4 +1,4 @@
-package main.java.elsim.simulation;
+package main.java.elsim.simulation.events;
 
 import java.time.LocalDateTime;
 
