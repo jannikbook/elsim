@@ -8,21 +8,11 @@ import java.util.List;
  * @author fwagner
  */
 
-/*
- * Data to be used in the config (Car)
- * maxPassengerNumber => Maximum allowed passengers in current elevator
- * maxCarArea => Rectangle of the area inside the elevator
- * maxMass => Maximum allowed of mass in current elevator
- * elevatorSpeed => Speed of which the elevator moves between floors
- * changeDoorTime => Time(seconds, tick) it takes to open/close the door
- */
-
 public class Car {
 	
 	private int maxPassengerNumber;
 	private int maxMass;							// Mass in kg
 	private Rectangle maxCarArea;					
-	private int elevatorSpeed;						// Unit for speed = m/s
 	private double changeDoorTime;					// Time in seconds
 	
 	private int currentPassengerNumber;
@@ -35,28 +25,18 @@ public class Car {
      * @param maxPassangerNumber Maximum amount of passenger inside a car
      * @param maxMass Maximum amount of mass inside a car in kg
      * @param maxCarArea Rectangle desribing the maximum car area
-     * @param elevatorSpeed Speed of a car while switching floors in m/s
      * @param changeDoorTime Time it takes to open/close the door
      */
-	public Car(int maxPassangerNumber, int maxMass, Rectangle maxCarArea, int elevatorSpeed, double changeDoorTime) {
+	public Car(int maxPassangerNumber, int maxMass, Rectangle maxCarArea, double changeDoorTime) {
 		super();
 		this.maxPassengerNumber = maxPassangerNumber;
 		this.maxMass = maxMass;
 		this.maxCarArea = maxCarArea;
-		this.elevatorSpeed = elevatorSpeed;
 		this.changeDoorTime = changeDoorTime;
 		this.currentPassengerNumber = 0;
 		this.currentMass = 0;
 		this.currentCarArea = 0.0;
 		this.currentPassengers = new ArrayList<>();
-	}
-	
-	/**
-	 * Returns speed of the elevator (m/s) 
-	 * @return Speed of the elevator
-	 */
-	public int getElevatorSpeed() {
-		return elevatorSpeed;
 	}
 
 	/**
