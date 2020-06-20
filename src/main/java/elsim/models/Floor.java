@@ -58,9 +58,18 @@ public class Floor {
         Passenger passenger = null;
         for (Passenger tmp: passengers) {
             int directionFloorNumber = tmp.getFloorDestination().getFloorNumber();
-            if(tmp.mass <= freeMass && tmp.spaceRequired <= freeSpace && (
+            int neededMass = tmp.getMass();
+            double neededSpace = tmp.getSpaceRequired();
+            // The neeeded mass and space for the passenger + his/her items
+            for (Item item:tmp.getItems()) {
+                neededMass += item.getMass();
+                neededSpace += item.getSpaceRequired();
+            }
+            if(neededMass <= freeMass && neededSpace <= freeSpace && (
                             (direction == MoveDirection.Up && directionFloorNumber > floorNumber) ||
                             (direction == MoveDirection.Down && directionFloorNumber < floorNumber) ) ) {
+
+
                 passenger = tmp;
                 break;
             }
