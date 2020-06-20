@@ -102,35 +102,19 @@ public class Car {
      * @return Status if passenger can be added
      */
 	public boolean addPassenger(Passenger passenger) {
-		int checkPersonNumber = 1;
-		int checkMass = passenger.getMass();
-		double checkCarArea = passenger.getSpaceRequired();
+		int addedMass = passenger.getMass();
+		double addedCarArea = passenger.getSpaceRequired();
 		List<Item> passengerItems = passenger.getItems();
 		
 		for (int i = 0; i < passengerItems.size(); i++) {
-			checkMass = checkMass + passengerItems.get(i).getMass();
-			checkCarArea = passengerItems.get(i).getSpaceRequired();
-		}
-		
-		if(checkPersonNumber > getSparePassenger()) {
-			System.out.println("Passenger number exceeds limit");
-			return false;
-		}
-		
-		if(checkMass > getSpareMass()) {
-			System.out.println("Mass exceeds the limit");
-			return false;
-		}
-		
-		if(checkCarArea > getSpareArea()) {
-			System.out.println("Car area exceeds the limit");
-			return false;
+			addedMass = addedMass + passengerItems.get(i).getMass();
+			addedCarArea = passengerItems.get(i).getSpaceRequired();
 		}
 		
 		this.currentPassengers.add(passenger);
 		this.currentPassengerNumber++;
-		this.currentMass = this.currentMass + checkMass;
-		this.currentCarArea = this.currentCarArea + checkCarArea;
+		this.currentMass = this.currentMass + addedMass;
+		this.currentCarArea = this.currentCarArea + addedCarArea;
 		return true;
 		
 	}
