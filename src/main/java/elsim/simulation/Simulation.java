@@ -76,7 +76,13 @@ public class Simulation {
 
 		var event = eventManager.getNextEvent();
 		while (event != null) {
-			event.processEvent();
+			try {
+				event.processEvent();
+			}
+			catch (SimulationNotInitializedException exc) {
+				System.err.println("Caught SimulationNotInitializedException while processing event:");
+				exc.printStackTrace(System.err);
+			}
 
 			event = eventManager.getNextEvent();
 		}
