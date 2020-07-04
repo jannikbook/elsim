@@ -1,5 +1,10 @@
 package main.java.elsim.models;
 
+import main.java.elsim.simulation.EventAlreadyExistsException;
+import main.java.elsim.simulation.Simulation;
+import main.java.elsim.simulation.SimulationNotInitializedException;
+import main.java.elsim.simulation.events.PassengerLeavesFloorSimEvent;
+
 import java.util.LinkedList;
 
 /**
@@ -37,22 +42,29 @@ public class Floor {
      * Add a passenger who wait at this floor for the elevator and press the button up or down to call the elevator car
      * @param passenger A new passenger who will wait for an elevator
      */
-    public void addPassenger(Passenger passenger) {
+    public void addPassenger(Passenger passenger) throws SimulationNotInitializedException {
         int destinationFloorNumber = passenger.getFloorDestination().getFloorNumber();
-        if(destinationFloorNumber > floorNumber) {
+
+        if (destinationFloorNumber == this.floorNumber) {
+            // just skip this passenger, maybe log to WARN
+        }
+
+        passengers.add(passenger);
+        if (destinationFloorNumber > this.floorNumber) {
             buttonPressedUp = true;
-            passengers.add(passenger);
         }
-        else if(destinationFloorNumber < floorNumber) {
+
+        if (destinationFloorNumber < this.floorNumber) {
             buttonPressedDown = true;
-            passengers.add(passenger);
         }
-        /*
-        else {
-            // Don't add passengers if is this floor is their destination floor
-            // Maybe error or warning message?
+
+        var sim = Simulation.getInstance();
+        try {
+            sim.addSimEvent(passenger.getTimePatience(), new PassengerLeavesFloorSimEvent(this, passenger));
         }
-        */
+        catch (EventAlreadyExistsException e) {
+            // log to WARN
+        }
     }
 
     /**
@@ -74,7 +86,7 @@ public class Floor {
             int directionFloorNumber = tmp.getFloorDestination().getFloorNumber();
             int neededMass = tmp.getMass();
             double neededSpace = tmp.getSpaceRequired();
-            // The neeeded mass and space for the passenger + his/her items
+            // The needed mass and space for the passenger + his/her items
             for (Item item:tmp.getItems()) {
                 neededMass += item.getMass();
                 neededSpace += item.getSpaceRequired();
@@ -115,4 +127,8 @@ public class Floor {
      * Reset the button down to false (necessary after the car arrived)
      */
     public void resetButtonDown() { buttonPressedDown = false; }
+
+    public void removePassenger(Passenger passenger) {
+        this.passengers.remove(passenger);
+    }
 }
