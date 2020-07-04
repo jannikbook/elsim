@@ -12,7 +12,7 @@ public class Car {
 	
 	private int maxPassengerNumber;
 	private int maxMass;							// Mass in kg
-	private Rectangle maxCarArea;					
+	private double maxCarArea;					
 	private double changeDoorTime;					// Time in seconds
 	
 	private int currentPassengerNumber;
@@ -27,7 +27,7 @@ public class Car {
      * @param maxCarArea Rectangle desribing the maximum car area
      * @param changeDoorTime Time it takes to open/close the door
      */
-	public Car(int maxPassangerNumber, int maxMass, Rectangle maxCarArea, double changeDoorTime) {
+	public Car(int maxPassangerNumber, int maxMass, double maxCarArea, double changeDoorTime) {
 		super();
 		this.maxPassengerNumber = maxPassangerNumber;
 		this.maxMass = maxMass;
@@ -84,7 +84,7 @@ public class Car {
 	 * @return Spare mass inside the car
 	 */
 	public double getSpareArea() {
-		return this.maxCarArea.getArea() - this.currentCarArea;
+		return this.maxCarArea - this.currentCarArea;
 	}
 	
 	/**

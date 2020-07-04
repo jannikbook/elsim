@@ -1,7 +1,5 @@
 package main.java.elsim.models;
 
-import java.util.Scanner;
-
 /**
  * An Item is a object that can be transported by a Passenger of an elevator.
  * This Class defines the common attributes like mass and required space
@@ -38,8 +36,8 @@ public class Item extends Load {
      */
     public Item CreateRandomItem (Passenger owner){
         Item myItem = new Item(owner,UNKNOWN,UNKNOWN);
-        myItem.mass =RNG.getRandomInteger(MIN_MASS,MAX_MASS);
-        myItem.spaceRequired = RNG.getRandomDouble(MIN_AREA,MAX_AREA,DECIMALS);
+        myItem.mass = RNG.getInstance().getRandomInteger(MIN_MASS,MAX_MASS);
+        myItem.spaceRequired = RNG.getInstance().getRandomDouble(MIN_AREA,MAX_AREA,DECIMALS);
         return myItem;
     }
 }
