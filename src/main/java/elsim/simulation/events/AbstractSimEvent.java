@@ -1,5 +1,6 @@
 package main.java.elsim.simulation.events;
 
+import main.java.elsim.simulation.EventAlreadyExistsException;
 import main.java.elsim.simulation.Simulation;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 
@@ -9,8 +10,8 @@ import java.time.LocalDateTime;
  * An abstract class defining some event occurring at a specific point in time during the simulation.
  */
 public abstract class AbstractSimEvent {
+	protected Simulation simulation;
 	private LocalDateTime timestamp;
-	private Simulation simulation;
 
 	public AbstractSimEvent() throws SimulationNotInitializedException {
 		this.simulation = Simulation.getInstance();
@@ -27,7 +28,7 @@ public abstract class AbstractSimEvent {
 	/**
 	 * Process this event instance.
 	 */
-	public abstract void processEvent() throws SimulationNotInitializedException;
+	public abstract void processEvent() throws SimulationNotInitializedException, EventAlreadyExistsException;
 
 	/**
 	 * Gets the event's timestamp as a {@code LocalDateTime}.

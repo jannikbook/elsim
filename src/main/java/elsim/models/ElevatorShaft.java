@@ -1,8 +1,6 @@
 package main.java.elsim.models;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ElevatorShaft {
@@ -17,11 +15,13 @@ public class ElevatorShaft {
         return carDir;
     }
 
-    public ElevatorShaft(Car c) {
-        elevatorCar = c;
-        floors = new ArrayList<Floor>();
-        carFloor = null;
-        carDir = MoveDirection.Up;
+    public ElevatorShaft(Car c, List<Floor> floors) {
+        this.elevatorCar = c;
+        this.elevatorCar.setElevatorShaft(this);
+
+        this.floors = floors;
+        this.carFloor = floors.get(0);
+        this.carDir = MoveDirection.Up;
     }
 
     public Car getElevatorCar() {
@@ -34,48 +34,64 @@ public class ElevatorShaft {
 
     public void addFloor(Floor f) {
         floors.add(f);
-        if (carFloor == null) {             //Kabine startet im untersten Geschoss
-            carFloor = f;
-        }
     }
 
-    public double distanceToFloor(Floor floor) {
+    private double distanceToFloor(Floor floor) {
         double distance = 0;
         int save;                           //Warte auf implementierung von Car.getCurrentFloor();
         int from = floors.indexOf(carFloor);
         int to = floors.indexOf(floor);
-        if (from>to) {
+        if (from > to) {
             save = to;
             to = from;
             from = save;
         }
-        for (int i = from; i<to; i++) {
-            distance+=this.getFloors().get(i).getHeight();
+        for (int i = from; i < to; i++) {
+            distance += this.getFloors().get(i).getHeight();
         }
         return distance;
     }
 
     public Floor nextFloor() {
         if (carDir == MoveDirection.Up) {
-            for (int i = floors.indexOf(carFloor); i<floors.size();i++) {
-                if (floors.get(i).getButtonPressedUp()) return floors.get(i);
+            for (int i = floors.indexOf(carFloor); i < floors.size(); i++) {
+                if (floors.get(i).getButtonPressedUp()) {
+                    return floors.get(i);
+                }
             }
         } else if (carDir == MoveDirection.Down) {
-            for (int i = floors.indexOf(carFloor); i>=0;i--) {
-                if (floors.get(i).getButtonPressedDown()) return floors.get(i);
+            for (int i = floors.indexOf(carFloor); i >= 0; i--) {
+                if (floors.get(i).getButtonPressedDown()) {
+                    return floors.get(i);
+                }
             }
         }
         return null;
     }
 
-    public int getSecondsToFloor(double distance) {
-        return (int) (distance/carSpeed);
+    private Duration getDurationForDistance(double distance) {
+        return Duration.ofMillis(1000 * (int)(distance / carSpeed));
     }
 
-    public void moveCar() {
-        getSecondsToFloor(distanceToFloor(nextFloor()));
+    public Duration moveCar() {
+        var nextFloor = nextFloor();
+        if (nextFloor == null) {
+            return Duration.ZERO;
+        }
+
+        var distance = distanceToFloor(nextFloor);
+        return getDurationForDistance(distance);
     }
 
+    public Floor getCurrentCarFloor() {
+        return this.carFloor;
+    }
 
+    public void arriveAtFloor(Floor floor) {
+        if (!this.floors.contains(floor)) {
+            throw new IllegalArgumentException("floor");
+        }
 
+        this.carFloor = floor;
+    }
 }

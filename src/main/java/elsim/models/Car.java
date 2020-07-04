@@ -1,5 +1,6 @@
 package main.java.elsim.models;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,10 +10,12 @@ import java.util.List;
  */
 
 public class Car {
-	
+
+	private ElevatorShaft shaft;
+
 	private int maxPassengerNumber;
 	private int maxMass;							// Mass in kg
-	private double maxCarArea;					
+	private double maxCarArea;
 	private double changeDoorTime;					// Time in seconds
 	
 	private int currentPassengerNumber;
@@ -22,13 +25,14 @@ public class Car {
 
 	/**
      * Parameterized Creation of Car Object
-     * @param maxPassangerNumber Maximum amount of passenger inside a car
+	 * @param maxPassangerNumber Maximum amount of passenger inside a car
      * @param maxMass Maximum amount of mass inside a car in kg
      * @param maxCarArea Rectangle desribing the maximum car area
      * @param changeDoorTime Time it takes to open/close the door
      */
 	public Car(int maxPassangerNumber, int maxMass, double maxCarArea, double changeDoorTime) {
-		super();
+		super(); // warum?!
+
 		this.maxPassengerNumber = maxPassangerNumber;
 		this.maxMass = maxMass;
 		this.maxCarArea = maxCarArea;
@@ -37,6 +41,12 @@ public class Car {
 		this.currentMass = 0;
 		this.currentCarArea = 0.0;
 		this.currentPassengers = new ArrayList<>();
+	}
+
+	public void setElevatorShaft(ElevatorShaft shaft) {
+		if (this.shaft == null) {
+			this.shaft = shaft;
+		}
 	}
 
 	/**
@@ -156,5 +166,41 @@ public class Car {
 	public double closeDoor() {
 		return changeDoorTime;
 	}
-	
+
+	public ElevatorShaft getElevatorShaft() {
+		return this.shaft;
+	}
+
+	public Duration removeAllPassengersAtFloor(Floor floor) {
+		Duration exitDuration = Duration.ZERO;
+
+		for (var p : this.currentPassengers) {
+			if (p.getFloorDestination().equals(floor)) {
+				this.removePassenger(p);
+				exitDuration = exitDuration.plus(p.getTimeChange());
+			}
+		}
+
+		return exitDuration;
+	}
+
+	public Duration addAllPassengersAtFloor(Floor currentFloor) {
+		var moveDirection = shaft.getDir();
+		var nextPassenger = currentFloor.findAndRemoveNextPossiblePassenger(maxMass - currentMass, getSpareArea(), moveDirection);
+		if (nextPassenger == null) {
+			return Duration.ZERO;
+		}
+
+		Duration enterDuration = nextPassenger.getTimeChange();
+
+		while (nextPassenger != null) {
+			this.addPassenger(nextPassenger);
+			enterDuration = enterDuration.plus(nextPassenger.getTimeChange());
+
+			var freeMass = this.maxMass - this.currentMass;
+			currentFloor.findAndRemoveNextPossiblePassenger(freeMass, getSpareArea(), moveDirection);
+		}
+
+		return enterDuration;
+	}
 }

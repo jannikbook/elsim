@@ -2,6 +2,7 @@ package main.java.elsim.simulation;
 
 import main.java.elsim.models.ElevatorShaft;
 import main.java.elsim.simulation.events.AbstractSimEvent;
+import main.java.elsim.simulation.events.DoorOpenSimEvent;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -12,11 +13,11 @@ import java.time.LocalDateTime;
 public class Simulation {
 	private static Simulation instance;
 
-	private LocalDateTime simulationStart;
-	private LocalDateTime simulationEnd;
+	private final LocalDateTime simulationStart;
+	private final LocalDateTime simulationEnd;
 
-	private ElevatorShaft elevatorShaft;
-	private SimEventManager eventManager;
+	private final ElevatorShaft elevatorShaft;
+	private final SimEventManager eventManager;
 
 	private boolean simulationIsRunning = false;
 
@@ -28,15 +29,27 @@ public class Simulation {
 		return instance;
 	}
 
-	public static void initialize(LocalDateTime start, LocalDateTime end) throws SimulationAlreadyInitializedException {
+	public static void initialize(ElevatorShaft shaft, SimEventManager eventManager, LocalDateTime start, LocalDateTime end) throws SimulationAlreadyInitializedException {
 		if (instance != null) {
 			throw new SimulationAlreadyInitializedException();
 		}
 
-		instance = new Simulation(start, end);
+		instance = new Simulation(shaft, eventManager, start, end);
 	}
 
-	private Simulation(LocalDateTime simStart, LocalDateTime simEnd) {
+	private Simulation(ElevatorShaft shaft, SimEventManager eventManager, LocalDateTime simStart, LocalDateTime simEnd) {
+		if (shaft == null) {
+			throw new IllegalArgumentException("shaft");
+		}
+
+		this.elevatorShaft = shaft;
+
+		if (eventManager == null) {
+			throw new IllegalArgumentException("eventManager");
+		}
+
+		this.eventManager = eventManager;
+
 		if (simStart == null) {
 			throw new IllegalArgumentException("simStart");
 		}
@@ -65,23 +78,40 @@ public class Simulation {
 		}
 	}
 
-	public void runSimulation() throws SimulationAlreadyRunningException {
-		if (simulationIsRunning) {
+	public static void run() throws SimulationAlreadyRunningException, SimulationNotInitializedException {
+		var sim = getInstance();
+
+		if (sim.simulationIsRunning) {
 			throw new SimulationAlreadyRunningException();
 		}
 
-		simulationIsRunning = true;
+		sim.simulationIsRunning = true;
 
-		// TODO: add first event
+
+		var eventManager = sim.eventManager;
+
+		var car = sim.elevatorShaft.getElevatorCar();
+		var startEvent = new DoorOpenSimEvent(car);
+		startEvent.setTimestamp(sim.simulationStart);
+
+		try {
+			eventManager.addEvent(startEvent);
+		} catch (EventWithoutTimestampException | EventAlreadyExistsException e) {
+			e.printStackTrace(); // log
+		}
 
 		var event = eventManager.getNextEvent();
-		while (event != null) {
+		while (event != null && event.getTimestamp().isBefore(sim.simulationEnd)) {
 			try {
 				event.processEvent();
 			}
-			catch (SimulationNotInitializedException exc) {
+			catch (SimulationNotInitializedException notInitializedException) {
 				System.err.println("Caught SimulationNotInitializedException while processing event:");
-				exc.printStackTrace(System.err);
+				notInitializedException.printStackTrace(System.err);
+			}
+			catch (EventAlreadyExistsException alreadyExistsException) {
+				System.err.println("Caught EventAlreadyExistsException while processing events:");
+				alreadyExistsException.printStackTrace(System.err);
 			}
 
 			event = eventManager.getNextEvent();

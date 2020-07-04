@@ -91,7 +91,7 @@ public class Passenger extends Load {
 
     /**
      * Get time required to get in or out of the elevator
-     * @return time in ms
+     * @return Duration object
      */
     public Duration getTimeChange() {
         return timeChange;
@@ -99,7 +99,7 @@ public class Passenger extends Load {
 
     /**
      * Set time required to get in or out of the elevator
-     * @param timeChange time in ms
+     * @param timeChange Duration object
      */
     public void setTimeChange(Duration timeChange) {
         this.timeChange = timeChange;
