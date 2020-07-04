@@ -59,6 +59,9 @@ public class ConfigManager {
         this.setProp("Passenger.people.2", "30..50;0.15..0.25;500..2000;40000..80000");
         this.setProp("Passenger.people.3", "50..100;0.20..0.40;500..2000;40000..80000");
 
+        // RNG namespace
+        this.setProp("RNG.seed", 12345678);
+
         // ElevatorCar namespace
         this.setProp("ElevatorCar.maxPassengerNumber", 12);
         this.setProp("ElevatorCar.maxCarArea.height", 3);

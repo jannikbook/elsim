@@ -1,5 +1,7 @@
 package main.java.elsim.models;
 
+import main.java.elsim.config.ConfigManager;
+
 import java.util.Random;
 
 /**
@@ -30,13 +32,12 @@ public class RNG {
 	public static RNG getInstance() {
 		return InstanceHolder.INSTANCE;
 	}
-	
+
 	/**
 	 * Initalisation method for RNG (set seed and create RNG generator)
-	 * @param seed Seed which is defined in the config to be used for the generator
 	 */
-	public void init (int seed) {
-		this.seed = seed;
+	public void init () {
+		this.seed = ConfigManager.getInstance().getPropAsInt("RNG.seed", 0);
 		this.randomGenerator = new Random(seed);
 	}
 	
