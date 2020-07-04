@@ -14,8 +14,12 @@ public class CarMoveSimEvent extends AbstractSimEvent {
 
 	@Override
 	public void processEvent() throws SimulationNotInitializedException, EventAlreadyExistsException {
-		var durationInSeconds = this.shaft.moveCar();
+		var duration = this.shaft.moveCar();
+		if (duration.isZero()) {
+			return; // no next floor to move to
+		}
+
 		var elevatorCar = this.shaft.getElevatorCar();
-		this.simulation.addSimEvent(durationInSeconds, new DoorOpenSimEvent(elevatorCar));
+		this.simulation.addSimEvent(duration, new DoorOpenSimEvent(elevatorCar));
 	}
 }

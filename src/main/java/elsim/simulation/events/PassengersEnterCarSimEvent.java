@@ -4,6 +4,8 @@ import main.java.elsim.models.Car;
 import main.java.elsim.simulation.EventAlreadyExistsException;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 
+import java.time.Duration;
+
 public class PassengersEnterCarSimEvent extends AbstractSimEvent {
 	private final Car car;
 

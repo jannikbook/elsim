@@ -25,15 +25,13 @@ public class Car {
 
 	/**
      * Parameterized Creation of Car Object
-	 * @param maxPassangerNumber Maximum amount of passenger inside a car
+	 * @param maxPassengerNumber Maximum amount of passenger inside a car
      * @param maxMass Maximum amount of mass inside a car in kg
      * @param maxCarArea Rectangle desribing the maximum car area
      * @param changeDoorTime Time it takes to open/close the door
      */
-	public Car(int maxPassangerNumber, int maxMass, double maxCarArea, double changeDoorTime) {
-		super(); // warum?!
-
-		this.maxPassengerNumber = maxPassangerNumber;
+	public Car(int maxPassengerNumber, int maxMass, double maxCarArea, double changeDoorTime) {
+		this.maxPassengerNumber = maxPassengerNumber;
 		this.maxMass = maxMass;
 		this.maxCarArea = maxCarArea;
 		this.changeDoorTime = changeDoorTime;
@@ -43,6 +41,11 @@ public class Car {
 		this.currentPassengers = new ArrayList<>();
 	}
 
+	/**
+	 * Sets the elevator shaft that this car belongs to.
+	 * Only possible to set this once. Subsequent calls will fail silently.
+	 * @param shaft The {@code ElevatorShaft} that this {@code Car} instance belongs to.
+	 */
 	public void setElevatorShaft(ElevatorShaft shaft) {
 		if (this.shaft == null) {
 			this.shaft = shaft;
@@ -198,7 +201,7 @@ public class Car {
 			enterDuration = enterDuration.plus(nextPassenger.getTimeChange());
 
 			var freeMass = this.maxMass - this.currentMass;
-			currentFloor.findAndRemoveNextPossiblePassenger(freeMass, getSpareArea(), moveDirection);
+			nextPassenger = currentFloor.findAndRemoveNextPossiblePassenger(freeMass, getSpareArea(), moveDirection);
 		}
 
 		return enterDuration;
