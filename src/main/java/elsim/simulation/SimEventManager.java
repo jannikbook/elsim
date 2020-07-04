@@ -39,7 +39,9 @@ public class SimEventManager {
 	 */
 	public AbstractSimEvent getNextEvent() {
 		var nextEvent = events.pollFirst();
-		lastEventTimestamp = nextEvent.getTimestamp();
+		if (nextEvent != null) {
+			lastEventTimestamp = nextEvent.getTimestamp();
+		}
 		return nextEvent;
 	}
 
