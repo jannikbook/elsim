@@ -1,4 +1,6 @@
 package main.java.elsim.models;
+import main.java.elsim.config.ConfigManager;
+
 import java.time.Duration;
 import java.util.ArrayList;
 
@@ -38,8 +40,29 @@ public class Passenger extends Load {
      * @param floorStartingPoint Starting floor of passenger
      * @param floorDestination Destination floor of passenger
      */
-    public Passenger(Floor floorStartingPoint, Floor floorDestination){
-        this(80, 0.25, Duration.ofSeconds(3), Duration.ofMinutes(10), floorStartingPoint, floorDestination);
+    public Passenger(Floor floorStartingPoint, Floor floorDestination) {
+        this.floorStartingPoint = floorStartingPoint;
+        this.floorDestination = floorDestination;
+
+        String conf = "Passenger.people." + String.valueOf(RNG.getInstance().getRandomInteger(0, ConfigManager.getInstance().getPropAsInt("Passenger.people.length")));
+        String[] vars = ConfigManager.getInstance().getProp(conf).split(";");
+        String[] varsMin = new String[vars.length];
+        String[] varsMax = new String[vars.length];
+        for (int i = 0; i < vars.length; i++) {
+            if (vars[i].contains("..")) {
+                varsMin[i] = vars[i].split("\\.\\.")[0];
+                varsMax[i] = vars[i].split("\\.\\.")[1];
+            } else {
+                varsMin[i] = vars[i];
+            varsMax[i] = vars[i];
+            }
+        }
+
+        this.mass = RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[0]), Integer.parseInt(varsMax[0]));
+        this.spaceRequired = RNG.getInstance().getRandomDouble(Double.parseDouble(varsMin[1]), Double.parseDouble(varsMax[1]),2);
+        this.timeChange = Duration.ofMillis((long) RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[2]), Integer.parseInt(varsMax[2])));
+        this.timePatience = Duration.ofMillis((long) RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[3]), Integer.parseInt(varsMax[3])));
+
     }
 
     /**
