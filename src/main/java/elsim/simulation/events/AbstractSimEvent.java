@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 public abstract class AbstractSimEvent {
 	protected Simulation simulation;
-	private LocalDateTime timestamp;
+	protected LocalDateTime timestamp;
 
 	/**
 	 * Create an event that should be processed at a specific time during the simulation.

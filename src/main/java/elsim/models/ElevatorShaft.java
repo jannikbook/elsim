@@ -48,7 +48,13 @@ public class ElevatorShaft {
         this.floors = new LinkedList<Floor>();
         for (int i = 0; i < ConfigManager.getInstance().getPropAsInt("ElevatorShaft.floors.length"); i++){
             String[] vars = ConfigManager.getInstance().getProp("ElevatorShaft.floors." + i).split(";");
-            this.floors.add(new Floor(Integer.parseInt(vars[0]), Integer.parseInt(vars[1])));
+            var temp = vars[2].split("\\.\\.");
+            this.floors.add(new Floor(Integer.parseInt(vars[0]), Integer.parseInt(vars[1]), Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
+        }
+
+        for (var f : this.floors) {
+            // all floors need to exist for this to work
+            f.loadPassengers(this.floors);
         }
     }
 

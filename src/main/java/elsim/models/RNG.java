@@ -54,6 +54,18 @@ public class RNG {
     	return this.randomGenerator.nextInt((max-min) + 1) + min;
     }
 
+	/**
+	 * Generates a random integer value between given boundaries with the exception of a given number.
+	 * @param min The minimal possible outcome of the randomization
+	 * @param max The maximal possible outcome of the randomization
+	 * @param except An integer which will be excluded from the possible return values.
+	 * @return A random integer between the given boundaries except for the given number.
+	 */
+	public int getRandomIntegerExcept(int min, int max, int except) {
+    	int random = getRandomInteger(min, max - 1);
+    	return random < except ? random : random + 1;
+    }
+
     /**
      * Generates a random double value between given boundaries and rounds it to a given number of decimals
      * @param min The minimal possible outcome of the randomization
