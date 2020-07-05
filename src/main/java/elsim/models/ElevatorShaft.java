@@ -6,6 +6,12 @@ import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * ElevatorShaft
+ * Handles a car and many floors.
+ * @author lBlankemeyer
+ */
+
 public class ElevatorShaft {
 
     private Car elevatorCar;
@@ -59,8 +65,8 @@ public class ElevatorShaft {
     }
 
     //Calculation of Distance to next Floor
-    private double distanceToFloor(Floor floor) {
-        double distance = 0;
+    private int distanceToFloor(Floor floor) {
+        int distance = 0;
         int save;
         int from = floors.indexOf(carFloor);
         int to = floors.indexOf(floor);
@@ -75,11 +81,11 @@ public class ElevatorShaft {
         return distance;
     }
 
-    //Get next Floor (next where someone leaves, next where someone enters)
+    //Get nextFloor (next floor between next floor where someone leaves and next floor where someone enters)
     public Floor nextFloor() {
-        Floor dest = nextFloorDest();
-        Floor arr = nextFloorArr();
-        if (dest!=null&&arr!=null) {
+        Floor dest = nextFloorEnters();
+        Floor arr = nextFloorLeaves();
+        if (dest != null && arr != null) {
             if (carDir == MoveDirection.Up) {
                 if (floors.indexOf(dest) < floors.indexOf(arr)) {
                     return dest;
@@ -94,13 +100,13 @@ public class ElevatorShaft {
                 }
             }
         }
-        if (nextFloorDest()!=null&&nextFloorArr()==null) return dest;
-        if (nextFloorDest()==null&&nextFloorArr()!=null) return arr;
+        if (dest != null && arr == null) return dest;
+        if (dest == null && arr != null) return arr;
         return null;
     }
 
-    //Next floor where a Passenger leaves
-    public Floor nextFloorDest() {
+    //Next floor where a Passenger enters
+    public Floor nextFloorEnters() {
         if (carDir == MoveDirection.Up) {
             for (int i = floors.indexOf(carFloor); i < floors.size(); i++) {
                 if (floors.get(i).getButtonPressedUp()) {
@@ -117,8 +123,8 @@ public class ElevatorShaft {
         return null;
     }
 
-    //Next floor where a Passenger enters
-    public Floor nextFloorArr() {
+    //Next floor where a Passenger leaves
+    public Floor nextFloorLeaves() {
         Floor f = null;
         if (carDir == MoveDirection.Up) {
             for (Passenger p : elevatorCar.getCurrentPassengers()) {
@@ -140,8 +146,8 @@ public class ElevatorShaft {
         return null;
     }
 
-    private Duration getDurationForDistance(double distance) {
-        return Duration.ofMillis(1000 * (int)(distance / carSpeed));
+    private Duration getDurationForDistance(int distance) {
+        return Duration.ofMillis((long) (1000 * (distance/100 / carSpeed)));
     }
 
     public Duration moveCar() {
