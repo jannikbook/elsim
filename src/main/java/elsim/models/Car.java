@@ -3,6 +3,7 @@ package main.java.elsim.models;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import main.java.elsim.config.ConfigManager;
 
@@ -12,6 +13,8 @@ import main.java.elsim.config.ConfigManager;
  */
 
 public class Car {
+	
+	private static final Logger LOGGER = Logger.getLogger(Car.class.getName());
 
 	private ElevatorShaft shaft;
 
@@ -144,6 +147,7 @@ public class Car {
 		this.currentPassengerNumber++;
 		this.currentMass = this.currentMass + addedMass;
 		this.currentCarArea = this.currentCarArea + addedCarArea;
+		LOGGER.fine("[Car] Passenger has been added to car");
 		return true;
 		
 	}
@@ -168,6 +172,7 @@ public class Car {
 		this.currentPassengerNumber--;
 		this.currentMass = this.currentMass - removedMass;
 		this.currentCarArea = currentCarArea - removedCarArea;
+		LOGGER.fine("[Car] Passenger has been removed from car");
 	}
 	
 	/**
@@ -175,6 +180,7 @@ public class Car {
 	 * @return changeDoorTime Time it takes to open the door 
 	 */
 	public double openDoor() {
+		LOGGER.fine("[Car] Door is opening");
 		return changeDoorTime;
 	}
 	
@@ -183,6 +189,7 @@ public class Car {
 	 * @return changeDoorTime Time it takes to close the door 
 	 */
 	public double closeDoor() {
+		LOGGER.fine("[Car] Door is closing");
 		return changeDoorTime;
 	}
 
