@@ -1,8 +1,13 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="elsim:jar">
+  <artifact name="elsim:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/elsim_jar</output-path>
-    <root id="archive" name="elsim.jar">
-      <element id="module-output" name="elsim" />
+    <root id="root">
+      <element id="archive" name="elsim.jar">
+        <element id="module-output" name="elsim" />
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+        </element>
+      </element>
     </root>
   </artifact>
 </component>
