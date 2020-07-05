@@ -126,7 +126,7 @@ public class ConfigManager {
         } catch (FileNotFoundException e) {
             Logging.log.log(Level.SEVERE, "[ConfigManager] File " + fileName + " not found. Creating a config file instead.");
             this.writeConfig(fileName);
-            this.prop.list(System.out);
+            //this.prop.list(System.out);
             return;
         }
         try {
@@ -134,7 +134,7 @@ public class ConfigManager {
         } catch (IOException e) {
             Logging.log.log(Level.SEVERE, "[ConfigManager] File '" + fileName + "' is not readable (may be invalid). Creating a config file instead.");
             this.writeConfig(fileName);
-            this.prop.list(System.out);
+            //this.prop.list(System.out);
         }
 
         Logging.log.log(Level.INFO, "[ConfigManager] Using the following config:");
