@@ -3,7 +3,7 @@ package main.java.elsim.config;
 import main.java.elsim.simulation.Simulation;
 
 import java.io.*;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,7 +57,7 @@ public class ConfigManager {
     public void setDefaultConfig() {
         // Use this to add your own default config
         // or use the optional defaultValue parameter in the getter-methods instead
-        LOGGER.log(Level.INFO, "[ConfigManager] Applying default config...");
+        LOGGER.info("[ConfigManager] Applying default config...");
         this.prop = new SortedProperties(); // empty config
 
         // Passenger namespace
@@ -95,7 +95,7 @@ public class ConfigManager {
         this.setProp("Item.maxArea",1);
 
         
-        LOGGER.log(Level.INFO, "[ConfigManager] Done. (Applying default config)");
+        LOGGER.info("[ConfigManager] Done. (Applying default config)");
     }
 
     /**
@@ -106,6 +106,21 @@ public class ConfigManager {
         return "elsim.config";
     }
 
+    /**
+     * List config
+     */
+    public void listConfig() {
+        List<String> keys = new ArrayList<String>();
+        String out = "[ConfigManager]";
+        for(String key : this.prop.stringPropertyNames()) {
+            keys.add(key);
+        }
+        Collections.sort(keys);
+        for (int i = 0; i < keys.size(); i++){
+            out += "\n" + keys.get(i) + "=" + getProp(keys.get(i), "<error retrieving prop>");
+        }
+        LOGGER.config(out);
+    }
     /**
      * Read config from disk using default file name
      * If the config file can't be found or read the default config is used and a write to disk will be attempted.
@@ -120,28 +135,26 @@ public class ConfigManager {
      * @param fileName Config file name, path is optional
      */
     public void readConfig(String fileName) {
-        LOGGER.log(Level.INFO, "[ConfigManager] Starting to read config");
+        LOGGER.info("[ConfigManager] Starting to read config");
         InputStream is = null;
         this.setDefaultConfig();
         try {
             is = new FileInputStream(fileName);
 
         } catch (FileNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "[ConfigManager] File " + fileName + " not found. Creating a config file instead.");
+            LOGGER.severe("[ConfigManager] File " + fileName + " not found. Creating a config file instead.");
             this.writeConfig(fileName);
-            //this.prop.list(System.out);
             return;
         }
         try {
             this.prop.load(is);
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "[ConfigManager] File '" + fileName + "' is not readable (may be invalid). Creating a config file instead.");
+            LOGGER.severe("[ConfigManager] File '" + fileName + "' is not readable (may be invalid). Creating a config file instead.");
             this.writeConfig(fileName);
-            //this.prop.list(System.out);
         }
 
         LOGGER.info("[ConfigManager] Using the following config:");
-        this.prop.list(System.out);
+        listConfig();
     }
 
 
