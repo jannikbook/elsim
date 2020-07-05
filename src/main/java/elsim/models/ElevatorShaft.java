@@ -95,7 +95,10 @@ public class ElevatorShaft {
         return distance;
     }
 
-    //Get nextFloor (next floor between next floor where someone leaves and next floor where someone enters)
+    /**
+     * Method that finds out which floor of the two auxiliary algorithms has determined the optimal floor.
+     * @return Floor, if there is an optimal Floor. Null, if there is no optimal Floor.
+     */
     private Floor nextFloor() {
         if (carDir == MoveDirection.Hold) carDir = MoveDirection.Up;
         Floor enter = nextFloorEnters();
@@ -182,7 +185,7 @@ public class ElevatorShaft {
     }
 
     /**
-     *
+     * Calculates the duration, the car needs, to move from floor to floor.
      * @param distance Distance, which needs to be traveled.
      * @return Return of Duration
      */
@@ -190,6 +193,10 @@ public class ElevatorShaft {
         return Duration.ofMillis((long) (1000 * (distance/100 / carSpeed)));
     }
 
+    /**
+     * Public method which gets called by events to perform the car movement.
+     * @return Duration of moving car
+     */
     public Duration moveCar() {
         var nextFloor = nextFloor();
 
@@ -218,10 +225,18 @@ public class ElevatorShaft {
         return getDurationForDistance(distance);
     }
 
+    /**
+     * Getter of current floor of elevator car.
+     * @return Floor of elevator car.
+     */
     public Floor getCurrentCarFloor() {
         return this.carFloor;
     }
 
+    /**
+     * This Method transfers the elevator car to a specific floor.
+     * @param floor Floor, where the elevator car should be moved to.
+     */
     private void moveToFloor(Floor floor) {
         if (!this.floors.contains(floor)) {
             throw new IllegalArgumentException("floor");
