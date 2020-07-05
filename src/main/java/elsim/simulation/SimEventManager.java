@@ -11,7 +11,7 @@ import java.util.TreeSet;
  * @author jbook
  */
 public class SimEventManager {
-	private NavigableSet<AbstractSimEvent> events;
+	private final NavigableSet<AbstractSimEvent> events;
 	private LocalDateTime lastEventTimestamp;
 
 	/**

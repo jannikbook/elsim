@@ -14,16 +14,12 @@ public abstract class AbstractSimEvent {
 	protected Simulation simulation;
 	private LocalDateTime timestamp;
 
+	/**
+	 * Create an event that should be processed at a specific time during the simulation.
+	 * @throws SimulationNotInitializedException When the simulation has not been initialized yet.
+	 */
 	public AbstractSimEvent() throws SimulationNotInitializedException {
 		this.simulation = Simulation.getInstance();
-	}
-
-	/**
-	 * Create an event that should be processed at a given time during the simulation.
-	 * @param timestamp When the event occurs.
-	 */
-	public AbstractSimEvent(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
 	}
 
 	/**
