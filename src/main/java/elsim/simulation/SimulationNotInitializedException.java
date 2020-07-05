@@ -2,6 +2,7 @@ package main.java.elsim.simulation;
 
 /**
  * An exception that is thrown when a simulation is run without being initialized first.
+ * @author jbook
  */
 public class SimulationNotInitializedException extends Exception {
 	/**

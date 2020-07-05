@@ -8,25 +8,27 @@ import java.util.logging.Logger;
 import main.java.elsim.config.ConfigManager;
 
 /**
- * Class for a elevator car used by passengers
+ * Contains all information needed to handle the elevator car for passenger transportation.
+ * All information needed to create an elevator car are supplied by the {@code ConfigManager}.
+ * Main functionality includes the managing of {@code Passenger} (adding, removing).
+ * @see ConfigManager
+ * @see Passenger
  * @author fwagner
  */
 
 public class Car {
-	
 	private static final Logger LOGGER = Logger.getLogger(Car.class.getName());
 
 	private ElevatorShaft shaft;
 
-	private int maxPassengerNumber;
-	private int maxMass;							// Mass in kg
-	private double maxCarArea;
-	private double changeDoorTime;					// Time in seconds
+	private final int maxPassengerNumber;
+	private final int maxMass;						// Mass in kg
+	private final double maxCarArea;
+	private final double changeDoorTime;			// Time in seconds
 	
-	private int currentPassengerNumber;
 	private int currentMass;						// Mass in kg
 	private double currentCarArea;					// area in m²
-	private List<Passenger> currentPassengers;		
+	private final List<Passenger> currentPassengers;
 
 	/**
      * Car constructor from values of the configuration
@@ -36,7 +38,6 @@ public class Car {
 		this.maxMass = ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxMass");
 		this.maxCarArea = ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxCarArea");
 		this.changeDoorTime = ConfigManager.getInstance().getPropAsInt("ElevatorCar.changeDoorTime");
-		this.currentPassengerNumber = 0;
 		this.currentMass = 0;
 		this.currentCarArea = 0.0;
 		this.currentPassengers = new ArrayList<>();
@@ -51,14 +52,6 @@ public class Car {
 		if (this.shaft == null) {
 			this.shaft = shaft;
 		}
-	}
-
-	/**
-	 * Returns number of peeple in the car 
-	 * @return Number of peeple in the car 
-	 */
-	public int getCurrentPersonNumber() {
-		return currentPassengerNumber;
 	}
 
 	/**
@@ -100,15 +93,7 @@ public class Car {
 	public double getSpareArea() {
 		return this.maxCarArea - this.currentCarArea;
 	}
-	
-	/**
-	 * Returns spare passenger number (maxPassengerNumber - currentPassengerNumber)
-	 * @return Spare passenger number
-	 */
-	public int getSparePassenger() {
-		return this.maxPassengerNumber - this.currentPassengerNumber;
-	}
-	
+
 	/**
      * Adding a passenger to a car
      * @see Passenger
@@ -126,21 +111,19 @@ public class Car {
 		}
 		
 		this.currentPassengers.add(passenger);
-		this.currentPassengerNumber++;
 		this.currentMass = this.currentMass + addedMass;
 		this.currentCarArea = this.currentCarArea + addedCarArea;
-		LOGGER.fine("[Car] Passenger has been added to car");
+		LOGGER.fine(String.format("A passenger has entered the car who wants to go to floor %d.", passenger.getFloorDestination().getFloorNumber()));
 		return true;
 		
 	}
-	
+
 	/**
 	 * Removing a passenger from the car
      * @see Passenger
      * @param passenger Passenger to be removed to the car
      */
 	public void removePassenger(Passenger passenger) {
-		
 		int removedMass = passenger.getMass();
 		double removedCarArea = passenger.getSpaceRequired();
 		List<Item> passengerItems = passenger.getItems();
@@ -151,10 +134,9 @@ public class Car {
 		}
 		
 		this.currentPassengers.remove(passenger);
-		this.currentPassengerNumber--;
 		this.currentMass = this.currentMass - removedMass;
 		this.currentCarArea = currentCarArea - removedCarArea;
-		LOGGER.fine("[Car] Passenger has been removed from car");
+		LOGGER.fine(String.format("A passenger from floor %d has exited the car.", passenger.getFloorStartingPoint().getFloorNumber()));
 	}
 	
 	/**
@@ -162,7 +144,6 @@ public class Car {
 	 * @return changeDoorTime Time it takes to open the door 
 	 */
 	public double openDoor() {
-		LOGGER.fine("[Car] Door is opening");
 		return changeDoorTime;
 	}
 	
@@ -171,7 +152,6 @@ public class Car {
 	 * @return changeDoorTime Time it takes to close the door 
 	 */
 	public double closeDoor() {
-		LOGGER.fine("[Car] Door is closing");
 		return changeDoorTime;
 	}
 
@@ -210,6 +190,11 @@ public class Car {
 	 */
 	public Duration addAllPassengersAtFloor(Floor currentFloor) {
 		var moveDirection = shaft.getDir();
+
+		if (this.currentPassengers.size() >= this.maxPassengerNumber) {
+			LOGGER.warning("Car is full but wants to add passengers.");
+		}
+
 		var nextPassenger = currentFloor.findAndRemoveNextPossiblePassenger(maxMass - currentMass, getSpareArea(), moveDirection);
 		if (nextPassenger == null) {
 			return Duration.ZERO;
@@ -217,7 +202,7 @@ public class Car {
 
 		Duration enterDuration = nextPassenger.getTimeChange();
 
-		while (nextPassenger != null) {
+		while (nextPassenger != null && this.currentPassengers.size() < this.maxPassengerNumber) {
 			this.addPassenger(nextPassenger);
 			enterDuration = enterDuration.plus(nextPassenger.getTimeChange());
 

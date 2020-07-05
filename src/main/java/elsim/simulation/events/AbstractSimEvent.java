@@ -1,16 +1,19 @@
 package main.java.elsim.simulation.events;
 
-import main.java.elsim.simulation.EventAlreadyExistsException;
 import main.java.elsim.simulation.Simulation;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * An abstract class defining some event occurring at a specific point in time during the simulation.
  * @author jbook
  */
 public abstract class AbstractSimEvent {
+	private static long counter = 0;
+
+	private final long id;
 	protected Simulation simulation;
 	protected LocalDateTime timestamp;
 
@@ -19,13 +22,14 @@ public abstract class AbstractSimEvent {
 	 * @throws SimulationNotInitializedException When the simulation has not been initialized yet.
 	 */
 	public AbstractSimEvent() throws SimulationNotInitializedException {
+		this.id = counter++;
 		this.simulation = Simulation.getInstance();
 	}
 
 	/**
 	 * Process this event instance.
 	 */
-	public abstract void processEvent() throws SimulationNotInitializedException, EventAlreadyExistsException;
+	public abstract void processEvent() throws SimulationNotInitializedException;
 
 	/**
 	 * Gets the event's timestamp as a {@code LocalDateTime}.
@@ -33,6 +37,14 @@ public abstract class AbstractSimEvent {
 	 */
 	public LocalDateTime getTimestamp() {
 		return timestamp;
+	}
+
+	/**
+	 * Gets the unique ID associated with this event instance.
+	 * @return A {@code long} identifying this instance.
+	 */
+	public long getId() {
+		return this.id;
 	}
 
 	/**
@@ -45,5 +57,21 @@ public abstract class AbstractSimEvent {
 		}
 
 		this.timestamp = timestamp;
+	}
+
+	/**
+	 * Gets {@code this.timestamp} formatted according to our specification.
+	 * @return A {@code String} representing this event's timestamp.
+	 */
+	protected String getNowFormatted() {
+		return formatTimestamp(this.timestamp);
+	}
+
+	/**
+	 * Formats a timestamp according to our specification.
+	 * @return A {@code String} representing the supplied timestamp.
+	 */
+	protected String formatTimestamp(LocalDateTime timestamp) {
+		return timestamp.format(DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy"));
 	}
 }

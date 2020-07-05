@@ -3,15 +3,17 @@ import main.java.elsim.config.ConfigManager;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * Class for passengers that use elevators
+ * Class for passengers that use elevators.
+ * The ranges of these properties can be configured for each individual passenger type.
  * @see Load
  * @see Duration
  * @author jdunker
  */
 public class Passenger extends Load {
+    private static final Logger LOGGER = Logger.getLogger(Passenger.class.getName());
     private Duration timeChange;
     private Duration timePatience;
     public ArrayList<Item> items;
@@ -19,7 +21,7 @@ public class Passenger extends Load {
     private Floor floorDestination;
 
     /**
-     * Simpler constructor for Passenger objects
+     * Constructor for Passenger objects
      * @param floorStartingPoint Starting floor of passenger
      * @param floorDestination Destination floor of passenger
      */
@@ -30,6 +32,9 @@ public class Passenger extends Load {
 
         String conf = "Passenger.people." + String.valueOf(RNG.getInstance().getRandomInteger(0, ConfigManager.getInstance().getPropAsInt("Passenger.people.length") - 1));
         String[] vars = ConfigManager.getInstance().getProp(conf).split(";");
+        if (vars.length < 4) {
+            LOGGER.severe("[Passenger] Passenger config contains to few fields to generate a Passenger. Please review your config file. To generate a default config, run this executable with the argument default.config");
+        }
         String[] varsMin = new String[vars.length];
         String[] varsMax = new String[vars.length];
         for (int i = 0; i < vars.length; i++) {
@@ -41,11 +46,18 @@ public class Passenger extends Load {
                 varsMax[i] = vars[i];
             }
         }
-
         this.mass = RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[0]), Integer.parseInt(varsMax[0]));
         this.spaceRequired = RNG.getInstance().getRandomDouble(Double.parseDouble(varsMin[1]), Double.parseDouble(varsMax[1]),2);
         this.timeChange = Duration.ofMillis((long) RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[2]), Integer.parseInt(varsMax[2])));
         this.timePatience = Duration.ofMillis((long) RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[3]), Integer.parseInt(varsMax[3])));
+        // this.items
+        if (vars.length < 5) {
+            LOGGER.warning("[Passenger] Passenger config contains to few fields. Not generating any items. Please review your config file. To generate a default config, run this executable with the argument default.config");
+            return;
+        }
+        for (int i = 0; i < RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[4]), Integer.parseInt(varsMax[4])); i++){
+            this.items.add(new Item());
+        }
     }
 
     /**

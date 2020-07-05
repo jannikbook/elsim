@@ -61,10 +61,13 @@ public class Simulation {
 		instance = new Simulation(shaft, eventManager, start, end);
 
 		for (var f : instance.elevatorShaft.getFloors()) {
-			f.initPatienceEvents(instance);
+			try {
+				f.loadPassengers(instance, instance.elevatorShaft);
+			}
+			catch (SimulationNotInitializedException e) {} // literally impossible
 		}
 
-		LOGGER.info("[Simulation] Simulation has been initialized.");
+		LOGGER.info("Simulation has been initialized.");
 	}
 
 	private Simulation(ElevatorShaft shaft, SimEventManager eventManager, LocalDateTime simStart, LocalDateTime simEnd) {
@@ -97,9 +100,8 @@ public class Simulation {
 	 * Add an event to the simulation's event queue.
 	 * @param secondsFromNow The offset in seconds after which to add the event.
 	 * @param simEvent The event to add.
-	 * @throws EventAlreadyExistsException When the event already exists in the event queue.
 	 */
-	public void addSimEvent(int secondsFromNow, AbstractSimEvent simEvent) throws EventAlreadyExistsException {
+	public void addSimEvent(int secondsFromNow, AbstractSimEvent simEvent) {
 		addSimEvent(Duration.ofSeconds(secondsFromNow), simEvent);
 	}
 
@@ -107,9 +109,8 @@ public class Simulation {
 	 * Add an event to the simulation's event queue.
 	 * @param timeFromNow The offset after which to add the event.
 	 * @param simEvent The event to add.
-	 * @throws EventAlreadyExistsException When the event already exists in the event queue.
 	 */
-	public void addSimEvent(Duration timeFromNow, AbstractSimEvent simEvent) throws EventAlreadyExistsException {
+	public void addSimEvent(Duration timeFromNow, AbstractSimEvent simEvent) {
 		var current = eventManager.getCurrentTimestamp();
 		simEvent.setTimestamp(current.plus(timeFromNow));
 		try {
@@ -134,9 +135,9 @@ public class Simulation {
 
 		sim.simulationIsRunning = true;
 
-		LOGGER.info("[Simulation]");
-		LOGGER.info("[Simulation] *** SIMULATION STARTING ***");
-		LOGGER.info("[Simulation]");
+		LOGGER.info("");
+		LOGGER.info("*** SIMULATION STARTING ***");
+		LOGGER.info("");
 
 		var eventManager = sim.eventManager;
 
@@ -147,26 +148,40 @@ public class Simulation {
 		try {
 			eventManager.addEvent(startEvent);
 		} catch (EventWithoutTimestampException withoutTimestampException) {
-			LOGGER.severe("[Simulation] " + withoutTimestampException.toString());
-		} catch (EventAlreadyExistsException alreadyExistsException) {
-			LOGGER.warning("[Simulation] " + alreadyExistsException.toString());
+			LOGGER.severe(withoutTimestampException.toString());
 		}
 
 		var event = eventManager.getNextEvent();
 		while (event != null && event.getTimestamp().isBefore(sim.simulationEnd)) {
 			try {
-				LOGGER.info("[Simulation] Executing event: " + event.getClass().getName());
+				LOGGER.finest("Executing event: " + event.getClass().getName());
 				event.processEvent();
 			}
-			catch (SimulationNotInitializedException | EventAlreadyExistsException exception) {
-				LOGGER.severe("[Simulation] " + exception.toString());
+			catch (SimulationNotInitializedException exception) {
+				LOGGER.severe(exception.toString());
 			}
 
 			event = eventManager.getNextEvent();
 		}
 
-		LOGGER.info("[Simulation]");
-		LOGGER.info("[Simulation] *** SIMULATION HAS ENDED ***");
-		LOGGER.info("[Simulation]");
+		LOGGER.info("");
+		LOGGER.info("*** SIMULATION HAS ENDED ***");
+		LOGGER.info("");
+	}
+
+	/**
+	 * Gets the timestamp of the simulation end.
+	 * @return The timestamp.
+	 */
+	public LocalDateTime getEnd() {
+		return this.simulationEnd;
+	}
+
+	/**
+	 * Gets the timestamp of the simulation start.
+	 * @return The timestamp.
+	 */
+	public LocalDateTime getStart() {
+		return this.simulationStart;
 	}
 }

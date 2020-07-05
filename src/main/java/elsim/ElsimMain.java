@@ -7,11 +7,9 @@ import main.java.elsim.simulation.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class ElsimMain {
 
@@ -24,10 +22,11 @@ public class ElsimMain {
 			IOException {
 
 		LOGGER.setUseParentHandlers(false);
-		LOGGER.setLevel(Level.ALL);
+		LOGGER.setLevel(Level.FINER);
 
-		var fileHandler = new FileHandler("log.txt");
-		var formatter = new SimpleFormatter();
+		var logFile = args.length > 2 ? args[1] : "log.txt";
+		var fileHandler = new FileHandler(logFile);
+		var formatter = new LogFormatter();
 		fileHandler.setFormatter(formatter);
 		LOGGER.addHandler(fileHandler);
 
@@ -39,13 +38,14 @@ public class ElsimMain {
 			configManager.readConfig(); // This reads from file or creates a default config
 		}
 
-		var timeStart = LocalDateTime.now();
+		var timeStart = LocalDateTime.parse(configManager.getProp("Simulation.start"));
+		var timeEnd = LocalDateTime.parse(configManager.getProp("Simulation.end"));
 
 		var car = new Car(); // construct from config
 		var elevatorShaft = new ElevatorShaft(car);
 		var eventManager = new SimEventManager(timeStart);
 
-		Simulation.initialize(elevatorShaft, eventManager, timeStart, timeStart.plus(1, ChronoUnit.DAYS));
+		Simulation.initialize(elevatorShaft, eventManager, timeStart, timeEnd);
 		Simulation.run();
 	}
 

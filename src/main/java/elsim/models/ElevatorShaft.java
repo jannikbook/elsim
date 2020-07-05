@@ -56,12 +56,6 @@ public class ElevatorShaft {
             var temp = vars[2].split("\\.\\.");
             this.floors.add(new Floor(Integer.parseInt(vars[0]), Integer.parseInt(vars[1]), Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
         }
-
-        for (var f : this.floors) {
-            // all floors need to exist for this to work
-            LOGGER.finer("[ElevatorShaft] Adding passengers to floor " + f.getFloorNumber());
-            f.loadPassengers(this.floors);
-        }
     }
 
     /**
@@ -146,8 +140,7 @@ public class ElevatorShaft {
                 }
             }
         }
-
-        for (int i = floors.indexOf(carFloor) + 1; i >= 0; i++) {
+        for (int i = floors.indexOf(carFloor) + 1; i < floors.size(); i++) {
             if (floors.get(i).getButtonPressedDown()) {
                 return floors.get(i);
             }
@@ -157,7 +150,6 @@ public class ElevatorShaft {
                 return floors.get(i);
             }
         }
-
         return null;
 
     }
@@ -186,7 +178,7 @@ public class ElevatorShaft {
                 }
             }
         }
-        return null;
+        return f;
     }
 
     /**
@@ -212,12 +204,17 @@ public class ElevatorShaft {
         }
 
         if (nextFloor == null) {
+            LOGGER.fine("No floor to move to. Changing to hold state.");
             carDir = MoveDirection.Hold;
             return Duration.ZERO;
         }
 
         var distance = distanceToFloor(nextFloor);
         this.moveToFloor(nextFloor);
+        if (this.getElevatorCar().getCurrentPassengers().size() == 0) {
+            carDir = MoveDirection.Hold;
+        }
+
         return getDurationForDistance(distance);
     }
 
