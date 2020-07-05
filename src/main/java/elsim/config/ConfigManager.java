@@ -61,7 +61,7 @@ public class ConfigManager {
         this.prop = new SortedProperties(); // empty config
 
         // Passenger namespace
-        this.setProp("Passenger.people.length", "4");
+        this.setProp("Passenger.people.length", 4);
         this.setProp("Passenger.people.0", "50..70;0.20..0.25;500..1500;40000..80000");
         this.setProp("Passenger.people.1", "75..100;0.30..0.40;500..2000;40000..80000");
         this.setProp("Passenger.people.2", "30..50;0.15..0.25;500..2000;40000..80000");
@@ -76,7 +76,7 @@ public class ConfigManager {
         this.setProp("ElevatorCar.maxMass", 1000);
         this.setProp("ElevatorCar.changeDoorTime", 1);
 
-        // ElevatorShaft
+        // ElevatorShaft namespace
         this.setProp("ElevatorShaft.carSpeed",8);
         this.setProp("ElevatorShaft.floors.length", 8);
         this.setProp("ElevatorShaft.floors.0", "-1;500;0..5");
@@ -88,14 +88,14 @@ public class ConfigManager {
         this.setProp("ElevatorShaft.floors.6", "5;382;15..20");
         this.setProp("ElevatorShaft.floors.7", "5;260;2..5");
 
-        //Item
+        //Item namespace
         this.setProp("Item.minMass",1);
         this.setProp("Item.maxMass",20);
         this.setProp("Item.minArea",0.01);
         this.setProp("Item.maxArea",1);
 
         
-        LOGGER.info("[ConfigManager] Done. (Applying default config)");
+        LOGGER.info("[ConfigManager] Applying default config... Done.");
     }
 
     /**
@@ -135,26 +135,38 @@ public class ConfigManager {
      * @param fileName Config file name, path is optional
      */
     public void readConfig(String fileName) {
-        LOGGER.info("[ConfigManager] Starting to read config");
-        InputStream is = null;
-        this.setDefaultConfig();
-        try {
-            is = new FileInputStream(fileName);
+        boolean skip = false;
+        //if anything goes wrong, write a new config file and skip the rest of the read process
 
-        } catch (FileNotFoundException e) {
-            LOGGER.severe("[ConfigManager] File " + fileName + " not found. Creating a config file instead.");
-            this.writeConfig(fileName);
-            return;
-        }
+        LOGGER.info("[ConfigManager] Initializing config...");
+        InputStream is = null;
+        // first, apply the default config
+        this.setDefaultConfig();
+        LOGGER.info("[ConfigManager] Trying to apply config from file '" + fileName + "'...");
         try {
+            // second, open file
+            is = new FileInputStream(fileName);
+        } catch (FileNotFoundException e) {
+            LOGGER.severe("[ConfigManager] File '" + fileName + "' not found. Creating a new config file instead.");
+            this.writeConfig(fileName);
+            skip = true;
+        }
+        if (!skip){
+        try {
+            // third, parse file
             this.prop.load(is);
         } catch (IOException e) {
-            LOGGER.severe("[ConfigManager] File '" + fileName + "' is not readable (may be invalid). Creating a config file instead.");
+            LOGGER.severe("[ConfigManager] File '" + fileName + "' is not readable (may be invalid). Attempting to create a new config file instead.");
             this.writeConfig(fileName);
+            skip = true;
+        }}
+        if (!skip) {
+            // everything went well
+            LOGGER.info("[ConfigManager] Trying to apply config from file '" + fileName + "'... Done.");
         }
-
         LOGGER.info("[ConfigManager] Using the following config:");
         listConfig();
+        LOGGER.info("[ConfigManager] Initializing config... Done.");
     }
 
 
@@ -170,11 +182,13 @@ public class ConfigManager {
      * @param fileName Config file name, path is optional
      */
     private void writeConfig(String fileName) {
+        LOGGER.info("[ConfigManager] Writing config to file '" + fileName + "'...");
         try {
             this.prop.store(new FileOutputStream(fileName), null);
         } catch (IOException e) {
             LOGGER.severe("[ConfigManager] Could not write file '" + fileName + "'. ");
         }
+        LOGGER.info("[ConfigManager] Writing config to file '" + fileName + "'... Done.");
     }
 
     // BELOW: Prop Setter Methods
