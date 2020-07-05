@@ -140,7 +140,7 @@ public class ConfigManager {
             //this.prop.list(System.out);
         }
 
-        Logging.log.log(Level.INFO, "[ConfigManager] Using the following config:");
+        LOGGER.info("[ConfigManager] Using the following config:");
         this.prop.list(System.out);
     }
 
@@ -160,7 +160,7 @@ public class ConfigManager {
         try {
             this.prop.store(new FileOutputStream(fileName), null);
         } catch (IOException e) {
-            Logging.log.log(Level.SEVERE, "[ConfigManager] Could not write file '" + fileName + "'. ");
+            LOGGER.severe("[ConfigManager] Could not write file '" + fileName + "'. ");
         }
     }
 
