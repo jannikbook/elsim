@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 public class PassengersExitCarSimEvent extends AbstractSimEvent {
 	private static final Logger LOGGER = Logger.getLogger(PassengersExitCarSimEvent.class.getName());
 
-
 	private final Car car;
 
 	public PassengersExitCarSimEvent(Car car) throws SimulationNotInitializedException {
@@ -26,9 +25,10 @@ public class PassengersExitCarSimEvent extends AbstractSimEvent {
 	public void processEvent() throws SimulationNotInitializedException, EventAlreadyExistsException {
 		var elevatorShaft = this.car.getElevatorShaft();
 		var currentFloor = elevatorShaft.getCurrentCarFloor();
+		LOGGER.fine(String.format("Passengers start exiting the car at %s", this.getNowFormatted()));
 
 		var exitDuration = this.car.removeAllPassengersAtFloor(currentFloor);
-		LOGGER.fine("After passengers exiting, " + car.getCurrentPassengers().size() + " passengers remain.");
+		LOGGER.finer(car.getCurrentPassengers().size() + " passengers remain in the car.");
 		this.simulation.addSimEvent(exitDuration, new PassengersEnterCarSimEvent(this.car));
 	}
 }

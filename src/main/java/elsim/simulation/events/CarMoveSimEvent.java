@@ -24,9 +24,10 @@ public class CarMoveSimEvent extends AbstractSimEvent {
 	@Override
 	public void processEvent() throws SimulationNotInitializedException, EventAlreadyExistsException {
 		var duration = this.shaft.moveCar();
-		LOGGER.fine(String.format("Elevator arrives at floor %d with %d passengers.",
+		LOGGER.fine(String.format("Elevator arrives at floor %d with %d passengers. (at %s)",
 				shaft.getCurrentCarFloor().getFloorNumber(),
-				shaft.getElevatorCar().getCurrentPassengers().size()));
+				shaft.getElevatorCar().getCurrentPassengers().size(),
+				this.getNowFormatted()));
 
 		if (duration.isZero()) {
 			return; // no next floor to move to

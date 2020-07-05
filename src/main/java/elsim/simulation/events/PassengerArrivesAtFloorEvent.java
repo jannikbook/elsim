@@ -35,7 +35,7 @@ public class PassengerArrivesAtFloorEvent extends AbstractSimEvent {
 		LOGGER.finer(String.format("Passenger arrives at floor %d, wanting to go to floor %d. (at %s)",
 				this.floor.getFloorNumber(),
 				passenger.getFloorDestination().getFloorNumber(),
-				this.formatTimestamp()));
+				this.getNowFormatted()));
 
 		try {
 			this.simulation.addSimEvent(passenger.getTimePatience(), new PassengerLeavesFloorSimEvent(this.floor, passenger));

@@ -48,7 +48,11 @@ public abstract class AbstractSimEvent {
 		this.timestamp = timestamp;
 	}
 
-	protected String formatTimestamp() {
-		return this.timestamp.format(DateTimeFormatter.ISO_LOCAL_TIME);
+	protected String getNowFormatted() {
+		return formatTimestamp(this.timestamp);
+	}
+
+	protected String formatTimestamp(LocalDateTime timestamp) {
+		return timestamp.format(DateTimeFormatter.ISO_LOCAL_TIME);
 	}
 }

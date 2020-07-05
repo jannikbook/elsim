@@ -17,19 +17,18 @@ import main.java.elsim.config.ConfigManager;
  */
 
 public class Car {
-	
 	private static final Logger LOGGER = Logger.getLogger(Car.class.getName());
 
 	private ElevatorShaft shaft;
 
-	private int maxPassengerNumber;
-	private int maxMass;							// Mass in kg
-	private double maxCarArea;
-	private double changeDoorTime;					// Time in seconds
+	private final int maxPassengerNumber;
+	private final int maxMass;						// Mass in kg
+	private final double maxCarArea;
+	private final double changeDoorTime;			// Time in seconds
 	
 	private int currentMass;						// Mass in kg
 	private double currentCarArea;					// area in m²
-	private List<Passenger> currentPassengers;		
+	private final List<Passenger> currentPassengers;
 
 	/**
      * Car constructor from values of the configuration
@@ -114,18 +113,17 @@ public class Car {
 		this.currentPassengers.add(passenger);
 		this.currentMass = this.currentMass + addedMass;
 		this.currentCarArea = this.currentCarArea + addedCarArea;
-		LOGGER.fine("Passenger has been added to car");
+		LOGGER.fine(String.format("A passenger has entered the car who wants to go to floor %d.", passenger.getFloorDestination().getFloorNumber()));
 		return true;
 		
 	}
-	
+
 	/**
 	 * Removing a passenger from the car
      * @see Passenger
      * @param passenger Passenger to be removed to the car
      */
 	public void removePassenger(Passenger passenger) {
-		
 		int removedMass = passenger.getMass();
 		double removedCarArea = passenger.getSpaceRequired();
 		List<Item> passengerItems = passenger.getItems();
@@ -138,7 +136,7 @@ public class Car {
 		this.currentPassengers.remove(passenger);
 		this.currentMass = this.currentMass - removedMass;
 		this.currentCarArea = currentCarArea - removedCarArea;
-		LOGGER.fine("Passenger has been removed from car");
+		LOGGER.fine(String.format("A passenger from floor %d has exited the car.", passenger.getFloorStartingPoint().getFloorNumber()));
 	}
 	
 	/**
@@ -146,7 +144,6 @@ public class Car {
 	 * @return changeDoorTime Time it takes to open the door 
 	 */
 	public double openDoor() {
-		LOGGER.fine("Door is opening");
 		return changeDoorTime;
 	}
 	
@@ -155,7 +152,6 @@ public class Car {
 	 * @return changeDoorTime Time it takes to close the door 
 	 */
 	public double closeDoor() {
-		LOGGER.fine("Door is closing");
 		return changeDoorTime;
 	}
 
