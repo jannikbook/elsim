@@ -35,7 +35,7 @@ public class ConfigManager {
     private static ConfigManager instance;
 
     private ConfigManager() {
-        this.prop = new Properties();
+        this.prop = new SortedProperties();
     }
 
     /**
@@ -92,7 +92,7 @@ public class ConfigManager {
         this.setProp("Item.maxArea",1);
 
         
-        Logging.log.log(Level.INFO, "[ConfigManager] Done. (Applying default config)");
+        Logging.log.log(Level.INFO, "[ConfigManager] Done with applying default config.");
     }
 
     /**
