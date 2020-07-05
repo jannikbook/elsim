@@ -1,5 +1,7 @@
 package main.java.elsim.models;
 
+import main.java.elsim.config.ConfigManager;
+
 /**
  * An Item is a object that can be transported by a Passenger of an elevator.
  * This Class defines the common attributes like mass and required space
@@ -8,36 +10,31 @@ package main.java.elsim.models;
  * @author ptomalak
  */
 public class Item extends Load {
-    static int UNKNOWN                  = 0;
-    static int MIN_MASS                 = 1;
-    static int MAX_MASS                 = 20;
-    static int DECIMALS                 = 2;
-    static double MIN_AREA              = 0.01;
-    static double MAX_AREA              = 1;
-
-    Passenger owner;
+    // minimal and maximal Mass of Items
+    static int MIN_MASS     = ConfigManager.getInstance().getPropAsInt("Item.minMass");
+    static int MAX_MASS     = ConfigManager.getInstance().getPropAsInt("Item.maxMass");
+    // Always round to 2 decimal places
+    static int DECIMALS     = 2;
+    // minimal and maximal required Area for Items
+    static double MIN_AREA  = ConfigManager.getInstance().getPropAsDouble("Item.minArea");
+    static double MAX_AREA  = ConfigManager.getInstance().getPropAsDouble("Item.maxArea");
 
     /**
      * Manual constructor for Item Objects
-     * @param owner Passenger that owns the item
      * @param mass Mass of the item in kg
      * @param spaceRequired Area needed for the item in m²
      */
-    public Item (Passenger owner, int mass, double spaceRequired){
-        this.owner = owner;
+    public Item (int mass, double spaceRequired){
         this.mass = mass;
         this.spaceRequired = spaceRequired;
     }
     /**
-     * Constructor for random Item Objects. An owner has to be provided,
-     * while mass and required space get randomized.
-     * @param owner Passenger that owns the item
-     * @return Item with randomly generated attributes
+     * Constructor for Item Objects with randomized mass and required space.
      */
-    public Item CreateRandomItem (Passenger owner){
-        Item myItem = new Item(owner,UNKNOWN,UNKNOWN);
-        myItem.mass = RNG.getInstance().getRandomInteger(MIN_MASS,MAX_MASS);
-        myItem.spaceRequired = RNG.getInstance().getRandomDouble(MIN_AREA,MAX_AREA,DECIMALS);
-        return myItem;
+    public Item (){
+        this.mass = RNG.getInstance().getRandomInteger(MIN_MASS,MAX_MASS);
+        this.spaceRequired = RNG.getInstance().getRandomDouble(MIN_AREA,MAX_AREA,DECIMALS);
     }
+
+
 }

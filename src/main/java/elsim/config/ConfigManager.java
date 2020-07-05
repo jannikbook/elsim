@@ -81,6 +81,12 @@ public class ConfigManager {
         this.setProp("ElevatorShaft.floors.6", "5;382");
         this.setProp("ElevatorShaft.floors.7", "5;260");
 
+        //Item
+        this.setProp("Item.minMass",1);
+        this.setProp("Item.maxMass",20);
+        this.setProp("Item.minArea",0.01);
+        this.setProp("Item.maxArea",1);
+
     }
 
     /**

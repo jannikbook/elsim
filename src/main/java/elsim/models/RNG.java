@@ -23,7 +23,10 @@ public class RNG {
 	/**
 	 * Private Constructor (only to be used by Singleton)
 	 */
-	private RNG() {}
+	private RNG() {
+		this.seed = ConfigManager.getInstance().getPropAsInt("RNG.seed", 0);
+		this.randomGenerator = new Random(seed);
+	}
 	
 	/**
 	 * Static method to return the defined RNG instance
@@ -33,14 +36,6 @@ public class RNG {
 		return InstanceHolder.INSTANCE;
 	}
 
-	/**
-	 * Initalisation method for RNG (set seed and create RNG generator)
-	 */
-	public void init () {
-		this.seed = ConfigManager.getInstance().getPropAsInt("RNG.seed", 0);
-		this.randomGenerator = new Random(seed);
-	}
-	
 	/**
 	 * Getter of seed
 	 * @return seed Seed which is defined in the config to be used for the generator
