@@ -92,6 +92,7 @@ public class ElevatorShaft {
 
     //Get nextFloor (next floor between next floor where someone leaves and next floor where someone enters)
     public Floor nextFloor() {
+        if (carDir == MoveDirection.Hold) carDir = MoveDirection.Up;
         Floor dest = nextFloorEnters();
         Floor arr = nextFloorLeaves();
         if (dest != null && arr != null) {
@@ -161,7 +162,19 @@ public class ElevatorShaft {
 
     public Duration moveCar() {
         var nextFloor = nextFloor();
+
         if (nextFloor == null) {
+            if (carDir == MoveDirection.Up) {
+                carDir = MoveDirection.Down;
+                nextFloor = nextFloor();
+            } else if (carDir == MoveDirection.Down) {
+                carDir = MoveDirection.Up;
+                nextFloor = nextFloor();
+            }
+        }
+
+        if (nextFloor == null) {
+            carDir = MoveDirection.Hold;
             return Duration.ZERO;
         }
 
