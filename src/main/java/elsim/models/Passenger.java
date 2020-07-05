@@ -16,7 +16,7 @@ public class Passenger extends Load {
     private static final Logger LOGGER = Logger.getLogger(Passenger.class.getName());
     private Duration timeChange;
     private Duration timePatience;
-    public ArrayList<Item> items;
+    private ArrayList<Item> items;
     private Floor floorStartingPoint;
     private Floor floorDestination;
 
