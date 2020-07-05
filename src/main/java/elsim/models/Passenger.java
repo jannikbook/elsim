@@ -44,7 +44,7 @@ public class Passenger extends Load {
         this.floorStartingPoint = floorStartingPoint;
         this.floorDestination = floorDestination;
 
-        String conf = "Passenger.people." + String.valueOf(RNG.getInstance().getRandomInteger(0, ConfigManager.getInstance().getPropAsInt("Passenger.people.length")));
+        String conf = "Passenger.people." + String.valueOf(RNG.getInstance().getRandomInteger(0, ConfigManager.getInstance().getPropAsInt("Passenger.people.length") - 1));
         String[] vars = ConfigManager.getInstance().getProp(conf).split(";");
         String[] varsMin = new String[vars.length];
         String[] varsMax = new String[vars.length];
@@ -54,7 +54,7 @@ public class Passenger extends Load {
                 varsMax[i] = vars[i].split("\\.\\.")[1];
             } else {
                 varsMin[i] = vars[i];
-            varsMax[i] = vars[i];
+                varsMax[i] = vars[i];
             }
         }
 

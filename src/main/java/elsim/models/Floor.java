@@ -1,11 +1,13 @@
 package main.java.elsim.models;
 
+import main.java.elsim.config.ConfigManager;
 import main.java.elsim.simulation.EventAlreadyExistsException;
 import main.java.elsim.simulation.Simulation;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 import main.java.elsim.simulation.events.PassengerLeavesFloorSimEvent;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Class for floors where the passengers wait for the elevator
@@ -19,17 +21,23 @@ public class Floor {
     private LinkedList<Passenger> passengers;
     private boolean buttonPressedUp;
     private boolean buttonPressedDown;
-    //private enum floorType; // Top or base floor do not have booth buttons
+
+    private final int passengerAmount;
 
     /**
      * Manual constructor for Passenger Objects
-     * @param  height Height of the floor in centimeters
+     * @param height Height of the floor in centimeters
      */
-    public Floor(int floorNumber, int height) {
+    public Floor(int floorNumber, int height, int minPassengers, int maxPassengers) {
         this.floorNumber = floorNumber;
         this.height = height;
-        passengers =
-                new LinkedList<>();
+        passengers = new LinkedList<>();
+
+        if (minPassengers > maxPassengers) {
+            throw new IllegalArgumentException("minPassengers has to be smaller than or equal to maxPassengers.");
+        }
+
+        this.passengerAmount = RNG.getInstance().getRandomInteger(minPassengers, maxPassengers);
     }
 
     /**
@@ -37,6 +45,14 @@ public class Floor {
      * @return the number of the floor
      */
     public int getFloorNumber() { return floorNumber; }
+
+    public void loadPassengers(List<Floor> allFloors) {
+        for (int i = 0; i < this.passengerAmount; i++) {
+            var targetFloorIndex = RNG.getInstance().getRandomIntegerExcept(0, allFloors.size() - 1, allFloors.indexOf(this));
+
+            new Passenger(this, allFloors.get(targetFloorIndex));
+        }
+    }
 
     /**
      * Add a passenger who wait at this floor for the elevator and press the button up or down to call the elevator car
@@ -46,7 +62,7 @@ public class Floor {
         int destinationFloorNumber = passenger.getFloorDestination().getFloorNumber();
 
         if (destinationFloorNumber == this.floorNumber) {
-            // just skip this passenger, maybe log to WARN
+            Logging.log.warning(String.format("[Floor] Tried to add passenger to floor %d that has the same floor as their destination.", this.floorNumber));
         }
 
         passengers.add(passenger);
@@ -63,7 +79,7 @@ public class Floor {
             sim.addSimEvent(passenger.getTimePatience(), new PassengerLeavesFloorSimEvent(this, passenger));
         }
         catch (EventAlreadyExistsException e) {
-            // log to WARN
+            Logging.log.warning(String.format("[Floor] PassengerLeavesFloor already exists as an event. Passenger might have been added twice to floor %d.", this.floorNumber));
         }
     }
 

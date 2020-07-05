@@ -3,13 +3,10 @@ package main.java.elsim;
 import main.java.elsim.config.ConfigManager;
 import main.java.elsim.models.Car;
 import main.java.elsim.models.ElevatorShaft;
-import main.java.elsim.models.Floor;
 import main.java.elsim.simulation.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ElsimMain {
 
@@ -26,8 +23,7 @@ public class ElsimMain {
 
 		var timeStart = LocalDateTime.now();
 
-		var car = new Car(10, 100, 5.0 * 5, 2);
-		
+		var car = new Car(); // construct from config
 		var elevatorShaft = new ElevatorShaft(car);
 		var eventManager = new SimEventManager();
 
