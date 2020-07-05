@@ -60,10 +60,11 @@ public class ConfigManager {
         this.prop = new SortedProperties(); // empty config
 
         // Passenger namespace
+        this.setProp("Passenger.people.comment", "Separated by semicolon ; . Define a range using 'min..max'. Order: Mass in kg (int);spaceRequired in m²(double);timeChange in ms(int);timePatience in ms(int);number of items(int)");
         this.setProp("Passenger.people.length", 4);
         this.setProp("Passenger.people.0", "50..70;0.20..0.25;500..1500;40000..80000;1..3");
         this.setProp("Passenger.people.1", "75..100;0.30..0.40;500..2000;40000..80000;0..3");
-        this.setProp("Passenger.people.2", "30..50;0.15..0.25;500..2000;40000..80000;0..1");
+        this.setProp("Passenger.people.2", "30..50;0.15..0.25;500..2000;40000..80000;1");
         this.setProp("Passenger.people.3", "50..100;0.20..0.40;500..2000;40000..80000;1..4");
 
         // RNG namespace
@@ -78,6 +79,7 @@ public class ConfigManager {
         // ElevatorShaft namespace
         this.setProp("ElevatorShaft.carSpeed",8);
         this.setProp("ElevatorShaft.floors.length", 8);
+        this.setProp("ElevatorShaft.floors.comment", "Floor number;height in cm;min..max amount of passengers");
         this.setProp("ElevatorShaft.floors.0", "-1;500;0..5");
         this.setProp("ElevatorShaft.floors.1", "0;350;10..25");
         this.setProp("ElevatorShaft.floors.2", "1;300;5..10");
