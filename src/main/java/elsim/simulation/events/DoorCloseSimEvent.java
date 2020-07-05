@@ -23,7 +23,7 @@ public class DoorCloseSimEvent extends AbstractSimEvent {
 	@Override
 	public void processEvent() throws SimulationNotInitializedException {
 		var durationInSeconds = (int)this.car.closeDoor();
-		LOGGER.fine(String.format("Door is closing and will be closed at %s.",
+		LOGGER.info(String.format("Door is closing and will be closed at %s.",
 				this.formatTimestamp(this.timestamp.plusSeconds(durationInSeconds))));
 
 		this.simulation.addSimEvent(durationInSeconds, new CarMoveSimEvent(this.car.getElevatorShaft()));

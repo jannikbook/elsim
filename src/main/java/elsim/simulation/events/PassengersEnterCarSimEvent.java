@@ -24,10 +24,14 @@ public class PassengersEnterCarSimEvent extends AbstractSimEvent {
 	public void processEvent() throws SimulationNotInitializedException {
 		var elevatorShaft = this.car.getElevatorShaft();
 		var currentFloor = elevatorShaft.getCurrentCarFloor();
-		LOGGER.fine(String.format("Passengers start entering the car at %s", this.getNowFormatted()));
+		var before = car.getCurrentPassengers().size();
 
 		var enterDuration = this.car.addAllPassengersAtFloor(currentFloor);
-		LOGGER.finer(car.getCurrentPassengers().size() + " passengers are now in the car.");
+
+		var after = car.getCurrentPassengers().size();
+		LOGGER.fine(String.format("%d passengers have entered the car at %s", after - before, this.getNowFormatted()));
+
+		LOGGER.finer(after + " passengers are now in the car.");
 		this.simulation.addSimEvent(enterDuration, new DoorCloseSimEvent(this.car));
 	}
 }

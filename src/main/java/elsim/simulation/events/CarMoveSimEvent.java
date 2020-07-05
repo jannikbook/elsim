@@ -22,7 +22,7 @@ public class CarMoveSimEvent extends AbstractSimEvent {
 	@Override
 	public void processEvent() throws SimulationNotInitializedException {
 		var duration = this.shaft.moveCar();
-		LOGGER.fine(String.format("Elevator arrives at floor %d with %d passengers. (at %s)",
+		LOGGER.info(String.format("Elevator arrives at floor %d with %d passengers. (at %s)",
 				shaft.getCurrentCarFloor().getFloorNumber(),
 				shaft.getElevatorCar().getCurrentPassengers().size(),
 				this.formatTimestamp(this.getTimestamp().plus(duration))));

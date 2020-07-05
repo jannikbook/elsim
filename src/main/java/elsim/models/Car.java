@@ -113,9 +113,8 @@ public class Car {
 		this.currentPassengers.add(passenger);
 		this.currentMass = this.currentMass + addedMass;
 		this.currentCarArea = this.currentCarArea + addedCarArea;
-		LOGGER.fine(String.format("A passenger has entered the car who wants to go to floor %d.", passenger.getFloorDestination().getFloorNumber()));
+		LOGGER.info(String.format("A passenger has entered the car who wants to go to floor %d.", passenger.getFloorDestination().getFloorNumber()));
 		return true;
-		
 	}
 
 	/**
@@ -136,7 +135,7 @@ public class Car {
 		this.currentPassengers.remove(passenger);
 		this.currentMass = this.currentMass - removedMass;
 		this.currentCarArea = currentCarArea - removedCarArea;
-		LOGGER.fine(String.format("A passenger from floor %d has exited the car.", passenger.getFloorStartingPoint().getFloorNumber()));
+		LOGGER.info(String.format("A passenger from floor %d has exited the car.", passenger.getFloorStartingPoint().getFloorNumber()));
 	}
 	
 	/**
