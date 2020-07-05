@@ -61,10 +61,13 @@ public class Simulation {
 		instance = new Simulation(shaft, eventManager, start, end);
 
 		for (var f : instance.elevatorShaft.getFloors()) {
-			f.initPatienceEvents(instance);
+			try {
+				f.loadPassengers(instance, instance.elevatorShaft);
+			}
+			catch (SimulationNotInitializedException e) {} // literally impossible
 		}
 
-		LOGGER.info("[Simulation] Simulation has been initialized.");
+		LOGGER.info("Simulation has been initialized.");
 	}
 
 	private Simulation(ElevatorShaft shaft, SimEventManager eventManager, LocalDateTime simStart, LocalDateTime simEnd) {
@@ -134,9 +137,9 @@ public class Simulation {
 
 		sim.simulationIsRunning = true;
 
-		LOGGER.info("[Simulation]");
-		LOGGER.info("[Simulation] *** SIMULATION STARTING ***");
-		LOGGER.info("[Simulation]");
+		LOGGER.info("");
+		LOGGER.info("*** SIMULATION STARTING ***");
+		LOGGER.info("");
 
 		var eventManager = sim.eventManager;
 
@@ -147,26 +150,34 @@ public class Simulation {
 		try {
 			eventManager.addEvent(startEvent);
 		} catch (EventWithoutTimestampException withoutTimestampException) {
-			LOGGER.severe("[Simulation] " + withoutTimestampException.toString());
+			LOGGER.severe(withoutTimestampException.toString());
 		} catch (EventAlreadyExistsException alreadyExistsException) {
-			LOGGER.warning("[Simulation] " + alreadyExistsException.toString());
+			LOGGER.warning(alreadyExistsException.toString());
 		}
 
 		var event = eventManager.getNextEvent();
 		while (event != null && event.getTimestamp().isBefore(sim.simulationEnd)) {
 			try {
-				LOGGER.info("[Simulation] Executing event: " + event.getClass().getName());
+				LOGGER.finer("Executing event: " + event.getClass().getName());
 				event.processEvent();
 			}
 			catch (SimulationNotInitializedException | EventAlreadyExistsException exception) {
-				LOGGER.severe("[Simulation] " + exception.toString());
+				LOGGER.severe(exception.toString());
 			}
 
 			event = eventManager.getNextEvent();
 		}
 
-		LOGGER.info("[Simulation]");
-		LOGGER.info("[Simulation] *** SIMULATION HAS ENDED ***");
-		LOGGER.info("[Simulation]");
+		LOGGER.info("");
+		LOGGER.info("*** SIMULATION HAS ENDED ***");
+		LOGGER.info("");
+	}
+
+	public LocalDateTime getEnd() {
+		return this.simulationEnd;
+	}
+
+	public LocalDateTime getStart() {
+		return this.simulationStart;
 	}
 }

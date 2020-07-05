@@ -114,7 +114,7 @@ public class Car {
 		this.currentPassengers.add(passenger);
 		this.currentMass = this.currentMass + addedMass;
 		this.currentCarArea = this.currentCarArea + addedCarArea;
-		LOGGER.fine("[Car] Passenger has been added to car");
+		LOGGER.fine("Passenger has been added to car");
 		return true;
 		
 	}
@@ -138,7 +138,7 @@ public class Car {
 		this.currentPassengers.remove(passenger);
 		this.currentMass = this.currentMass - removedMass;
 		this.currentCarArea = currentCarArea - removedCarArea;
-		LOGGER.fine("[Car] Passenger has been removed from car");
+		LOGGER.fine("Passenger has been removed from car");
 	}
 	
 	/**
@@ -146,7 +146,7 @@ public class Car {
 	 * @return changeDoorTime Time it takes to open the door 
 	 */
 	public double openDoor() {
-		LOGGER.fine("[Car] Door is opening");
+		LOGGER.fine("Door is opening");
 		return changeDoorTime;
 	}
 	
@@ -155,7 +155,7 @@ public class Car {
 	 * @return changeDoorTime Time it takes to close the door 
 	 */
 	public double closeDoor() {
-		LOGGER.fine("[Car] Door is closing");
+		LOGGER.fine("Door is closing");
 		return changeDoorTime;
 	}
 
@@ -196,7 +196,7 @@ public class Car {
 		var moveDirection = shaft.getDir();
 
 		if (this.currentPassengers.size() >= this.maxPassengerNumber) {
-			LOGGER.warning("[Car] Car is full but wants to add passengers.");
+			LOGGER.warning("Car is full but wants to add passengers.");
 		}
 
 		var nextPassenger = currentFloor.findAndRemoveNextPossiblePassenger(maxMass - currentMass, getSpareArea(), moveDirection);

@@ -56,7 +56,7 @@ public class ConfigManager {
     public void setDefaultConfig() {
         // Use this to add your own default config
         // or use the optional defaultValue parameter in the getter-methods instead
-        LOGGER.info("[ConfigManager] Applying default config...");
+        LOGGER.info("Applying default config...");
         this.prop = new SortedProperties(); // empty config
 
         // Passenger namespace
@@ -96,7 +96,7 @@ public class ConfigManager {
         this.setProp("Item.maxArea",1);
 
         
-        LOGGER.info("[ConfigManager] Applying default config... Done.");
+        LOGGER.info("Applying default config... Done.");
     }
 
     /**
@@ -112,7 +112,7 @@ public class ConfigManager {
      */
     public void listConfig() {
         List<String> keys = new ArrayList<String>();
-        String out = "[ConfigManager]";
+        String out = "";
         for(String key : this.prop.stringPropertyNames()) {
             keys.add(key);
         }
@@ -139,16 +139,16 @@ public class ConfigManager {
         boolean skip = false;
         //if anything goes wrong, write a new config file and skip the rest of the read process
 
-        LOGGER.info("[ConfigManager] Initializing config...");
+        LOGGER.info("Initializing config...");
         InputStream is = null;
         // first, apply the default config
         this.setDefaultConfig();
-        LOGGER.info("[ConfigManager] Trying to apply config from file '" + fileName + "'...");
+        LOGGER.info("Trying to apply config from file '" + fileName + "'...");
         try {
             // second, open file
             is = new FileInputStream(fileName);
         } catch (FileNotFoundException e) {
-            LOGGER.severe("[ConfigManager] File '" + fileName + "' not found. Creating a new config file instead.");
+            LOGGER.severe("File '" + fileName + "' not found. Creating a new config file instead.");
             this.writeConfig(fileName);
             skip = true;
         }
@@ -157,17 +157,17 @@ public class ConfigManager {
             // third, parse file
             this.prop.load(is);
         } catch (IOException e) {
-            LOGGER.severe("[ConfigManager] File '" + fileName + "' is not readable (may be invalid). Attempting to create a new config file instead.");
+            LOGGER.severe("File '" + fileName + "' is not readable (may be invalid). Attempting to create a new config file instead.");
             this.writeConfig(fileName);
             skip = true;
         }}
         if (!skip) {
             // everything went well
-            LOGGER.info("[ConfigManager] Trying to apply config from file '" + fileName + "'... Done.");
+            LOGGER.info("Trying to apply config from file '" + fileName + "'... Done.");
         }
-        LOGGER.info("[ConfigManager] Using the following config:");
+        LOGGER.info("Using the following config:");
         listConfig();
-        LOGGER.info("[ConfigManager] Initializing config... Done.");
+        LOGGER.info("Initializing config... Done.");
     }
 
 
@@ -183,13 +183,13 @@ public class ConfigManager {
      * @param fileName Config file name, path is optional
      */
     private void writeConfig(String fileName) {
-        LOGGER.info("[ConfigManager] Writing config to file '" + fileName + "'...");
+        LOGGER.info("Writing config to file '" + fileName + "'...");
         try {
             this.prop.store(new FileOutputStream(fileName), null);
         } catch (IOException e) {
-            LOGGER.severe("[ConfigManager] Could not write file '" + fileName + "'. ");
+            LOGGER.severe("Could not write file '" + fileName + "'. ");
         }
-        LOGGER.info("[ConfigManager] Writing config to file '" + fileName + "'... Done.");
+        LOGGER.info("Writing config to file '" + fileName + "'... Done.");
     }
 
     // BELOW: Prop Setter Methods

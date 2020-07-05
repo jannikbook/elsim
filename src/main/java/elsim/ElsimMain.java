@@ -11,7 +11,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class ElsimMain {
 
@@ -24,10 +23,10 @@ public class ElsimMain {
 			IOException {
 
 		LOGGER.setUseParentHandlers(false);
-		LOGGER.setLevel(Level.ALL);
+		LOGGER.setLevel(Level.FINE);
 
 		var fileHandler = new FileHandler("log.txt");
-		var formatter = new SimpleFormatter();
+		var formatter = new LogFormatter();
 		fileHandler.setFormatter(formatter);
 		LOGGER.addHandler(fileHandler);
 

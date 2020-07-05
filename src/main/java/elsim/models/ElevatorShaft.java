@@ -1,6 +1,7 @@
 package main.java.elsim.models;
 
 import main.java.elsim.config.ConfigManager;
+import main.java.elsim.simulation.SimulationNotInitializedException;
 
 import java.time.Duration;
 import java.util.LinkedList;
@@ -26,7 +27,7 @@ public class ElevatorShaft {
         return carDir;
     }
 
-    public ElevatorShaft(Car c) {
+    public ElevatorShaft(Car c) throws SimulationNotInitializedException {
         this.elevatorCar = c;
         this.elevatorCar.setElevatorShaft(this);
 
@@ -37,18 +38,12 @@ public class ElevatorShaft {
         carSpeed = ConfigManager.getInstance().getPropAsInt("ElevatorShaft.carSpeed");
     }
 
-    private void loadFloors() {
+    private void loadFloors() throws SimulationNotInitializedException {
         this.floors = new LinkedList<Floor>();
         for (int i = 0; i < ConfigManager.getInstance().getPropAsInt("ElevatorShaft.floors.length"); i++){
             String[] vars = ConfigManager.getInstance().getProp("ElevatorShaft.floors." + i).split(";");
             var temp = vars[2].split("\\.\\.");
             this.floors.add(new Floor(Integer.parseInt(vars[0]), Integer.parseInt(vars[1]), Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
-        }
-
-        for (var f : this.floors) {
-            // all floors need to exist for this to work
-            LOGGER.finer("[ElevatorShaft] Adding passengers to floor " + f.getFloorNumber());
-            f.loadPassengers(this.floors);
         }
     }
 
