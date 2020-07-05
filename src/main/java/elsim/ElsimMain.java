@@ -16,7 +16,7 @@ public class ElsimMain {
 		var timeStart = LocalDateTime.now();
 
 		var car = new Car(10, 100, 5.0 * 5, 2);
-		var floors = new ArrayList<Floor>(Arrays.asList(
+		var floors = new ArrayList<>(Arrays.asList(
 				new Floor(-1, 300),
 				new Floor(0, 350),
 				new Floor(1, 300),

@@ -2,7 +2,6 @@ package main.java.elsim.simulation.events;
 
 import main.java.elsim.models.Floor;
 import main.java.elsim.models.Passenger;
-import main.java.elsim.simulation.Simulation;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 
 public class PassengerLeavesFloorSimEvent extends AbstractSimEvent {

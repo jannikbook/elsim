@@ -174,6 +174,11 @@ public class Car {
 		return this.shaft;
 	}
 
+	/**
+	 * Removes all passengers that have the given floor as destination.
+	 * @param floor The floor to have passengers exit at.
+	 * @return How long the action takes.
+	 */
 	public Duration removeAllPassengersAtFloor(Floor floor) {
 		Duration exitDuration = Duration.ZERO;
 
@@ -187,6 +192,11 @@ public class Car {
 		return exitDuration;
 	}
 
+	/**
+	 * Add all passengers that can enter the elevator car at the given floor.
+	 * @param currentFloor The floor to have passengers enter the car at.
+	 * @return How long the action takes.
+	 */
 	public Duration addAllPassengersAtFloor(Floor currentFloor) {
 		var moveDirection = shaft.getDir();
 		var nextPassenger = currentFloor.findAndRemoveNextPossiblePassenger(maxMass - currentMass, getSpareArea(), moveDirection);
