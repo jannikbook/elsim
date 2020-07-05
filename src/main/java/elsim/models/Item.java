@@ -12,8 +12,8 @@ public class Item extends Load {
     static int MIN_MASS                 = 1;
     static int MAX_MASS                 = 20;
     static int DECIMALS                 = 2;
-    static double MIN_AREA              = 10;
-    static double MAX_AREA              = 10000;
+    static double MIN_AREA              = 0.01;
+    static double MAX_AREA              = 1;
 
     Passenger owner;
 
