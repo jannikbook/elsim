@@ -151,7 +151,7 @@ public class Floor {
     /**
      * Removes one passenger from this floor. This is called either when a passenger enters the elevator car or leaves because of their patience running out.
      * @param passenger The passenger to leave this floor.
-     * @return
+     * @return Whether the passenger was removed.
      */
     public boolean removePassenger(Passenger passenger) {
         var pGoingUp = passenger.getFloorDestination().getFloorNumber() > this.getFloorNumber();
@@ -163,6 +163,7 @@ public class Floor {
             for (var p : this.passengers) {
                 if (!p.equals(passenger) && p.getFloorDestination().getFloorNumber() > this.getFloorNumber()) {
                     otherGoingUp = true;
+                    break;
                 }
             }
 
@@ -175,6 +176,7 @@ public class Floor {
             for (var p : this.passengers) {
                 if (!p.equals(passenger) && p.getFloorDestination().getFloorNumber() < this.getFloorNumber()) {
                     otherGoingDown = true;
+                    break;
                 }
             }
 
