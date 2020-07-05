@@ -4,6 +4,9 @@ import main.java.elsim.models.Floor;
 import main.java.elsim.models.Passenger;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 
+/**
+ * Describes a passenger's patience running out and leaving.
+ */
 public class PassengerLeavesFloorSimEvent extends AbstractSimEvent {
 	private final Floor floor;
 	private final Passenger passenger;
@@ -13,6 +16,9 @@ public class PassengerLeavesFloorSimEvent extends AbstractSimEvent {
 		this.passenger = passenger;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void processEvent() throws SimulationNotInitializedException {
 		this.floor.removePassenger(passenger);
