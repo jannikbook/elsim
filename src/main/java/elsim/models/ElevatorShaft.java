@@ -144,7 +144,7 @@ public class ElevatorShaft {
                 }
             }
         }
-        return null;
+        return f;
     }
 
     private Duration getDurationForDistance(int distance) {
