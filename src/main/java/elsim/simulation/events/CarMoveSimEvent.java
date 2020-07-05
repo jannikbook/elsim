@@ -31,6 +31,7 @@ public class CarMoveSimEvent extends AbstractSimEvent {
 		LOGGER.fine("Elevator moves " + s + ".");
 		var duration = this.shaft.moveCar();
 		LOGGER.fine("Elevator arrives at " + shaft.getCurrentCarFloor().getFloorNumber() + ".");
+		LOGGER.fine("Passenger amount: " + shaft.getElevatorCar().getCurrentPassengers().size());
 
 		if (duration.isZero()) {
 			return; // no next floor to move to

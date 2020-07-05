@@ -37,7 +37,7 @@ public class ElevatorShaft {
         carSpeed = ConfigManager.getInstance().getPropAsInt("ElevatorShaft.carSpeed");
     }
 
-    private void loadFloors(){
+    private void loadFloors() {
         this.floors = new LinkedList<Floor>();
         for (int i = 0; i < ConfigManager.getInstance().getPropAsInt("ElevatorShaft.floors.length"); i++){
             String[] vars = ConfigManager.getInstance().getProp("ElevatorShaft.floors." + i).split(";");

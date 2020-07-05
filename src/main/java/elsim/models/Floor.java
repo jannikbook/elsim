@@ -97,6 +97,7 @@ public class Floor {
      */
     public Passenger findAndRemoveNextPossiblePassenger(int freeMass, double freeSpace, MoveDirection direction) {
         Passenger passenger = null;
+
         for (Passenger tmp: passengers) {
             int directionFloorNumber = tmp.getFloorDestination().getFloorNumber();
             int neededMass = tmp.getMass();
@@ -146,7 +147,46 @@ public class Floor {
     public void resetButtonDown() { buttonPressedDown = false; }
 
     public void removePassenger(Passenger passenger) {
+        var pGoingUp = passenger.getFloorDestination().getFloorNumber() > this.getFloorNumber();
+
+        // これは文書化する必要はありません - とにかく誰もそれを理解していません。
+        if (pGoingUp) {
+            boolean otherGoingUp = false;
+
+            for (var p : this.passengers) {
+                if (!p.equals(passenger) && p.getFloorDestination().getFloorNumber() > this.getFloorNumber()) {
+                    otherGoingUp = true;
+                }
+            }
+
+            if (!otherGoingUp) {
+                this.resetButtonUp();
+            }
+        } else {
+            boolean otherGoingDown = false;
+
+            for (var p : this.passengers) {
+                if (!p.equals(passenger) && p.getFloorDestination().getFloorNumber() < this.getFloorNumber()) {
+                    otherGoingDown = true;
+                }
+            }
+
+            if (!otherGoingDown) {
+                this.resetButtonDown();
+            }
+        }
+
+        var destNumber = passenger.getFloorDestination().getFloorNumber();
         this.passengers.remove(passenger);
+
+        boolean anyWithSameDest = false;
+        for (var p : this.passengers) {
+            if (p.getFloorDestination().getFloorNumber() == destNumber) {
+                anyWithSameDest = true;
+            }
+        }
+
+
     }
 
     public void initPatienceEvents(Simulation sim) {

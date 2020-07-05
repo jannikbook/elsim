@@ -23,7 +23,7 @@ public class Car {
 	private double maxCarArea;
 	private double changeDoorTime;					// Time in seconds
 	
-	private int currentPassengerNumber;
+	//private int currentPassengerNumber;
 	private int currentMass;						// Mass in kg
 	private double currentCarArea;					// area in m²
 	private List<Passenger> currentPassengers;		
@@ -36,7 +36,6 @@ public class Car {
 		this.maxMass = ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxMass");
 		this.maxCarArea = ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxCarArea");
 		this.changeDoorTime = ConfigManager.getInstance().getPropAsInt("ElevatorCar.changeDoorTime");
-		this.currentPassengerNumber = 0;
 		this.currentMass = 0;
 		this.currentCarArea = 0.0;
 		this.currentPassengers = new ArrayList<>();
@@ -51,14 +50,6 @@ public class Car {
 		if (this.shaft == null) {
 			this.shaft = shaft;
 		}
-	}
-
-	/**
-	 * Returns number of peeple in the car 
-	 * @return Number of peeple in the car 
-	 */
-	public int getCurrentPersonNumber() {
-		return currentPassengerNumber;
 	}
 
 	/**
@@ -100,15 +91,7 @@ public class Car {
 	public double getSpareArea() {
 		return this.maxCarArea - this.currentCarArea;
 	}
-	
-	/**
-	 * Returns spare passenger number (maxPassengerNumber - currentPassengerNumber)
-	 * @return Spare passenger number
-	 */
-	public int getSparePassenger() {
-		return this.maxPassengerNumber - this.currentPassengerNumber;
-	}
-	
+
 	/**
      * Adding a passenger to a car
      * @see Passenger
@@ -126,7 +109,6 @@ public class Car {
 		}
 		
 		this.currentPassengers.add(passenger);
-		this.currentPassengerNumber++;
 		this.currentMass = this.currentMass + addedMass;
 		this.currentCarArea = this.currentCarArea + addedCarArea;
 		LOGGER.fine("[Car] Passenger has been added to car");
@@ -151,7 +133,6 @@ public class Car {
 		}
 		
 		this.currentPassengers.remove(passenger);
-		this.currentPassengerNumber--;
 		this.currentMass = this.currentMass - removedMass;
 		this.currentCarArea = currentCarArea - removedCarArea;
 		LOGGER.fine("[Car] Passenger has been removed from car");
@@ -210,6 +191,11 @@ public class Car {
 	 */
 	public Duration addAllPassengersAtFloor(Floor currentFloor) {
 		var moveDirection = shaft.getDir();
+
+		if (this.currentPassengers.size() >= this.maxPassengerNumber) {
+			LOGGER.warning("[Car] Car is full but wants to add passengers.");
+		}
+
 		var nextPassenger = currentFloor.findAndRemoveNextPossiblePassenger(maxMass - currentMass, getSpareArea(), moveDirection);
 		if (nextPassenger == null) {
 			return Duration.ZERO;
@@ -217,7 +203,7 @@ public class Car {
 
 		Duration enterDuration = nextPassenger.getTimeChange();
 
-		while (nextPassenger != null) {
+		while (nextPassenger != null && this.currentPassengers.size() < this.maxPassengerNumber) {
 			this.addPassenger(nextPassenger);
 			enterDuration = enterDuration.plus(nextPassenger.getTimeChange());
 
