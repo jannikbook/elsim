@@ -3,3 +3,5 @@
 # these two folder contain build and binary files and are not currently needed in the repository
 bin/
 target/
+
+elsim.config

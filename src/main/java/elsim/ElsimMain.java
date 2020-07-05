@@ -1,5 +1,6 @@
 package main.java.elsim;
 
+import main.java.elsim.config.ConfigManager;
 import main.java.elsim.models.Car;
 import main.java.elsim.models.ElevatorShaft;
 import main.java.elsim.models.Floor;
