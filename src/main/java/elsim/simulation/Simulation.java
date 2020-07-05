@@ -9,6 +9,12 @@ import java.time.LocalDateTime;
 
 /**
  * Contains all information needed to run a simulation and handles the basic simulation logic.
+ *
+ * The methods {@code initialize} and {@code run} are the public interfaces for simulation.
+ * All needed information should be supplied as parameters for the {@code initialize} method call.
+ * Then, {@code run} can be called to start the simulation.
+ * To configure logging output, the static logging interfaces should be used.
+ *
  * @author jbook
  */
 public class Simulation {
