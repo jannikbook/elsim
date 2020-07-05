@@ -116,7 +116,7 @@ public class ConfigManager {
         }
         Collections.sort(keys);
         for (int i = 0; i < keys.size(); i++){
-            out += "\n" + keys.get(i) + "=" + getProp(keys.get(i), "<error retrieving prop>");
+            out += "\n\t" + keys.get(i) + "=" + getProp(keys.get(i), "<error retrieving prop>");
         }
         LOGGER.config(out);
     }
