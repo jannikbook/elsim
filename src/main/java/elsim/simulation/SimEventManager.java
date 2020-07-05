@@ -20,8 +20,9 @@ public class SimEventManager {
 	/**
 	 * Creates a new EventManager instance.
 	 */
-	public SimEventManager() {
+	public SimEventManager(LocalDateTime simulationStart){
 		events = new TreeSet<>(new SimEventTimestampComparator());
+		this.lastEventTimestamp = simulationStart;
 	}
 
 	/**
@@ -37,7 +38,7 @@ public class SimEventManager {
 		if (!events.add(newEvent)) {
 			throw new EventAlreadyExistsException();
 		}
-		LOGGER.fine("[EventManager] An event has been added to the event queue: " + newEvent.getClass().getName() + " at " + newEvent.getTimestamp().toString());
+		LOGGER.fine("[EventManager] An event has been added to the event queue: " + newEvent.getClass().getName());
 	}
 
 	/**

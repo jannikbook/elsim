@@ -43,7 +43,7 @@ public class ElsimMain {
 
 		var car = new Car(); // construct from config
 		var elevatorShaft = new ElevatorShaft(car);
-		var eventManager = new SimEventManager();
+		var eventManager = new SimEventManager(timeStart);
 
 		Simulation.initialize(elevatorShaft, eventManager, timeStart, timeStart.plus(1, ChronoUnit.DAYS));
 		Simulation.run();

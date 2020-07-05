@@ -26,17 +26,6 @@ public class ElevatorShaft {
         return carDir;
     }
 
-    public ElevatorShaft(Car c, List<Floor> floors) {
-        this.elevatorCar = c;
-        this.elevatorCar.setElevatorShaft(this);
-
-        this.floors = floors;
-        this.carFloor = floors.get(0);
-        this.carDir = MoveDirection.Up;
-
-        carSpeed=ConfigManager.getInstance().getPropAsInt("carSpeed");
-    }
-
     public ElevatorShaft(Car c) {
         this.elevatorCar = c;
         this.elevatorCar.setElevatorShaft(this);
@@ -44,6 +33,8 @@ public class ElevatorShaft {
         this.loadFloors();
         this.carFloor = floors.get(0);
         this.carDir = MoveDirection.Up;
+
+        carSpeed=ConfigManager.getInstance().getPropAsInt("ElevatorShaft.carSpeed");
     }
 
     private void loadFloors(){
@@ -118,13 +109,13 @@ public class ElevatorShaft {
     //Next floor where a Passenger enters
     public Floor nextFloorEnters() {
         if (carDir == MoveDirection.Up) {
-            for (int i = floors.indexOf(carFloor); i < floors.size(); i++) {
+            for (int i = floors.indexOf(carFloor) + 1; i < floors.size(); i++) {
                 if (floors.get(i).getButtonPressedUp()) {
                     return floors.get(i);
                 }
             }
         } else if (carDir == MoveDirection.Down) {
-            for (int i = floors.indexOf(carFloor); i >= 0; i--) {
+            for (int i = floors.indexOf(carFloor) - 1; i >= 0; i--) {
                 if (floors.get(i).getButtonPressedDown()) {
                     return floors.get(i);
                 }

@@ -3,6 +3,7 @@ package main.java.elsim.simulation;
 import main.java.elsim.models.ElevatorShaft;
 import main.java.elsim.simulation.events.AbstractSimEvent;
 import main.java.elsim.simulation.events.DoorOpenSimEvent;
+import main.java.elsim.simulation.events.PassengerLeavesFloorSimEvent;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -58,6 +59,11 @@ public class Simulation {
 		}
 
 		instance = new Simulation(shaft, eventManager, start, end);
+
+		for (var f : instance.elevatorShaft.getFloors()) {
+			f.initPatienceEvents(instance);
+		}
+
 		LOGGER.info("[Simulation] Simulation has been initialized.");
 	}
 

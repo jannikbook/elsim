@@ -53,7 +53,11 @@ public class Floor {
         for (int i = 0; i < this.passengerAmount; i++) {
             var targetFloorIndex = RNG.getInstance().getRandomIntegerExcept(0, allFloors.size() - 1, allFloors.indexOf(this));
 
-            this.passengers.add(new Passenger(this, allFloors.get(targetFloorIndex)));
+            try {
+                this.addPassenger(new Passenger(this, allFloors.get(targetFloorIndex)));
+            } catch (SimulationNotInitializedException notInitializedException) {
+                LOGGER.warning("[Floor] Exception on adding passenger: " + notInitializedException.toString());
+            }
         }
     }
 
@@ -75,14 +79,6 @@ public class Floor {
 
         if (destinationFloorNumber < this.floorNumber) {
             buttonPressedDown = true;
-        }
-
-        var sim = Simulation.getInstance();
-        try {
-            sim.addSimEvent(passenger.getTimePatience(), new PassengerLeavesFloorSimEvent(this, passenger));
-        }
-        catch (EventAlreadyExistsException e) {
-            LOGGER.warning(String.format("[Floor] PassengerLeavesFloor already exists as an event. Passenger might have been added twice to floor %d.", this.floorNumber));
         }
     }
 
@@ -151,5 +147,17 @@ public class Floor {
 
     public void removePassenger(Passenger passenger) {
         this.passengers.remove(passenger);
+    }
+
+    public void initPatienceEvents(Simulation sim) {
+        for (var p : this.passengers) {
+            try {
+                sim.addSimEvent(p.getTimePatience(), new PassengerLeavesFloorSimEvent(this, p));
+            }
+            catch (EventAlreadyExistsException e) {
+                LOGGER.warning(String.format("[Floor] PassengerLeavesFloor already exists as an event. Passenger might have been added twice to floor %d.", this.floorNumber));
+            }
+            catch (SimulationNotInitializedException fuckJava) {}
+        }
     }
 }

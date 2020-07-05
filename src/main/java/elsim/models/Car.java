@@ -29,30 +29,12 @@ public class Car {
 	private List<Passenger> currentPassengers;		
 
 	/**
-     * Parameterized Creation of Car Object
-	 * @param maxPassengerNumber Maximum amount of passenger inside a car
-     * @param maxMass Maximum amount of mass inside a car in kg
-     * @param maxCarArea Rectangle desribing the maximum car area
-     * @param changeDoorTime Time it takes to open/close the door
-     */
-	public Car(int maxPassengerNumber, int maxMass, double maxCarArea, double changeDoorTime) {
-		this.maxPassengerNumber = maxPassengerNumber;
-		this.maxMass = maxMass;
-		this.maxCarArea = maxCarArea;
-		this.changeDoorTime = changeDoorTime;
-		this.currentPassengerNumber = 0;
-		this.currentMass = 0;
-		this.currentCarArea = 0.0;
-		this.currentPassengers = new ArrayList<>();
-	}
-	
-	/**
      * Car constructor from values of the configuration
      */
 	public Car() {
 		this.maxPassengerNumber =  ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxPassengerNumber");
-		this.maxMass = ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxCarArea");
-		this.maxCarArea = ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxPassengerNumber");
+		this.maxMass = ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxMass");
+		this.maxCarArea = ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxCarArea");
 		this.changeDoorTime = ConfigManager.getInstance().getPropAsInt("ElevatorCar.changeDoorTime");
 		this.currentPassengerNumber = 0;
 		this.currentMass = 0;
