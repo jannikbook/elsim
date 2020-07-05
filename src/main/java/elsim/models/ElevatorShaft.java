@@ -1,5 +1,7 @@
 package main.java.elsim.models;
 
+import main.java.elsim.config.ConfigManager;
+
 import java.time.Duration;
 import java.util.List;
 
@@ -9,7 +11,7 @@ public class ElevatorShaft {
     private List<Floor> floors;
     private Floor carFloor;
     private MoveDirection carDir;
-    private double carSpeed = 21.00;
+    private double carSpeed;
 
     public MoveDirection getDir() {
         return carDir;
@@ -22,6 +24,8 @@ public class ElevatorShaft {
         this.floors = floors;
         this.carFloor = floors.get(0);
         this.carDir = MoveDirection.Up;
+
+        carSpeed=ConfigManager.getInstance().getPropAsInt("carSpeed");
     }
 
     public Car getElevatorCar() {
@@ -36,9 +40,10 @@ public class ElevatorShaft {
         floors.add(f);
     }
 
+    //Calculation of Distance to next Floor
     private double distanceToFloor(Floor floor) {
         double distance = 0;
-        int save;                           //Warte auf implementierung von Car.getCurrentFloor();
+        int save;
         int from = floors.indexOf(carFloor);
         int to = floors.indexOf(floor);
         if (from > to) {

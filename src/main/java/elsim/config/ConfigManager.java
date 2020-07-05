@@ -70,6 +70,8 @@ public class ConfigManager {
         this.setProp("ElevatorCar.maxMass", 1000);
         this.setProp("ElevatorCar.changeDoorTime", 1);
 
+        //ElevatorShaft
+        this.setProp("ElevatorShaft.carSpeed",8);
 
     }
 
