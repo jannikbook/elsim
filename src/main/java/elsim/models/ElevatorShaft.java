@@ -8,28 +8,36 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * ElevatorShaft
- * Handles a car and many floors.
+ * Contains all Information of the elevator shaft. The elevator shaft also contains the elevator car.
+ * The elevator car is controlled from the elevator shaft to move it to the individual floors.
+ * In addition, this class controls the algorithm with which the elevator car travels to each floor.
  * @author lBlankemeyer
  */
-
 public class ElevatorShaft {
-    private static final Logger LOGGER = Logger.getLogger(ElevatorShaft.class.getName());
 
+    private static final Logger LOGGER = Logger.getLogger(ElevatorShaft.class.getName());
     private Car elevatorCar;
     private List<Floor> floors;
     private Floor carFloor;
     private MoveDirection carDir;
     private double carSpeed;
 
+    /**
+     * Public GETTER of move direction.
+     * @return Direction of ar movement
+     */
     public MoveDirection getDir() {
         return carDir;
     }
 
+    /**
+     * Public constructor, which creates an elevator shaft with an elevator car.
+     * Elevator car speed is set by the config.
+     * @param c The elevator car, which is contained by the elevator Shaft
+     */
     public ElevatorShaft(Car c) {
         this.elevatorCar = c;
         this.elevatorCar.setElevatorShaft(this);
-
         this.loadFloors();
         this.carFloor = floors.get(0);
         this.carDir = MoveDirection.Up;
@@ -37,6 +45,10 @@ public class ElevatorShaft {
         carSpeed = ConfigManager.getInstance().getPropAsInt("ElevatorShaft.carSpeed");
     }
 
+    /**
+     * First reads the floor count from the config.
+     * Then each floor is read from the config file and created inside the elevator shaft.
+     */
     private void loadFloors(){
         this.floors = new LinkedList<Floor>();
         for (int i = 0; i < ConfigManager.getInstance().getPropAsInt("ElevatorShaft.floors.length"); i++){
@@ -52,19 +64,27 @@ public class ElevatorShaft {
         }
     }
 
+    /**
+     * Public GETTER for elevator car.
+     * @return elevator car, which is contained by the elevator shaft.
+     */
     public Car getElevatorCar() {
         return elevatorCar;
     }
 
+    /**
+     * Public GETTER for elevator car.
+     * @return List of floors, which is contained by the elevator shaft.
+     */
     public List<Floor> getFloors() {
         return floors;
     }
 
-    public void addFloor(Floor f) {
-        floors.add(f);
-    }
-
-    //Calculation of Distance to next Floor
+    /**
+     * Adds up all floor heights of floors between start and destination floor.
+     * @param floor Floor to which the distance is to be measured.
+     * @return Distance in centimeters.
+     */
     private int distanceToFloor(Floor floor) {
         int distance = 0;
         int save;
@@ -82,32 +102,37 @@ public class ElevatorShaft {
     }
 
     //Get nextFloor (next floor between next floor where someone leaves and next floor where someone enters)
-    public Floor nextFloor() {
+    private Floor nextFloor() {
         if (carDir == MoveDirection.Hold) carDir = MoveDirection.Up;
-        Floor dest = nextFloorEnters();
-        Floor arr = nextFloorLeaves();
-        if (dest != null && arr != null) {
+        Floor enter = nextFloorEnters();
+        Floor leaver = nextFloorLeaves();
+        if (enter != null && leaver != null) {
             if (carDir == MoveDirection.Up) {
-                if (floors.indexOf(dest) < floors.indexOf(arr)) {
-                    return dest;
+                if (floors.indexOf(enter) < floors.indexOf(leaver)) {
+                    return enter;
                 } else {
-                    return arr;
+                    return leaver;
                 }
             } else if (carDir == MoveDirection.Down) {
-                if (floors.indexOf(dest) > floors.indexOf(arr)) {
-                    return dest;
+                if (floors.indexOf(enter) > floors.indexOf(leaver)) {
+                    return enter;
                 } else {
-                    return arr;
+                    return leaver;
                 }
             }
         }
-        if (dest != null && arr == null) return dest;
-        if (dest == null && arr != null) return arr;
+        if (enter != null && leaver == null) return enter;
+        if (enter == null && leaver != null) return leaver;
         return null;
     }
 
-    //Next floor where a Passenger enters
-    public Floor nextFloorEnters() {
+    /**
+     * Part of the algorithm, to find the next destination floor.
+     * The elevator shaft pays attention to the nearest floor and queries the button statuses.
+     * If the elevator shaft finds no floor, it
+     * @return Next destination floor in terms of passengers waiting for the elevator car
+     */
+    private Floor nextFloorEnters() {
         if (carDir == MoveDirection.Up) {
             for (int i = floors.indexOf(carFloor) + 1; i < floors.size(); i++) {
                 if (floors.get(i).getButtonPressedUp()) {
@@ -121,11 +146,28 @@ public class ElevatorShaft {
                 }
             }
         }
+
+        for (int i = floors.indexOf(carFloor) + 1; i >= 0; i++) {
+            if (floors.get(i).getButtonPressedDown()) {
+                return floors.get(i);
+            }
+        }
+        for (int i = floors.indexOf(carFloor) - 1; i >= 0; i--) {
+            if (floors.get(i).getButtonPressedUp()) {
+                return floors.get(i);
+            }
+        }
+
         return null;
+
     }
 
-    //Next floor where a Passenger leaves
-    public Floor nextFloorLeaves() {
+    /**
+     * Part of the algorithm, to find the next destination floor.
+     * The elevator shaft pays attention to the nearest floor, which is also a passenger's destination floor.
+     * @return Next destination floor in terms of passengers in the elevator car
+     */
+    private Floor nextFloorLeaves() {
         Floor f = null;
         if (carDir == MoveDirection.Up) {
             for (Passenger p : elevatorCar.getCurrentPassengers()) {
@@ -147,6 +189,11 @@ public class ElevatorShaft {
         return null;
     }
 
+    /**
+     *
+     * @param distance Distance, which needs to be traveled.
+     * @return Return of Duration
+     */
     private Duration getDurationForDistance(int distance) {
         return Duration.ofMillis((long) (1000 * (distance/100 / carSpeed)));
     }
@@ -178,7 +225,7 @@ public class ElevatorShaft {
         return this.carFloor;
     }
 
-    public void moveToFloor(Floor floor) {
+    private void moveToFloor(Floor floor) {
         if (!this.floors.contains(floor)) {
             throw new IllegalArgumentException("floor");
         }
