@@ -38,6 +38,15 @@ public class ElsimMain {
 			configManager.readConfig(); // This reads from file or creates a default config
 		}
 
+		//apply log level from config
+		try {
+			LOGGER.setLevel(Level.parse(configManager.getProp("ElsimMain.LogLevel", "invalid")));
+		} catch (IllegalArgumentException e) {
+			LOGGER.warning("Invalid log level supplied in config. Using default instead.");
+		}
+
+
+
 		var timeStart = LocalDateTime.parse(configManager.getProp("Simulation.start"));
 		var timeEnd = LocalDateTime.parse(configManager.getProp("Simulation.end"));
 

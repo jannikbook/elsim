@@ -60,6 +60,10 @@ public class ConfigManager {
         LOGGER.finer("Applying default config...");
         this.prop = new SortedProperties(); // empty config
 
+        // ElsimMain namespace
+        this.setProp("ElsimMain.LogLevel", "FINER");
+
+        // Simulation namespace
         this.setProp("Simulation.start", "2020-07-01T04:00:00");
         this.setProp("Simulation.end", "2020-07-03T23:59:59");
 
