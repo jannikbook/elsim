@@ -8,7 +8,11 @@ import java.util.logging.Logger;
 import main.java.elsim.config.ConfigManager;
 
 /**
- * Class for a elevator car used by passengers
+ * Contains all informationen needed to handle the elevator car for passenger transportation.
+ * All information needed to create an elevator car are supplied by the {@code ConfigManager}.
+ * Main functionality includes the managing of {@code Passenger} (adding, removing).
+ * @see ConfigManager
+ * @see Passenger
  * @author fwagner
  */
 
@@ -23,7 +27,6 @@ public class Car {
 	private double maxCarArea;
 	private double changeDoorTime;					// Time in seconds
 	
-	//private int currentPassengerNumber;
 	private int currentMass;						// Mass in kg
 	private double currentCarArea;					// area in m²
 	private List<Passenger> currentPassengers;		
