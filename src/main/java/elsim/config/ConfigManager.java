@@ -119,8 +119,11 @@ public class ConfigManager {
      * List config
      */
     public void listConfig() {
+        List<String> keys = new ArrayList<String>();
         String out = "";
-        List<String> keys = new ArrayList<String>(this.prop.stringPropertyNames());
+        for(String key : this.prop.stringPropertyNames()) {
+            keys.add(key);
+        }
         Collections.sort(keys);
         for (int i = 0; i < keys.size(); i++){
             out += "\n\t" + keys.get(i) + "=" + getProp(keys.get(i), "<error retrieving prop>");
