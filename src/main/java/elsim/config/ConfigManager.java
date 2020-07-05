@@ -4,7 +4,6 @@ import main.java.elsim.simulation.Simulation;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -62,10 +61,10 @@ public class ConfigManager {
 
         // Passenger namespace
         this.setProp("Passenger.people.length", 4);
-        this.setProp("Passenger.people.0", "50..70;0.20..0.25;500..1500;40000..80000");
-        this.setProp("Passenger.people.1", "75..100;0.30..0.40;500..2000;40000..80000");
-        this.setProp("Passenger.people.2", "30..50;0.15..0.25;500..2000;40000..80000");
-        this.setProp("Passenger.people.3", "50..100;0.20..0.40;500..2000;40000..80000");
+        this.setProp("Passenger.people.0", "50..70;0.20..0.25;500..1500;40000..80000;1..3");
+        this.setProp("Passenger.people.1", "75..100;0.30..0.40;500..2000;40000..80000;0..3");
+        this.setProp("Passenger.people.2", "30..50;0.15..0.25;500..2000;40000..80000;0..1");
+        this.setProp("Passenger.people.3", "50..100;0.20..0.40;500..2000;40000..80000;1..4");
 
         // RNG namespace
         this.setProp("RNG.seed", 12345678);

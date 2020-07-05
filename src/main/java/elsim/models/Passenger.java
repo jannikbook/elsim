@@ -3,7 +3,7 @@ import main.java.elsim.config.ConfigManager;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Class for passengers that use elevators
@@ -12,6 +12,7 @@ import java.util.List;
  * @author jdunker
  */
 public class Passenger extends Load {
+    private static final Logger LOGGER = Logger.getLogger(Passenger.class.getName());
     private Duration timeChange;
     private Duration timePatience;
     public ArrayList<Item> items;
@@ -46,6 +47,14 @@ public class Passenger extends Load {
         this.spaceRequired = RNG.getInstance().getRandomDouble(Double.parseDouble(varsMin[1]), Double.parseDouble(varsMax[1]),2);
         this.timeChange = Duration.ofMillis((long) RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[2]), Integer.parseInt(varsMax[2])));
         this.timePatience = Duration.ofMillis((long) RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[3]), Integer.parseInt(varsMax[3])));
+        // this.items
+        if (vars.length < 5) {
+            LOGGER.warning("[Passenger] Passenger config contains to few fields. Not generating any items.");
+            return;
+        }
+        for (int i = 0; i < RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[4]), Integer.parseInt(varsMax[4])); i++){
+            this.items.add(new Item());
+        }
     }
 
     /**
