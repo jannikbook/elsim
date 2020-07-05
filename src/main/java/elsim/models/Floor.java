@@ -117,7 +117,7 @@ public class Floor {
                 break;
             }
         }
-        if(passenger != null) {
+        if (passenger != null) {
             passengers.remove(passenger);
         }
         return passenger;

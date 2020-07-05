@@ -34,7 +34,7 @@ public class ElevatorShaft {
         this.carFloor = floors.get(0);
         this.carDir = MoveDirection.Up;
 
-        carSpeed=ConfigManager.getInstance().getPropAsInt("ElevatorShaft.carSpeed");
+        carSpeed = ConfigManager.getInstance().getPropAsInt("ElevatorShaft.carSpeed");
     }
 
     private void loadFloors(){
@@ -170,6 +170,7 @@ public class ElevatorShaft {
         }
 
         var distance = distanceToFloor(nextFloor);
+        this.moveToFloor(nextFloor);
         return getDurationForDistance(distance);
     }
 
@@ -177,7 +178,7 @@ public class ElevatorShaft {
         return this.carFloor;
     }
 
-    public void arriveAtFloor(Floor floor) {
+    public void moveToFloor(Floor floor) {
         if (!this.floors.contains(floor)) {
             throw new IllegalArgumentException("floor");
         }

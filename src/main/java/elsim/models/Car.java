@@ -187,11 +187,17 @@ public class Car {
 	public Duration removeAllPassengersAtFloor(Floor floor) {
 		Duration exitDuration = Duration.ZERO;
 
+		var toRemove = new ArrayList<Passenger>();
+
 		for (var p : this.currentPassengers) {
 			if (p.getFloorDestination().equals(floor)) {
-				this.removePassenger(p);
+				toRemove.add(p);
 				exitDuration = exitDuration.plus(p.getTimeChange());
 			}
+		}
+
+		for (var rm : toRemove) {
+			this.removePassenger(rm);
 		}
 
 		return exitDuration;
