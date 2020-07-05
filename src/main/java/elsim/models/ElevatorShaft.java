@@ -75,7 +75,32 @@ public class ElevatorShaft {
         return distance;
     }
 
+    //Get next Floor (next where someone leaves, next where someone enters)
     public Floor nextFloor() {
+        Floor dest = nextFloorDest();
+        Floor arr = nextFloorArr();
+        if (dest!=null&&arr!=null) {
+            if (carDir == MoveDirection.Up) {
+                if (floors.indexOf(dest) < floors.indexOf(arr)) {
+                    return dest;
+                } else {
+                    return arr;
+                }
+            } else if (carDir == MoveDirection.Down) {
+                if (floors.indexOf(dest) > floors.indexOf(arr)) {
+                    return dest;
+                } else {
+                    return arr;
+                }
+            }
+        }
+        if (nextFloorDest()!=null&&nextFloorArr()==null) return dest;
+        if (nextFloorDest()==null&&nextFloorArr()!=null) return arr;
+        return null;
+    }
+
+    //Next floor where a Passenger leaves
+    public Floor nextFloorDest() {
         if (carDir == MoveDirection.Up) {
             for (int i = floors.indexOf(carFloor); i < floors.size(); i++) {
                 if (floors.get(i).getButtonPressedUp()) {
@@ -86,6 +111,29 @@ public class ElevatorShaft {
             for (int i = floors.indexOf(carFloor); i >= 0; i--) {
                 if (floors.get(i).getButtonPressedDown()) {
                     return floors.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    //Next floor where a Passenger enters
+    public Floor nextFloorArr() {
+        Floor f = null;
+        if (carDir == MoveDirection.Up) {
+            for (Passenger p : elevatorCar.getCurrentPassengers()) {
+                if (floors.indexOf(p.getFloorDestination())>floors.indexOf(carFloor)) {
+                    if (floors.indexOf(f)>floors.indexOf(p.getFloorDestination())||f==null) {
+                        f=p.getFloorDestination();
+                    }
+                }
+            }
+        } else if (carDir == MoveDirection.Down) {
+            for (Passenger p : elevatorCar.getCurrentPassengers()) {
+                if (floors.indexOf(p.getFloorDestination())<floors.indexOf(carFloor)) {
+                    if (floors.indexOf(f)<floors.indexOf(p.getFloorDestination())||f==null) {
+                        f=p.getFloorDestination();
+                    }
                 }
             }
         }
