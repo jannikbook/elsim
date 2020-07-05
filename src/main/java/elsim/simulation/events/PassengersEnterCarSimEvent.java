@@ -4,6 +4,9 @@ import main.java.elsim.models.Car;
 import main.java.elsim.simulation.EventAlreadyExistsException;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 
+/**
+ * Describes passengers entering the elevator car at a specific floor.
+ */
 public class PassengersEnterCarSimEvent extends AbstractSimEvent {
 	private final Car car;
 
@@ -11,6 +14,9 @@ public class PassengersEnterCarSimEvent extends AbstractSimEvent {
 		this.car = car;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void processEvent() throws SimulationNotInitializedException, EventAlreadyExistsException {
 		var elevatorShaft = this.car.getElevatorShaft();

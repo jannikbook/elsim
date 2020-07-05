@@ -15,8 +15,14 @@ public class ElsimMain {
 
 	public static void main(String[] args)
 			throws SimulationAlreadyInitializedException, SimulationAlreadyRunningException, SimulationNotInitializedException {
+
 		var configManager = ConfigManager.getInstance();
-		configManager.readConfig(); // This reads from file or creates a default config
+
+		if (args.length > 0) {
+			configManager.readConfig(args[0]);
+		} else {
+			configManager.readConfig(); // This reads from file or creates a default config
+		}
 
 		var timeStart = LocalDateTime.now();
 
