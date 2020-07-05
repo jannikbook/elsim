@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"main.java.elsim"},{"l":"main.java.elsim.models"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"main.java.elsim"},{"l":"main.java.elsim.config"},{"l":"main.java.elsim.models"},{"l":"main.java.elsim.simulation"},{"l":"main.java.elsim.simulation.events"}]

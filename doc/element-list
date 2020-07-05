@@ -1,2 +1,5 @@
 main.java.elsim
+main.java.elsim.config
 main.java.elsim.models
+main.java.elsim.simulation
+main.java.elsim.simulation.events
