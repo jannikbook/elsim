@@ -119,16 +119,13 @@ public class ConfigManager {
      * List config
      */
     public void listConfig() {
-        List<String> keys = new ArrayList<String>();
-        String out = "";
-        for(String key : this.prop.stringPropertyNames()) {
-            keys.add(key);
-        }
+        StringBuilder out = new StringBuilder();
+        List<String> keys = new ArrayList<String>(this.prop.stringPropertyNames());
         Collections.sort(keys);
-        for (int i = 0; i < keys.size(); i++){
-            out += "\n\t" + keys.get(i) + "=" + getProp(keys.get(i), "<error retrieving prop>");
+        for (String key : keys) {
+            out.append("\n\t").append(key).append("=").append(getProp(key, "<error retrieving prop>"));
         }
-        LOGGER.config(out);
+        LOGGER.config(out.toString());
     }
     /**
      * Read config from disk using default file name
