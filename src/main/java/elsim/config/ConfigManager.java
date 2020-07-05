@@ -65,8 +65,7 @@ public class ConfigManager {
 
         // ElevatorCar namespace
         this.setProp("ElevatorCar.maxPassengerNumber", 12);
-        this.setProp("ElevatorCar.maxCarArea.height", 3);
-        this.setProp("ElevatorCar.maxCarArea.width", 3);
+        this.setProp("ElevatorCar.maxCarArea", 9);
         this.setProp("ElevatorCar.maxMass", 1000);
         this.setProp("ElevatorCar.changeDoorTime", 1);
 

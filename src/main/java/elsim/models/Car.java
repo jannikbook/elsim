@@ -4,6 +4,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.java.elsim.config.ConfigManager;
+
 /**
  * Class for a elevator car used by passengers
  * @author fwagner
@@ -35,6 +37,20 @@ public class Car {
 		this.maxMass = maxMass;
 		this.maxCarArea = maxCarArea;
 		this.changeDoorTime = changeDoorTime;
+		this.currentPassengerNumber = 0;
+		this.currentMass = 0;
+		this.currentCarArea = 0.0;
+		this.currentPassengers = new ArrayList<>();
+	}
+	
+	/**
+     * Car constructor from values of the configuration
+     */
+	public Car() {
+		this.maxPassengerNumber =  ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxPassengerNumber");
+		this.maxMass = ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxCarArea");
+		this.maxCarArea = ConfigManager.getInstance().getPropAsInt("ElevatorCar.maxPassengerNumber");
+		this.changeDoorTime = ConfigManager.getInstance().getPropAsInt("ElevatorCar.changeDoorTime");
 		this.currentPassengerNumber = 0;
 		this.currentMass = 0;
 		this.currentCarArea = 0.0;
@@ -93,7 +109,7 @@ public class Car {
 	}
 	
 	/**
-	 * Returns spare area inside the car (maxAre - currentArea)
+	 * Returns spare area inside the car (maxArea - currentArea)
 	 * @return Spare mass inside the car
 	 */
 	public double getSpareArea() {
@@ -109,7 +125,7 @@ public class Car {
 	}
 	
 	/**
-     * Adding a passenger to a car with a check to the limits
+     * Adding a passenger to a car
      * @see Passenger
      * @param passenger Passenger to be added to the car
      * @return Status if passenger can be added
