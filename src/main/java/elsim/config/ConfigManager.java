@@ -56,7 +56,7 @@ public class ConfigManager {
     public void setDefaultConfig() {
         // Use this to add your own default config
         // or use the optional defaultValue parameter in the getter-methods instead
-        LOGGER.info("Applying default config...");
+        LOGGER.finer("Applying default config...");
         this.prop = new SortedProperties(); // empty config
 
         // Passenger namespace
@@ -96,7 +96,7 @@ public class ConfigManager {
         this.setProp("Item.maxArea",1);
 
         
-        LOGGER.info("Applying default config... Done.");
+        LOGGER.finer("Applying default config... Done.");
     }
 
     /**
@@ -143,7 +143,7 @@ public class ConfigManager {
         InputStream is = null;
         // first, apply the default config
         this.setDefaultConfig();
-        LOGGER.info("Trying to apply config from file '" + fileName + "'...");
+        LOGGER.finer("Trying to apply config from file '" + fileName + "'...");
         try {
             // second, open file
             is = new FileInputStream(fileName);
@@ -163,7 +163,7 @@ public class ConfigManager {
         }}
         if (!skip) {
             // everything went well
-            LOGGER.info("Trying to apply config from file '" + fileName + "'... Done.");
+            LOGGER.finer("Trying to apply config from file '" + fileName + "'... Done.");
         }
         LOGGER.info("Using the following config:");
         listConfig();
