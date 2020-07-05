@@ -169,10 +169,18 @@ public class Simulation {
 		LOGGER.info("");
 	}
 
+	/**
+	 * Gets the timestamp of the simulation end.
+	 * @return The timestamp.
+	 */
 	public LocalDateTime getEnd() {
 		return this.simulationEnd;
 	}
 
+	/**
+	 * Gets the timestamp of the simulation start.
+	 * @return The timestamp.
+	 */
 	public LocalDateTime getStart() {
 		return this.simulationStart;
 	}

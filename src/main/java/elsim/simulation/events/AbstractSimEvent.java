@@ -39,6 +39,10 @@ public abstract class AbstractSimEvent {
 		return timestamp;
 	}
 
+	/**
+	 * Gets the unique ID associated with this event instance.
+	 * @return A {@code long} identifying this instance.
+	 */
 	public long getId() {
 		return this.id;
 	}
@@ -55,10 +59,18 @@ public abstract class AbstractSimEvent {
 		this.timestamp = timestamp;
 	}
 
+	/**
+	 * Gets {@code this.timestamp} formatted according to our specification.
+	 * @return A {@code String} representing this event's timestamp.
+	 */
 	protected String getNowFormatted() {
 		return formatTimestamp(this.timestamp);
 	}
 
+	/**
+	 * Formats a timestamp according to our specification.
+	 * @return A {@code String} representing the supplied timestamp.
+	 */
 	protected String formatTimestamp(LocalDateTime timestamp) {
 		return timestamp.format(DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy"));
 	}

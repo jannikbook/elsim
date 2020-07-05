@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import main.java.elsim.config.ConfigManager;
 
 /**
- * Contains all informationen needed to handle the elevator car for passenger transportation.
+ * Contains all information needed to handle the elevator car for passenger transportation.
  * All information needed to create an elevator car are supplied by the {@code ConfigManager}.
  * Main functionality includes the managing of {@code Passenger} (adding, removing).
  * @see ConfigManager

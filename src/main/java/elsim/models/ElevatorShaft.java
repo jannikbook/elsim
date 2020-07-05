@@ -13,7 +13,6 @@ import java.util.logging.Logger;
  * Handles a car and many floors.
  * @author lBlankemeyer
  */
-
 public class ElevatorShaft {
     private static final Logger LOGGER = Logger.getLogger(ElevatorShaft.class.getName());
 

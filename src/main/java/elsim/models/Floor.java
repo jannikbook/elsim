@@ -12,23 +12,22 @@ import java.util.logging.Logger;
 /**
  * Class for floors where the passengers wait for the elevator
  * @see Passenger
- * @author mjaeckel
+ * @author mjaeckel, jbook
  */
-
 public class Floor {
     private static final Logger LOGGER = Logger.getLogger(Floor.class.getName());
 
-    private int floorNumber;
-    private int height;
-    private LinkedList<Passenger> passengers;
+    private final int floorNumber;
+    private final int height;
+    private final LinkedList<Passenger> passengers;
     private boolean buttonPressedUp;
     private boolean buttonPressedDown;
 
     private final int passengerAmount;
 
     /**
-     * Manual constructor for Passenger Objects
-     * @param height Height of the floor in centimeters
+     * Manual constructor for Passenger Objects.
+     * @param height Height of the floor in centimeters.
      */
     public Floor(int floorNumber, int height, int minPassengers, int maxPassengers) {
         this.floorNumber = floorNumber;
@@ -43,8 +42,8 @@ public class Floor {
     }
 
     /**
-     * Get number of floor
-     * @return the number of the floor
+     * Get number of floor.
+     * @return The number of the floor.
      */
     public int getFloorNumber() { return floorNumber; }
 
@@ -64,8 +63,8 @@ public class Floor {
     }
 
     /**
-     * Add a passenger who wait at this floor for the elevator and press the button up or down to call the elevator car
-     * @param passenger A new passenger who will wait for an elevator
+     * Add a passenger who wait at this floor for the elevator and press the button up or down to call the elevator car.
+     * @param passenger A new passenger who will wait for an elevator.
      */
     public void addPassenger(Passenger passenger) {
         int destinationFloorNumber = passenger.getFloorDestination().getFloorNumber();
@@ -85,16 +84,16 @@ public class Floor {
     }
 
     /**
-     * Get the height of the floor
-     * @return Height of the floor as int
+     * Get the height of the floor.
+     * @return Height of the floor as an integer.
      */
     public int getHeight() { return height; }
 
     /**
-     * Find, return and remove next waiting passenger who can get into the elevator limited by mass, required space and direction
-     * @param freeMass Free mass of the elevator
-     * @param freeSpace Free space of the elevator
-     * @param direction The move direction of the elevator car
+     * Find, return and remove next waiting passenger who can get into the elevator limited by mass, required space and direction.
+     * @param freeMass Free mass of the elevator.
+     * @param freeSpace Free space of the elevator.
+     * @param direction The move direction of the elevator car.
      * @return Passenger as type Passenger who fit with the conditions and can enter the elevator. If no passenger fit it will return null.
      */
     public Passenger findAndRemoveNextPossiblePassenger(int freeMass, double freeSpace, MoveDirection direction) {
@@ -149,6 +148,11 @@ public class Floor {
      */
     public void resetButtonDown() { buttonPressedDown = false; }
 
+    /**
+     * Removes one passenger from this floor. This is called either when a passenger enters the elevator car or leaves because of their patience running out.
+     * @param passenger The passenger to leave this floor.
+     * @return
+     */
     public boolean removePassenger(Passenger passenger) {
         var pGoingUp = passenger.getFloorDestination().getFloorNumber() > this.getFloorNumber();
 
@@ -179,16 +183,6 @@ public class Floor {
             }
         }
 
-        var destNumber = passenger.getFloorDestination().getFloorNumber();
         return this.passengers.remove(passenger);
-    }
-
-    public void initPatienceEvents(Simulation sim) {
-        for (var p : this.passengers) {
-            try {
-                sim.addSimEvent(p.getTimePatience(), new PassengerLeavesFloorSimEvent(this, p));
-            }
-            catch (SimulationNotInitializedException e) {}
-        }
     }
 }
