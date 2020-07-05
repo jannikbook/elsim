@@ -25,6 +25,7 @@ import java.util.Properties;
  *
  * Default Config:
  * Either edit this class, method setDefaultConfig() or pass the parameter defaultValue in each getProp call that will be returned if no value is set
+ * @author jdunker
  */
 public class ConfigManager {
     private Properties prop;
