@@ -37,7 +37,7 @@ public class SimEventManager {
 		if (!events.add(newEvent)) {
 			throw new EventAlreadyExistsException();
 		}
-		LOGGER.finest("[EventManager] An event has been added to the event queue: " + newEvent.getClass().getName() + " at " + newEvent.getTimestamp().toString());
+		LOGGER.fine("[EventManager] An event has been added to the event queue: " + newEvent.getClass().getName() + " at " + newEvent.getTimestamp().toString());
 	}
 
 	/**

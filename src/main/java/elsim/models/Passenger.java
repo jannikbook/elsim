@@ -3,6 +3,7 @@ import main.java.elsim.config.ConfigManager;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class for passengers that use elevators
@@ -18,24 +19,6 @@ public class Passenger extends Load {
     private Floor floorDestination;
 
     /**
-     * Manual constructor for Passenger Objects
-     * @param mass Mass of the passenger in kg
-     * @param spaceRequired Area needed for the passenger in m²
-     * @param timeChange Duration for getting on or off the car
-     * @param timePatience Patience of the passenger as Duration
-     * @param floorStartingPoint Starting floor of passenger
-     * @param floorDestination Destination floor of passenger
-     */
-    public Passenger(int mass, double spaceRequired, Duration timeChange, Duration timePatience, Floor floorStartingPoint, Floor floorDestination){
-        this.mass = mass;
-        this.timeChange = timeChange;
-        this.timePatience = timePatience;
-        this.spaceRequired = spaceRequired;
-        this.floorStartingPoint = floorStartingPoint;
-        this.floorDestination = floorDestination;
-    }
-
-    /**
      * Simpler constructor for Passenger objects
      * @param floorStartingPoint Starting floor of passenger
      * @param floorDestination Destination floor of passenger
@@ -43,6 +26,7 @@ public class Passenger extends Load {
     public Passenger(Floor floorStartingPoint, Floor floorDestination) {
         this.floorStartingPoint = floorStartingPoint;
         this.floorDestination = floorDestination;
+        this.items = new ArrayList<>();
 
         String conf = "Passenger.people." + String.valueOf(RNG.getInstance().getRandomInteger(0, ConfigManager.getInstance().getPropAsInt("Passenger.people.length") - 1));
         String[] vars = ConfigManager.getInstance().getProp(conf).split(";");
@@ -62,7 +46,6 @@ public class Passenger extends Load {
         this.spaceRequired = RNG.getInstance().getRandomDouble(Double.parseDouble(varsMin[1]), Double.parseDouble(varsMax[1]),2);
         this.timeChange = Duration.ofMillis((long) RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[2]), Integer.parseInt(varsMax[2])));
         this.timePatience = Duration.ofMillis((long) RNG.getInstance().getRandomInteger(Integer.parseInt(varsMin[3]), Integer.parseInt(varsMax[3])));
-
     }
 
     /**

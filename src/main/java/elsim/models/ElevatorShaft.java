@@ -5,6 +5,7 @@ import main.java.elsim.config.ConfigManager;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * ElevatorShaft
@@ -13,6 +14,7 @@ import java.util.List;
  */
 
 public class ElevatorShaft {
+    private static final Logger LOGGER = Logger.getLogger(ElevatorShaft.class.getName());
 
     private Car elevatorCar;
     private List<Floor> floors;
@@ -54,6 +56,7 @@ public class ElevatorShaft {
 
         for (var f : this.floors) {
             // all floors need to exist for this to work
+            LOGGER.finer("[ElevatorShaft] Adding passengers to floor " + f.getFloorNumber());
             f.loadPassengers(this.floors);
         }
     }

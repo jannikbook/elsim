@@ -53,7 +53,7 @@ public class Floor {
         for (int i = 0; i < this.passengerAmount; i++) {
             var targetFloorIndex = RNG.getInstance().getRandomIntegerExcept(0, allFloors.size() - 1, allFloors.indexOf(this));
 
-            new Passenger(this, allFloors.get(targetFloorIndex));
+            this.passengers.add(new Passenger(this, allFloors.get(targetFloorIndex)));
         }
     }
 
@@ -106,14 +106,16 @@ public class Floor {
             int neededMass = tmp.getMass();
             double neededSpace = tmp.getSpaceRequired();
             // The needed mass and space for the passenger + his/her items
-            for (Item item:tmp.getItems()) {
+            for (Item item : tmp.getItems()) {
                 neededMass += item.getMass();
                 neededSpace += item.getSpaceRequired();
             }
-            if(neededMass <= freeMass && neededSpace <= freeSpace && (
-                            (direction == MoveDirection.Up && directionFloorNumber > floorNumber) ||
-                            (direction == MoveDirection.Down && directionFloorNumber < floorNumber) ) ) {
 
+            if (neededMass <= freeMass &&
+                neededSpace <= freeSpace && (
+                    (direction == MoveDirection.Up && directionFloorNumber > floorNumber) ||
+                    (direction == MoveDirection.Down && directionFloorNumber < floorNumber)
+                )) {
 
                 passenger = tmp;
                 break;
