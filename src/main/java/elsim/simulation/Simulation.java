@@ -64,7 +64,7 @@ public class Simulation {
 			try {
 				f.loadPassengers(instance, instance.elevatorShaft);
 			}
-			catch (SimulationNotInitializedException e) {} // literally impossible
+			catch (SimulationNotInitializedException ignored) {} // literally impossible
 		}
 
 		LOGGER.info("Simulation has been initialized.");
