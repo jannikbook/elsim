@@ -23,7 +23,7 @@ public class ElsimMain {
 			IOException {
 
 		LOGGER.setUseParentHandlers(false);
-		LOGGER.setLevel(Level.FINE);
+		LOGGER.setLevel(Level.FINER);
 
 		var fileHandler = new FileHandler("log.txt");
 		var formatter = new LogFormatter();

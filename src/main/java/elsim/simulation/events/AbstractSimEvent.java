@@ -5,6 +5,7 @@ import main.java.elsim.simulation.Simulation;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * An abstract class defining some event occurring at a specific point in time during the simulation.
@@ -45,5 +46,9 @@ public abstract class AbstractSimEvent {
 		}
 
 		this.timestamp = timestamp;
+	}
+
+	protected String formatTimestamp() {
+		return this.timestamp.format(DateTimeFormatter.ISO_LOCAL_TIME);
 	}
 }

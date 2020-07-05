@@ -158,7 +158,7 @@ public class Simulation {
 		var event = eventManager.getNextEvent();
 		while (event != null && event.getTimestamp().isBefore(sim.simulationEnd)) {
 			try {
-				LOGGER.finer("Executing event: " + event.getClass().getName());
+				LOGGER.finest("Executing event: " + event.getClass().getName());
 				event.processEvent();
 			}
 			catch (SimulationNotInitializedException | EventAlreadyExistsException exception) {

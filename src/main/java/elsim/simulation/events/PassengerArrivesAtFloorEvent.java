@@ -1,5 +1,6 @@
 package main.java.elsim.simulation.events;
 
+import jdk.jfr.Event;
 import main.java.elsim.models.ElevatorShaft;
 import main.java.elsim.models.Floor;
 import main.java.elsim.models.MoveDirection;
@@ -31,12 +32,24 @@ public class PassengerArrivesAtFloorEvent extends AbstractSimEvent {
 	@Override
 	public void processEvent() throws SimulationNotInitializedException, EventAlreadyExistsException {
 		this.floor.addPassenger(passenger);
+		LOGGER.finer(String.format("Passenger arrives at floor %d, wanting to go to floor %d. (at %s)",
+				this.floor.getFloorNumber(),
+				passenger.getFloorDestination().getFloorNumber(),
+				this.formatTimestamp()));
 
-		this.simulation.addSimEvent(passenger.getTimePatience(), new PassengerLeavesFloorSimEvent(this.floor, passenger));
-		LOGGER.warning(String.format("PassengerLeavesFloor already exists as an event. Passenger might have been added twice to floor %d.", this.floor.getFloorNumber()));
+		try {
+			this.simulation.addSimEvent(passenger.getTimePatience(), new PassengerLeavesFloorSimEvent(this.floor, passenger));
+		}
+		catch (EventAlreadyExistsException alreadyExistsException) {
+			LOGGER.warning(String.format("PassengerLeavesFloor already exists as an event. Passenger might have been added twice to floor %d.", this.floor.getFloorNumber()));
+		}
 
 		if (this.shaft.getDir() == MoveDirection.Hold) {
-			this.simulation.addSimEvent(0, new CarMoveSimEvent(this.shaft));
+			if (this.shaft.getCurrentCarFloor().getFloorNumber() == passenger.getFloorStartingPoint().getFloorNumber()) {
+				this.simulation.addSimEvent(0, new DoorOpenSimEvent(this.shaft.getElevatorCar()));
+			} else {
+				this.simulation.addSimEvent(0, new CarMoveSimEvent(this.shaft));
+			}
 		}
 	}
 }

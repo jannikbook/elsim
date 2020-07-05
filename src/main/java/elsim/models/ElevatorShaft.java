@@ -160,6 +160,7 @@ public class ElevatorShaft {
         }
 
         if (nextFloor == null) {
+            LOGGER.fine("No floor to move to. Changing to hold state.");
             carDir = MoveDirection.Hold;
             return Duration.ZERO;
         }
