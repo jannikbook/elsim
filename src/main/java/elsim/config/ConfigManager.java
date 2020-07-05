@@ -103,12 +103,15 @@ public class ConfigManager {
         } catch (FileNotFoundException e) {
             System.err.println("[ConfigManager] File " + fileName + " not found. Creating a config file instead.");
             this.writeConfig(fileName);
+            this.prop.list(System.out);
+            return;
         }
         try {
             this.prop.load(is);
         } catch (IOException e) {
             System.err.println("[ConfigManager] File '" + fileName + "' is not readable (may be invalid). Creating a config file instead.");
             this.writeConfig(fileName);
+            this.prop.list(System.out);
         }
 
         System.out.println("[ConfigManager] Using the following config:");
