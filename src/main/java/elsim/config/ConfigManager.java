@@ -31,7 +31,7 @@ import java.util.logging.Level;
  * @author jdunker
  */
 public class ConfigManager {
-    private Properties prop;
+    private SortedProperties prop;
     private static ConfigManager instance;
 
     private ConfigManager() {
@@ -55,7 +55,7 @@ public class ConfigManager {
         // Use this to add your own default config
         // or use the optional defaultValue parameter in the getter-methods instead
         Logging.log.log(Level.INFO, "[ConfigManager] Applying default config...");
-        this.prop = new Properties(); // empty config
+        this.prop = new SortedProperties(); // empty config
 
         // Passenger namespace
         this.setProp("Passenger.people.length", "4");
@@ -137,7 +137,7 @@ public class ConfigManager {
             this.prop.list(System.out);
         }
 
-        System.out.println("[ConfigManager] Using the following config:");
+        Logging.log.log(Level.INFO, "[ConfigManager] Using the following config:");
         this.prop.list(System.out);
     }
 
@@ -157,7 +157,7 @@ public class ConfigManager {
         try {
             this.prop.store(new FileOutputStream(fileName), null);
         } catch (IOException e) {
-            System.err.println("[ConfigManager] Could not write file '" + fileName + "'. ");
+            Logging.log.log(Level.SEVERE, "[ConfigManager] Could not write file '" + fileName + "'. ");
         }
     }
 
