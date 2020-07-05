@@ -1,7 +1,10 @@
 package main.java.elsim.config;
 
+import main.java.elsim.models.Logging;
+
 import java.io.*;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Singleton class for managing config that wraps the properties api.
@@ -51,6 +54,7 @@ public class ConfigManager {
     public void setDefaultConfig() {
         // Use this to add your own default config
         // or use the optional defaultValue parameter in the getter-methods instead
+        Logging.log.log(Level.INFO, "[ConfigManager] Applying default config...");
         this.prop = new Properties(); // empty config
 
         // Passenger namespace
@@ -87,6 +91,8 @@ public class ConfigManager {
         this.setProp("Item.minArea",0.01);
         this.setProp("Item.maxArea",1);
 
+        
+        Logging.log.log(Level.INFO, "[ConfigManager] Done. (Applying default config)");
     }
 
     /**
@@ -111,13 +117,14 @@ public class ConfigManager {
      * @param fileName Config file name, path is optional
      */
     public void readConfig(String fileName) {
+        Logging.log.log(Level.INFO, "[ConfigManager] Starting to read config");
         InputStream is = null;
         this.setDefaultConfig();
         try {
             is = new FileInputStream(fileName);
 
         } catch (FileNotFoundException e) {
-            System.err.println("[ConfigManager] File " + fileName + " not found. Creating a config file instead.");
+            Logging.log.log(Level.SEVERE, "[ConfigManager] File " + fileName + " not found. Creating a config file instead.");
             this.writeConfig(fileName);
             this.prop.list(System.out);
             return;
@@ -125,7 +132,7 @@ public class ConfigManager {
         try {
             this.prop.load(is);
         } catch (IOException e) {
-            System.err.println("[ConfigManager] File '" + fileName + "' is not readable (may be invalid). Creating a config file instead.");
+            Logging.log.log(Level.SEVERE, "[ConfigManager] File '" + fileName + "' is not readable (may be invalid). Creating a config file instead.");
             this.writeConfig(fileName);
             this.prop.list(System.out);
         }
