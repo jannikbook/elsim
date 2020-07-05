@@ -10,6 +10,7 @@ import java.util.logging.Logger;
  * Singleton class for managing config that wraps the properties api.
  * Includes methods to read, write and apply default config and set or get values.
  * Beware that the properties api uses only Strings internally and types are converted by this class.
+ * If the filename 'default.config' is used, it will force writing the defaults disk even if the file already exists.
  *
  * How to use:
  * Init and Exit
@@ -133,7 +134,7 @@ public class ConfigManager {
     /**
      * Read config from disk
      * If the config file can't be found or read the default config is used and a write to disk will be attempted.
-     * @param fileName Config file name, path is optional
+     * @param fileName Config file name, path is optional. Using "default.config" results in force writing the default config to disk.
      */
     public void readConfig(String fileName) {
         boolean skip = false;
@@ -143,28 +144,44 @@ public class ConfigManager {
         InputStream is = null;
         // first, apply the default config
         this.setDefaultConfig();
-        LOGGER.finer("Trying to apply config from file '" + fileName + "'...");
-        try {
-            // second, open file
-            is = new FileInputStream(fileName);
-        } catch (FileNotFoundException e) {
-            LOGGER.severe("File '" + fileName + "' not found. Creating a new config file instead.");
-            this.writeConfig(fileName);
+
+        // if fileName is default.config, force writing the default config
+        if (fileName == "default.config") {
+            LOGGER.info("Because the filename 'default.config' was specified, the default config will be written to disk and used.");
+            writeConfig(fileName);
             skip = true;
         }
-        if (!skip){
-        try {
-            // third, parse file
-            this.prop.load(is);
-        } catch (IOException e) {
-            LOGGER.severe("File '" + fileName + "' is not readable (may be invalid). Attempting to create a new config file instead.");
-            this.writeConfig(fileName);
-            skip = true;
-        }}
+
+        // second, open file
         if (!skip) {
-            // everything went well
+            LOGGER.finer("Trying to apply config from file '" + fileName + "'...");
+            try {
+                is = new FileInputStream(fileName);
+            } catch (FileNotFoundException e) {
+                LOGGER.severe("File '" + fileName + "' not found. Creating a new config file instead.");
+                this.writeConfig(fileName);
+                skip = true;
+            }
+        }
+
+        // third, parse file
+        if (!skip){
+            try {
+
+                this.prop.load(is);
+            } catch (IOException e) {
+                LOGGER.severe("File '" + fileName + "' is not readable (may be invalid). Attempting to create a new config file instead.");
+                this.writeConfig(fileName);
+                skip = true;
+            }
+        }
+
+        // everything went well
+        if (!skip) {
             LOGGER.finer("Trying to apply config from file '" + fileName + "'... Done.");
         }
+
+        // list config in logs
         LOGGER.info("Using the following config:");
         listConfig();
         LOGGER.info("Initializing config... Done.");
