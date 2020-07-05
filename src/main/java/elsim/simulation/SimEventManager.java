@@ -5,12 +5,15 @@ import main.java.elsim.simulation.events.AbstractSimEvent;
 import java.time.LocalDateTime;
 import java.util.NavigableSet;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 /**
  * A class managing simulation events.
  * @author jbook
  */
 public class SimEventManager {
+	private static final Logger LOGGER = Logger.getLogger(SimEventManager.class.getName());
+
 	private final NavigableSet<AbstractSimEvent> events;
 	private LocalDateTime lastEventTimestamp;
 
@@ -34,6 +37,7 @@ public class SimEventManager {
 		if (!events.add(newEvent)) {
 			throw new EventAlreadyExistsException();
 		}
+		LOGGER.finest("[EventManager] An event has been added to the event queue: " + newEvent.getClass().getName() + " at " + newEvent.getTimestamp().toString());
 	}
 
 	/**

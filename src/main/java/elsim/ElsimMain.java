@@ -5,13 +5,31 @@ import main.java.elsim.models.Car;
 import main.java.elsim.models.ElevatorShaft;
 import main.java.elsim.simulation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class ElsimMain {
 
-	public static void main(String[] args)
-			throws SimulationAlreadyInitializedException, SimulationAlreadyRunningException, SimulationNotInitializedException {
+	private static final Logger LOGGER = Logger.getLogger(ElsimMain.class.getPackageName());
+
+	public static void main(String[] args) throws
+			SimulationAlreadyInitializedException,
+			SimulationAlreadyRunningException,
+			SimulationNotInitializedException,
+			IOException {
+
+		LOGGER.setUseParentHandlers(false);
+		LOGGER.setLevel(Level.ALL);
+
+		var fileHandler = new FileHandler("log.txt");
+		var formatter = new SimpleFormatter();
+		fileHandler.setFormatter(formatter);
+		LOGGER.addHandler(fileHandler);
 
 		var configManager = ConfigManager.getInstance();
 

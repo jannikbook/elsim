@@ -1,10 +1,11 @@
 package main.java.elsim.config;
 
-import main.java.elsim.models.Logging;
+import main.java.elsim.simulation.Simulation;
 
 import java.io.*;
 import java.util.Properties;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Singleton class for managing config that wraps the properties api.
@@ -31,7 +32,9 @@ import java.util.logging.Level;
  * @author jdunker
  */
 public class ConfigManager {
-    private SortedProperties prop;
+    private static final Logger LOGGER = Logger.getLogger(ConfigManager.class.getName());
+
+    private Properties prop;
     private static ConfigManager instance;
 
     private ConfigManager() {
@@ -54,7 +57,7 @@ public class ConfigManager {
     public void setDefaultConfig() {
         // Use this to add your own default config
         // or use the optional defaultValue parameter in the getter-methods instead
-        Logging.log.log(Level.INFO, "[ConfigManager] Applying default config...");
+        LOGGER.log(Level.INFO, "[ConfigManager] Applying default config...");
         this.prop = new SortedProperties(); // empty config
 
         // Passenger namespace
@@ -92,7 +95,7 @@ public class ConfigManager {
         this.setProp("Item.maxArea",1);
 
         
-        Logging.log.log(Level.INFO, "[ConfigManager] Done with applying default config.");
+        LOGGER.log(Level.INFO, "[ConfigManager] Done. (Applying default config)");
     }
 
     /**
@@ -117,14 +120,14 @@ public class ConfigManager {
      * @param fileName Config file name, path is optional
      */
     public void readConfig(String fileName) {
-        Logging.log.log(Level.INFO, "[ConfigManager] Starting to read config");
+        LOGGER.log(Level.INFO, "[ConfigManager] Starting to read config");
         InputStream is = null;
         this.setDefaultConfig();
         try {
             is = new FileInputStream(fileName);
 
         } catch (FileNotFoundException e) {
-            Logging.log.log(Level.SEVERE, "[ConfigManager] File " + fileName + " not found. Creating a config file instead.");
+            LOGGER.log(Level.SEVERE, "[ConfigManager] File " + fileName + " not found. Creating a config file instead.");
             this.writeConfig(fileName);
             //this.prop.list(System.out);
             return;
@@ -132,7 +135,7 @@ public class ConfigManager {
         try {
             this.prop.load(is);
         } catch (IOException e) {
-            Logging.log.log(Level.SEVERE, "[ConfigManager] File '" + fileName + "' is not readable (may be invalid). Creating a config file instead.");
+            LOGGER.log(Level.SEVERE, "[ConfigManager] File '" + fileName + "' is not readable (may be invalid). Creating a config file instead.");
             this.writeConfig(fileName);
             //this.prop.list(System.out);
         }

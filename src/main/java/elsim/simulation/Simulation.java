@@ -6,6 +6,7 @@ import main.java.elsim.simulation.events.DoorOpenSimEvent;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 /**
  * Contains all information needed to run a simulation and handles the basic simulation logic.
@@ -18,6 +19,8 @@ import java.time.LocalDateTime;
  * @author jbook
  */
 public class Simulation {
+	private static final Logger LOGGER = Logger.getLogger(Simulation.class.getName());
+
 	private static Simulation instance;
 
 	private final LocalDateTime simulationStart;
@@ -55,6 +58,7 @@ public class Simulation {
 		}
 
 		instance = new Simulation(shaft, eventManager, start, end);
+		LOGGER.info("[Simulation] Simulation has been initialized.");
 	}
 
 	private Simulation(ElevatorShaft shaft, SimEventManager eventManager, LocalDateTime simStart, LocalDateTime simEnd) {
@@ -124,6 +128,10 @@ public class Simulation {
 
 		sim.simulationIsRunning = true;
 
+		LOGGER.info("[Simulation]");
+		LOGGER.info("[Simulation] *** SIMULATION STARTING ***");
+		LOGGER.info("[Simulation]");
+
 		var eventManager = sim.eventManager;
 
 		var car = sim.elevatorShaft.getElevatorCar();
@@ -132,8 +140,10 @@ public class Simulation {
 
 		try {
 			eventManager.addEvent(startEvent);
-		} catch (EventWithoutTimestampException | EventAlreadyExistsException e) {
-			e.printStackTrace(); // log
+		} catch (EventWithoutTimestampException withoutTimestampException) {
+			LOGGER.severe("[Simulation] " + withoutTimestampException.toString());
+		} catch (EventAlreadyExistsException alreadyExistsException) {
+			LOGGER.warning("[Simulation] " + alreadyExistsException.toString());
 		}
 
 		var event = eventManager.getNextEvent();
@@ -141,18 +151,15 @@ public class Simulation {
 			try {
 				event.processEvent();
 			}
-			catch (SimulationNotInitializedException notInitializedException) {
-				System.err.println("Caught SimulationNotInitializedException while processing event:");
-				notInitializedException.printStackTrace(System.err);
-			}
-			catch (EventAlreadyExistsException alreadyExistsException) {
-				System.err.println("Caught EventAlreadyExistsException while processing events:");
-				alreadyExistsException.printStackTrace(System.err);
+			catch (SimulationNotInitializedException | EventAlreadyExistsException exception) {
+				LOGGER.severe("[Simulation] " + exception.toString());
 			}
 
 			event = eventManager.getNextEvent();
 		}
 
-		System.out.println("Simulation has ended.");
+		LOGGER.info("[Simulation]");
+		LOGGER.info("[Simulation] *** SIMULATION HAS ENDED ***");
+		LOGGER.info("[Simulation]");
 	}
 }

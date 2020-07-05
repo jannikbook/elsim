@@ -8,6 +8,7 @@ import main.java.elsim.simulation.events.PassengerLeavesFloorSimEvent;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Class for floors where the passengers wait for the elevator
@@ -16,6 +17,8 @@ import java.util.List;
  */
 
 public class Floor {
+    private static final Logger LOGGER = Logger.getLogger(Floor.class.getName());
+
     private int floorNumber;
     private int height;
     private LinkedList<Passenger> passengers;
@@ -62,7 +65,7 @@ public class Floor {
         int destinationFloorNumber = passenger.getFloorDestination().getFloorNumber();
 
         if (destinationFloorNumber == this.floorNumber) {
-            Logging.log.warning(String.format("[Floor] Tried to add passenger to floor %d that has the same floor as their destination.", this.floorNumber));
+            LOGGER.warning(String.format("[Floor] Tried to add passenger to floor %d that has the same floor as their destination.", this.floorNumber));
         }
 
         passengers.add(passenger);
@@ -79,7 +82,7 @@ public class Floor {
             sim.addSimEvent(passenger.getTimePatience(), new PassengerLeavesFloorSimEvent(this, passenger));
         }
         catch (EventAlreadyExistsException e) {
-            Logging.log.warning(String.format("[Floor] PassengerLeavesFloor already exists as an event. Passenger might have been added twice to floor %d.", this.floorNumber));
+            LOGGER.warning(String.format("[Floor] PassengerLeavesFloor already exists as an event. Passenger might have been added twice to floor %d.", this.floorNumber));
         }
     }
 

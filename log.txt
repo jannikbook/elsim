@@ -1,0 +1,30 @@
+Jul 05, 2020 2:36:34 PM main.java.elsim.config.ConfigManager readConfig
+INFO: [ConfigManager] Starting to read config
+Jul 05, 2020 2:36:34 PM main.java.elsim.config.ConfigManager setDefaultConfig
+INFO: [ConfigManager] Applying default config...
+Jul 05, 2020 2:36:34 PM main.java.elsim.config.ConfigManager setDefaultConfig
+INFO: [ConfigManager] Done. (Applying default config)
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.Simulation initialize
+INFO: [Simulation] Simulation has been initialized.
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.Simulation run
+INFO: [Simulation]
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.Simulation run
+INFO: [Simulation] *** SIMULATION STARTING ***
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.Simulation run
+INFO: [Simulation]
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.SimEventManager addEvent
+FINEST: [EventManager] An event has been added to the event queue: main.java.elsim.simulation.events.DoorOpenSimEvent at 2020-07-05T14:36:34.845787400
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.SimEventManager addEvent
+FINEST: [EventManager] An event has been added to the event queue: main.java.elsim.simulation.events.PassengersExitCarSimEvent at 2020-07-05T14:36:35.845787400
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.SimEventManager addEvent
+FINEST: [EventManager] An event has been added to the event queue: main.java.elsim.simulation.events.PassengersEnterCarSimEvent at 2020-07-05T14:36:35.845787400
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.SimEventManager addEvent
+FINEST: [EventManager] An event has been added to the event queue: main.java.elsim.simulation.events.DoorCloseSimEvent at 2020-07-05T14:36:35.845787400
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.SimEventManager addEvent
+FINEST: [EventManager] An event has been added to the event queue: main.java.elsim.simulation.events.CarMoveSimEvent at 2020-07-05T14:36:36.845787400
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.Simulation run
+INFO: [Simulation]
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.Simulation run
+INFO: [Simulation] *** SIMULATION HAS ENDED ***
+Jul 05, 2020 2:36:34 PM main.java.elsim.simulation.Simulation run
+INFO: [Simulation]
