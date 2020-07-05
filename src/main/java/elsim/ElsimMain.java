@@ -13,7 +13,11 @@ import java.util.Arrays;
 
 public class ElsimMain {
 
-	public static void main(String[] args) throws SimulationAlreadyInitializedException, SimulationAlreadyRunningException, SimulationNotInitializedException {
+	public static void main(String[] args)
+			throws SimulationAlreadyInitializedException, SimulationAlreadyRunningException, SimulationNotInitializedException {
+		var configManager = ConfigManager.getInstance();
+		configManager.readConfig(); // This reads from file or creates a default config
+
 		var timeStart = LocalDateTime.now();
 
 		var car = new Car(10, 100, 5.0 * 5, 2);
