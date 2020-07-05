@@ -116,6 +116,16 @@ public class ElevatorShaft {
                 }
             }
         }
+        for (int i = floors.indexOf(carFloor) + 1; i < floors.size(); i++) {
+            if (floors.get(i).getButtonPressedDown()) {
+                return floors.get(i);
+            }
+        }
+        for (int i = floors.indexOf(carFloor) - 1; i >= 0; i--) {
+            if (floors.get(i).getButtonPressedUp()) {
+                return floors.get(i);
+            }
+        }
         return null;
     }
 
