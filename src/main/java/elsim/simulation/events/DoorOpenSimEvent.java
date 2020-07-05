@@ -1,7 +1,6 @@
 package main.java.elsim.simulation.events;
 
 import main.java.elsim.models.Car;
-import main.java.elsim.simulation.EventAlreadyExistsException;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 
 import java.util.logging.Logger;
@@ -22,7 +21,7 @@ public class DoorOpenSimEvent extends AbstractSimEvent {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void processEvent() throws SimulationNotInitializedException, EventAlreadyExistsException {
+	public void processEvent() throws SimulationNotInitializedException {
 		var durationInSeconds = (int)this.car.openDoor();
 		LOGGER.fine(String.format("Door is opening and will be open at %s.",
 				this.formatTimestamp(this.timestamp.plusSeconds(durationInSeconds))));

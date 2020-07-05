@@ -60,6 +60,9 @@ public class ConfigManager {
         LOGGER.finer("Applying default config...");
         this.prop = new SortedProperties(); // empty config
 
+        this.setProp("Simulation.start", "2020-07-01T04:00:00");
+        this.setProp("Simulation.end", "2020-07-03T23:59:59");
+
         // Passenger namespace
         this.setProp("Passenger.people.comment", "Separated by semicolon ; . Define a range using 'min..max'. Order: Mass in kg (int);spaceRequired in sqm(double);timeChange in ms(int);timePatience in ms(int);number of items(int)");
         this.setProp("Passenger.people.length", 4);
@@ -78,17 +81,17 @@ public class ConfigManager {
         this.setProp("ElevatorCar.changeDoorTime", 1);
 
         // ElevatorShaft namespace
-        this.setProp("ElevatorShaft.carSpeed",8);
+        this.setProp("ElevatorShaft.carSpeed", 2);
         this.setProp("ElevatorShaft.floors.length", 8);
         this.setProp("ElevatorShaft.floors.comment", "Floor number;height in cm;min..max amount of passengers");
-        this.setProp("ElevatorShaft.floors.0", "-1;500;0..5");
-        this.setProp("ElevatorShaft.floors.1", "0;350;10..25");
-        this.setProp("ElevatorShaft.floors.2", "1;300;5..10");
-        this.setProp("ElevatorShaft.floors.3", "2;300;4..12");
-        this.setProp("ElevatorShaft.floors.4", "3;400;2..5");
-        this.setProp("ElevatorShaft.floors.5", "4;400;2..5");
-        this.setProp("ElevatorShaft.floors.6", "5;382;15..20");
-        this.setProp("ElevatorShaft.floors.7", "6;260;2..5");
+        this.setProp("ElevatorShaft.floors.0", "-1;500;150..350");
+        this.setProp("ElevatorShaft.floors.1", "0;350;200..600");
+        this.setProp("ElevatorShaft.floors.2", "1;300;75..160");
+        this.setProp("ElevatorShaft.floors.3", "2;300;60..220");
+        this.setProp("ElevatorShaft.floors.4", "3;400;120..280");
+        this.setProp("ElevatorShaft.floors.5", "4;400;40..140");
+        this.setProp("ElevatorShaft.floors.6", "5;382;340..700");
+        this.setProp("ElevatorShaft.floors.7", "6;260;45..120");
 
         //Item namespace
         this.setProp("Item.minMass",1);

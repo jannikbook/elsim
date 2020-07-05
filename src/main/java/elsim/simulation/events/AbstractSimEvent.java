@@ -1,6 +1,5 @@
 package main.java.elsim.simulation.events;
 
-import main.java.elsim.simulation.EventAlreadyExistsException;
 import main.java.elsim.simulation.Simulation;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 
@@ -12,6 +11,9 @@ import java.time.format.DateTimeFormatter;
  * @author jbook
  */
 public abstract class AbstractSimEvent {
+	private static long counter = 0;
+
+	private final long id;
 	protected Simulation simulation;
 	protected LocalDateTime timestamp;
 
@@ -20,13 +22,14 @@ public abstract class AbstractSimEvent {
 	 * @throws SimulationNotInitializedException When the simulation has not been initialized yet.
 	 */
 	public AbstractSimEvent() throws SimulationNotInitializedException {
+		this.id = counter++;
 		this.simulation = Simulation.getInstance();
 	}
 
 	/**
 	 * Process this event instance.
 	 */
-	public abstract void processEvent() throws SimulationNotInitializedException, EventAlreadyExistsException;
+	public abstract void processEvent() throws SimulationNotInitializedException;
 
 	/**
 	 * Gets the event's timestamp as a {@code LocalDateTime}.
@@ -34,6 +37,10 @@ public abstract class AbstractSimEvent {
 	 */
 	public LocalDateTime getTimestamp() {
 		return timestamp;
+	}
+
+	public long getId() {
+		return this.id;
 	}
 
 	/**
@@ -53,6 +60,6 @@ public abstract class AbstractSimEvent {
 	}
 
 	protected String formatTimestamp(LocalDateTime timestamp) {
-		return timestamp.format(DateTimeFormatter.ISO_LOCAL_TIME);
+		return timestamp.format(DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy"));
 	}
 }

@@ -100,9 +100,8 @@ public class Simulation {
 	 * Add an event to the simulation's event queue.
 	 * @param secondsFromNow The offset in seconds after which to add the event.
 	 * @param simEvent The event to add.
-	 * @throws EventAlreadyExistsException When the event already exists in the event queue.
 	 */
-	public void addSimEvent(int secondsFromNow, AbstractSimEvent simEvent) throws EventAlreadyExistsException {
+	public void addSimEvent(int secondsFromNow, AbstractSimEvent simEvent) {
 		addSimEvent(Duration.ofSeconds(secondsFromNow), simEvent);
 	}
 
@@ -110,9 +109,8 @@ public class Simulation {
 	 * Add an event to the simulation's event queue.
 	 * @param timeFromNow The offset after which to add the event.
 	 * @param simEvent The event to add.
-	 * @throws EventAlreadyExistsException When the event already exists in the event queue.
 	 */
-	public void addSimEvent(Duration timeFromNow, AbstractSimEvent simEvent) throws EventAlreadyExistsException {
+	public void addSimEvent(Duration timeFromNow, AbstractSimEvent simEvent) {
 		var current = eventManager.getCurrentTimestamp();
 		simEvent.setTimestamp(current.plus(timeFromNow));
 		try {
@@ -151,8 +149,6 @@ public class Simulation {
 			eventManager.addEvent(startEvent);
 		} catch (EventWithoutTimestampException withoutTimestampException) {
 			LOGGER.severe(withoutTimestampException.toString());
-		} catch (EventAlreadyExistsException alreadyExistsException) {
-			LOGGER.warning(alreadyExistsException.toString());
 		}
 
 		var event = eventManager.getNextEvent();
@@ -161,7 +157,7 @@ public class Simulation {
 				LOGGER.finest("Executing event: " + event.getClass().getName());
 				event.processEvent();
 			}
-			catch (SimulationNotInitializedException | EventAlreadyExistsException exception) {
+			catch (SimulationNotInitializedException exception) {
 				LOGGER.severe(exception.toString());
 			}
 

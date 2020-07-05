@@ -14,6 +14,17 @@ public class SimEventTimestampComparator implements Comparator<AbstractSimEvent>
 	 */
 	@Override
 	public int compare(AbstractSimEvent o1, AbstractSimEvent o2) {
-		return o1.getTimestamp().compareTo(o2.getTimestamp());
+		var cprTimestamp = o1.getTimestamp().compareTo(o2.getTimestamp());
+		if (cprTimestamp != 0) {
+			return cprTimestamp;
+		}
+
+		if (o1.getId() > o2.getId()) {
+			return 1;
+		} else if (o1.getId() < o2.getId()) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 }

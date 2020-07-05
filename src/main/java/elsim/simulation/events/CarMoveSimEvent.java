@@ -1,8 +1,6 @@
 package main.java.elsim.simulation.events;
 
 import main.java.elsim.models.ElevatorShaft;
-import main.java.elsim.models.MoveDirection;
-import main.java.elsim.simulation.EventAlreadyExistsException;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 import java.util.logging.Logger;
 
@@ -22,12 +20,12 @@ public class CarMoveSimEvent extends AbstractSimEvent {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void processEvent() throws SimulationNotInitializedException, EventAlreadyExistsException {
+	public void processEvent() throws SimulationNotInitializedException {
 		var duration = this.shaft.moveCar();
 		LOGGER.fine(String.format("Elevator arrives at floor %d with %d passengers. (at %s)",
 				shaft.getCurrentCarFloor().getFloorNumber(),
 				shaft.getElevatorCar().getCurrentPassengers().size(),
-				this.getNowFormatted()));
+				this.formatTimestamp(this.getTimestamp().plus(duration))));
 
 		if (duration.isZero()) {
 			return; // no next floor to move to

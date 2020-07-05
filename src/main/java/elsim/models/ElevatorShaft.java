@@ -177,6 +177,10 @@ public class ElevatorShaft {
 
         var distance = distanceToFloor(nextFloor);
         this.moveToFloor(nextFloor);
+        if (this.getElevatorCar().getCurrentPassengers().size() == 0) {
+            carDir = MoveDirection.Hold;
+        }
+
         return getDurationForDistance(distance);
     }
 

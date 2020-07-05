@@ -3,6 +3,7 @@ package main.java.elsim.simulation;
 import main.java.elsim.simulation.events.AbstractSimEvent;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 import java.util.logging.Logger;
@@ -14,6 +15,7 @@ import java.util.logging.Logger;
 public class SimEventManager {
 	private static final Logger LOGGER = Logger.getLogger(SimEventManager.class.getName());
 
+	private final ArrayList<AbstractSimEvent> failedEvents = new ArrayList<>();
 	private final NavigableSet<AbstractSimEvent> events;
 	private LocalDateTime lastEventTimestamp;
 
@@ -30,15 +32,14 @@ public class SimEventManager {
 	 * @param newEvent The new {@code SimEvent} to add.
 	 * @return True iff the event was successfully added to the queue.
 	 */
-	public void addEvent(AbstractSimEvent newEvent) throws EventWithoutTimestampException, EventAlreadyExistsException {
+	public void addEvent(AbstractSimEvent newEvent) throws EventWithoutTimestampException {
 		if (newEvent.getTimestamp() == null) {
 			throw new EventWithoutTimestampException();
 		}
 
-		if (!events.add(newEvent)) {
-			throw new EventAlreadyExistsException();
+		if (events.add(newEvent)) {
+			LOGGER.finest("An event has been added to the event queue: " + newEvent.getClass().getName());
 		}
-		LOGGER.finest("An event has been added to the event queue: " + newEvent.getClass().getName());
 	}
 
 	/**

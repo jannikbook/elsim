@@ -1,7 +1,5 @@
 package main.java.elsim.models;
 
-import main.java.elsim.config.ConfigManager;
-import main.java.elsim.simulation.EventAlreadyExistsException;
 import main.java.elsim.simulation.Simulation;
 import main.java.elsim.simulation.SimulationNotInitializedException;
 import main.java.elsim.simulation.events.PassengerArrivesAtFloorEvent;
@@ -9,7 +7,6 @@ import main.java.elsim.simulation.events.PassengerLeavesFloorSimEvent;
 
 import java.time.Duration;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -62,11 +59,7 @@ public class Floor {
             var p = new Passenger(this, allFloors.get(targetFloorIndex));
             var randomOffset = RNG.getInstance().getRandomInteger(0, (int)secondsDuration);
 
-            try {
-                sim.addSimEvent(randomOffset, new PassengerArrivesAtFloorEvent(p, this, shaft));
-            } catch (EventAlreadyExistsException alreadyExistsException) {
-                LOGGER.warning("Passenger arrival event already exists: " + alreadyExistsException.toString());
-            }
+            sim.addSimEvent(randomOffset, new PassengerArrivesAtFloorEvent(p, this, shaft));
         }
     }
 
@@ -119,6 +112,7 @@ public class Floor {
 
             if (neededMass <= freeMass &&
                 neededSpace <= freeSpace && (
+                    (direction == MoveDirection.Hold) ||
                     (direction == MoveDirection.Up && directionFloorNumber > floorNumber) ||
                     (direction == MoveDirection.Down && directionFloorNumber < floorNumber)
                 )) {
@@ -194,10 +188,7 @@ public class Floor {
             try {
                 sim.addSimEvent(p.getTimePatience(), new PassengerLeavesFloorSimEvent(this, p));
             }
-            catch (EventAlreadyExistsException e) {
-                LOGGER.warning(String.format("PassengerLeavesFloor already exists as an event. Passenger might have been added twice to floor %d.", this.floorNumber));
-            }
-            catch (SimulationNotInitializedException fuckJava) {}
+            catch (SimulationNotInitializedException e) {}
         }
     }
 }

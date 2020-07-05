@@ -26,7 +26,9 @@ public class PassengerLeavesFloorSimEvent extends AbstractSimEvent {
 	@Override
 	public void processEvent() {
 		if (this.floor.removePassenger(passenger)) {
-			LOGGER.info(String.format("One passenger runs out of patience after they have waited for %d seconds", passenger.getTimePatience().toSeconds()));
+			LOGGER.info(String.format("One passenger runs out of patience after they have waited for %d seconds (at %s)",
+					passenger.getTimePatience().toSeconds(),
+					this.getNowFormatted()));
 		}
 	}
 }
