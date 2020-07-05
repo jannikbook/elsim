@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * An abstract class defining some event occurring at a specific point in time during the simulation.
+ * @author jbook
  */
 public abstract class AbstractSimEvent {
 	protected Simulation simulation;

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * Contains all information needed to run a simulation and handles the basic simulation logic.
+ * @author jbook
  */
 public class Simulation {
 	private static Simulation instance;
@@ -21,6 +22,11 @@ public class Simulation {
 
 	private boolean simulationIsRunning = false;
 
+	/**
+	 * Gets the singleton {@code Simulation} instance if it exists, and throws a {@code SimulationNotInitializedException} when it doesn't.
+	 * @return The {@code Simulation} instance.
+	 * @throws SimulationNotInitializedException When the {@code initialize} method has not been called beforehand.
+	 */
 	public static Simulation getInstance() throws SimulationNotInitializedException {
 		if (instance == null) {
 			throw new SimulationNotInitializedException();
@@ -29,6 +35,14 @@ public class Simulation {
 		return instance;
 	}
 
+	/**
+	 * Initializes the static {@code Simulation} instance with all information necessary for running the simulation.
+	 * @param shaft The elevator shaft to simulate.
+	 * @param eventManager The event manager to use for simulation events.
+	 * @param start The point at which the simulation starts.
+	 * @param end The point at which the simulation ends, even when there are still events after this point in time.
+	 * @throws SimulationAlreadyInitializedException When this method is called more than once.
+	 */
 	public static void initialize(ElevatorShaft shaft, SimEventManager eventManager, LocalDateTime start, LocalDateTime end) throws SimulationAlreadyInitializedException {
 		if (instance != null) {
 			throw new SimulationAlreadyInitializedException();
@@ -63,10 +77,22 @@ public class Simulation {
 		this.simulationEnd = simEnd;
 	}
 
+	/**
+	 * Add an event to the simulation's event queue.
+	 * @param secondsFromNow The offset in seconds after which to add the event.
+	 * @param simEvent The event to add.
+	 * @throws EventAlreadyExistsException When the event already exists in the event queue.
+	 */
 	public void addSimEvent(int secondsFromNow, AbstractSimEvent simEvent) throws EventAlreadyExistsException {
 		addSimEvent(Duration.ofSeconds(secondsFromNow), simEvent);
 	}
 
+	/**
+	 * Add an event to the simulation's event queue.
+	 * @param timeFromNow The offset after which to add the event.
+	 * @param simEvent The event to add.
+	 * @throws EventAlreadyExistsException When the event already exists in the event queue.
+	 */
 	public void addSimEvent(Duration timeFromNow, AbstractSimEvent simEvent) throws EventAlreadyExistsException {
 		var current = eventManager.getCurrentTimestamp();
 		simEvent.setTimestamp(current.plus(timeFromNow));
@@ -78,6 +104,11 @@ public class Simulation {
 		}
 	}
 
+	/**
+	 * Start the simulation.
+	 * @throws SimulationAlreadyRunningException Thrown when this method has been called before.
+	 * @throws SimulationNotInitializedException Thrown when {@code initialize} has not been called before calling this method.
+	 */
 	public static void run() throws SimulationAlreadyRunningException, SimulationNotInitializedException {
 		var sim = getInstance();
 
@@ -86,7 +117,6 @@ public class Simulation {
 		}
 
 		sim.simulationIsRunning = true;
-
 
 		var eventManager = sim.eventManager;
 

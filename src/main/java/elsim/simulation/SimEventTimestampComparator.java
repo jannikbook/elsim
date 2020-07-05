@@ -6,8 +6,12 @@ import java.util.Comparator;
 
 /**
  * A comparator class that allows comparison of two {@code SimEvent} instances by their timestamp.
+ * @author jbook
  */
 public class SimEventTimestampComparator implements Comparator<AbstractSimEvent> {
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int compare(AbstractSimEvent o1, AbstractSimEvent o2) {
 		return o1.getTimestamp().compareTo(o2.getTimestamp());
