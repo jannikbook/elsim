@@ -41,6 +41,7 @@ public class ElsimMain {
 		//apply log level from config
 		try {
 			LOGGER.setLevel(Level.parse(configManager.getProp("ElsimMain.LogLevel", "invalid")));
+			LOGGER.info("Log level set to '" + configManager.getProp("ElsimMain.LogLevel") + "'. Use FINE, FINER or FINEST get more verbose output.");
 		} catch (IllegalArgumentException e) {
 			LOGGER.warning("Invalid log level supplied in config. Using default instead.");
 		}

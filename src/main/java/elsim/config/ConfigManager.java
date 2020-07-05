@@ -61,7 +61,7 @@ public class ConfigManager {
         this.prop = new SortedProperties(); // empty config
 
         // ElsimMain namespace
-        this.setProp("ElsimMain.LogLevel", "FINER");
+        this.setProp("ElsimMain.LogLevel", "INFO");
 
         // Simulation namespace
         this.setProp("Simulation.start", "2020-07-01T04:00:00");
