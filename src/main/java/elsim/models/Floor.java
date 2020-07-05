@@ -155,7 +155,7 @@ public class Floor {
      */
     public void resetButtonDown() { buttonPressedDown = false; }
 
-    public void removePassenger(Passenger passenger) {
+    public boolean removePassenger(Passenger passenger) {
         var pGoingUp = passenger.getFloorDestination().getFloorNumber() > this.getFloorNumber();
 
         // これは文書化する必要はありません - とにかく誰もそれを理解していません。
@@ -186,14 +186,7 @@ public class Floor {
         }
 
         var destNumber = passenger.getFloorDestination().getFloorNumber();
-        this.passengers.remove(passenger);
-
-        boolean anyWithSameDest = false;
-        for (var p : this.passengers) {
-            if (p.getFloorDestination().getFloorNumber() == destNumber) {
-                anyWithSameDest = true;
-            }
-        }
+        return this.passengers.remove(passenger);
     }
 
     public void initPatienceEvents(Simulation sim) {
