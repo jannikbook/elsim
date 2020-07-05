@@ -3,6 +3,7 @@ package main.java.elsim.models;
 import main.java.elsim.config.ConfigManager;
 
 import java.time.Duration;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ElevatorShaft {
@@ -26,6 +27,23 @@ public class ElevatorShaft {
         this.carDir = MoveDirection.Up;
 
         carSpeed=ConfigManager.getInstance().getPropAsInt("carSpeed");
+    }
+
+    public ElevatorShaft(Car c) {
+        this.elevatorCar = c;
+        this.elevatorCar.setElevatorShaft(this);
+
+        this.loadFloors();
+        this.carFloor = floors.get(0);
+        this.carDir = MoveDirection.Up;
+    }
+
+    private void loadFloors(){
+        this.floors = new LinkedList<Floor>();
+        for (int i = 0; i < ConfigManager.getInstance().getPropAsInt("ElevatorShaft.floors.length"); i++){
+            String[] vars = ConfigManager.getInstance().getProp("ElevatorShaft.floors." + i).split(";");
+            this.floors.add(new Floor(Integer.parseInt(vars[0]), Integer.parseInt(vars[1])));
+        }
     }
 
     public Car getElevatorCar() {

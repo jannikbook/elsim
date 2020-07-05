@@ -72,6 +72,15 @@ public class ConfigManager {
 
         //ElevatorShaft
         this.setProp("ElevatorShaft.carSpeed",8);
+        this.setProp("ElevatorShaft.floors.length", 8);
+        this.setProp("ElevatorShaft.floors.0", "-1;500");
+        this.setProp("ElevatorShaft.floors.1", "0;350");
+        this.setProp("ElevatorShaft.floors.2", "1;300");
+        this.setProp("ElevatorShaft.floors.3", "2;300");
+        this.setProp("ElevatorShaft.floors.4", "3;400");
+        this.setProp("ElevatorShaft.floors.5", "4;400");
+        this.setProp("ElevatorShaft.floors.6", "5;382");
+        this.setProp("ElevatorShaft.floors.7", "5;260");
 
     }
 
